@@ -1,0 +1,6 @@
+[submodule "game-runner/external/mpu6050"]
+	path = game-runner/external/mpu6050
+	url = https://github.com/alex-mous/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+[submodule "game-runner/external/matrixAPI"]
+	path = game-runner/external/matrixAPI
+	url = https://github.com/hzeller/rpi-rgb-led-matrix.git
