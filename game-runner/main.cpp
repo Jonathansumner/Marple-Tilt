@@ -4,9 +4,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <signal.h>
+#include <Magick++.h>
+#include <magick/image.h>
+#include <MPU6050.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
+
+MPU6050 gyro(0x68)
 
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo) {
@@ -30,11 +35,12 @@ static void DrawOnCanvas(Canvas *canvas) {
         float dot_y = sin(a * 2 * M_PI) * r;
         canvas->SetPixel(center_x + dot_x, center_y + dot_y,
                          255, 0, 0);
-        usleep(5 * 1000);  // wait a little to slow down things.
+        usleep(1 * 1000);  // wait a little to slow down things.
     }
 }
 
 int main(int argc, char *argv[]) {
+    float ax, ay, az, gr, gp, gy;
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
     defaults.rows = 64;
@@ -43,7 +49,7 @@ int main(int argc, char *argv[]) {
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.show_refresh_rate = true;
-    defaults.brightness = 15;
+    defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == NULL)
         return 1;
@@ -54,7 +60,14 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    DrawOnCanvas(canvas);    // Using the canvas.
+    DrawOnCanvas(canvas);    // Using the canvas
+    while (1) {
+        gyro.getAngle(0, &gr);
+        gyro.getAngle(1, &gp);
+        gyro.getAngle(2, &gy);
+        std::cout << "Gyro output: " << gr << gp << gy << "\n";
+        usleep(250000); //0.25sec
+    }
 
     // Animation finished. Shut down the RGB matrix.
     canvas->Clear();
