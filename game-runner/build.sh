@@ -1,5 +1,9 @@
 #! /bin/sh
 
+sudo apt-get install libi2c-dev
+sudo apt-get install i2c-tools
+sudo apt-get install libi2c0
+
 make -C external/matrix-api
 make -C external/mpu6050-api
 
