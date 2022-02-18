@@ -18,7 +18,6 @@ static void DrawOnCanvas(Canvas *canvas) {
      * Let's create a simple animation. We use the canvas to draw
      * pixels. We wait between each step to have a slower animation.
      */
-    canvas->Fill(0, 0, 255);
 
     int center_x = canvas->width() / 2;
     int center_y = canvas->height() / 2;
@@ -31,17 +30,20 @@ static void DrawOnCanvas(Canvas *canvas) {
         float dot_y = sin(a * 2 * M_PI) * r;
         canvas->SetPixel(center_x + dot_x, center_y + dot_y,
                          255, 0, 0);
-        usleep(2 * 1000);  // wait a little to slow down things.
+        usleep(5 * 1000);  // wait a little to slow down things.
     }
 }
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
-    defaults.rows = 32;
+    defaults.rows = 64;
+    defaults.cols = 64;
+    defaults.disable_hardware_pulsing=true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.show_refresh_rate = true;
+    defaults.brightness = 15;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == NULL)
         return 1;
