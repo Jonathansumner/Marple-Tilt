@@ -7,6 +7,8 @@
 [submodule "game-runner/external/matrix-api"]
 	path = game-runner/external/matrix-api
 	url = https://github.com/hzeller/rpi-rgb-led-matrix.git
+	ignore = dirty
 [submodule "game-runner/external/mpu6050-api"]
 	path = game-runner/external/mpu6050-api
 	url = https://github.com/alex-mous/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+	ignore = dirty
