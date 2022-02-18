@@ -32,7 +32,7 @@ static void DrawOnCanvas(Canvas *canvas) {
         canvas->SetPixel(center_x + dot_x, center_y + dot_y,
                          255, 0, 0);
         usleep(5 * 1000);  // wait a little to slow down things.
-        canvas->Fill(69, 69, 69)
+        canvas->Fill(69, 69, 69);
     }
 }
 
