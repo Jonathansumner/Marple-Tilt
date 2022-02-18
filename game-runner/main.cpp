@@ -31,17 +31,19 @@ static void DrawOnCanvas(Canvas *canvas) {
         float dot_y = sin(a * 2 * M_PI) * r;
         canvas->SetPixel(center_x + dot_x, center_y + dot_y,
                          255, 0, 0);
-        usleep(2 * 1000);  // wait a little to slow down things.
+        usleep(5 * 1000);  // wait a little to slow down things.
+        canvas->Fill(69, 69, 69)
     }
 }
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
     defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
-    defaults.rows = 32;
+    defaults.rows = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.show_refresh_rate = true;
+    defaults.brightness = 15;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == NULL)
         return 1;
