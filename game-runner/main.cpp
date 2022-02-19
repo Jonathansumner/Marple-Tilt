@@ -4,14 +4,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <signal.h>
-#include <Magick++.h>
-#include <magick/image.h>
+//#include <Magick++.h>
+//#include <magick/image.h>
 #include <MPU6050.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
 
-MPU6050 gyro(0x68)
+MPU6050 gyro(0x68);
 
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo) {
