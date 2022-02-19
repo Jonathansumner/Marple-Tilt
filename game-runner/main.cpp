@@ -6,12 +6,12 @@
 #include <signal.h>
 //#include <Magick++.h>
 //#include <magick/image.h>
-#include <MPU6050.h>
+//#include <MPU6050.h>
 
 using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
 
-MPU6050 gyro(0x68);
+//MPU6050 gyro(0x68);
 
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo) {
@@ -61,13 +61,13 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, InterruptHandler);
 
     DrawOnCanvas(canvas);    // Using the canvas
-    while (1) {
-        gyro.getAngle(0, &gr);
-        gyro.getAngle(1, &gp);
-        gyro.getAngle(2, &gy);
-        std::cout << "Gyro output: " << gr << gp << gy << "\n";
-        usleep(250000); //0.25sec
-    }
+//    while (1) {
+//        gyro.getAngle(0, &gr);
+//        gyro.getAngle(1, &gp);
+//        gyro.getAngle(2, &gy);
+//        std::cout << "Gyro output: " << gr << gp << gy << "\n";
+//        usleep(250000); //0.25sec
+//    }
 
     // Animation finished. Shut down the RGB matrix.
     canvas->Clear();
