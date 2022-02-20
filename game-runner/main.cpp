@@ -6,7 +6,6 @@
 #include <signal.h>
 
 #include "gfx.h"
-#include "gfx.cpp"
 //#include <Magick++.h>
 //#include <magick/image.h>
 //#include <MPU6050.h>
@@ -39,7 +38,8 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Object bing(1,1, MARPLE_2x2);
+    Object bing(1,1, IMAGE); //make generic image object at position 1,1
+    Marple marple(1, 1, 2, MARPLE); //make a marple at position 1,1 with diameter 2
 
     canvas->Clear();
     delete canvas;

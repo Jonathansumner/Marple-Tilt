@@ -1,5 +1,4 @@
 #include "gfx.h"
-#include <vector>
 
 using std::vector;
 
@@ -13,4 +12,8 @@ vector<int> Object::move(int x, int y) {
     y_pos+=y;
     vector<int> ret{x_pos, y_pos};
     return ret;
+}
+
+Marple::Object(int x, int y, int d, draw_type shape) {
+    break;
 }
