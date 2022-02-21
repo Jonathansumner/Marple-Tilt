@@ -37,7 +37,7 @@ void render(Canvas *canvas) {
             vector<int> rgb3 = {50, 50, 50};
             drawRect(x_pos, y_pos, x_pos + d, y_pos + d, &rgb, canvas);
             drawRect(10, 10, 25, 12, &rgb2, canvas);
-            drawRect(8, 8, 27, 14, &rgb3, canvas);
+            drawRect(30, 24, 35, 22, &rgb3, canvas);
         }
     }
 }
