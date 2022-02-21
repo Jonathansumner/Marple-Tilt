@@ -21,3 +21,7 @@ draw_type Object::getType() {
 int Marple::getDiameter() {
     return diameter;
 }
+
+int Hole::getDiameter() {
+    return diameter;
+}
