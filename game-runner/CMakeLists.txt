@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18.4)
 
 project(MarpleTilt)
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
