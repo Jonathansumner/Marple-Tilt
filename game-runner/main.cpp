@@ -37,7 +37,7 @@ int main()
         std::cout << "Current angle around the roll axis: " << gr << "\n";
         std::cout << "Current angle around the pitch axis: " << gp << "\n";
         std::cout << "Current angle around the yaw axis: " << gy << "\n";
-        usleep(250000); // 0.25sec
+        usleep(50000); // 0.05sec
     }
 
     return 0;
