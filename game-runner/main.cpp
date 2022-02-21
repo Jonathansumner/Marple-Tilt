@@ -29,7 +29,7 @@ int main()
     // Read the current yaw angle
     device.calc_yaw = true;
 
-    for (int i = 0; i < 40; i++)
+    for (int i = 1; i > 0; i++)
     {
         device.getAngle(0, &gr);
         device.getAngle(1, &gp);
@@ -39,14 +39,6 @@ int main()
         std::cout << "Current angle around the yaw axis: " << gy << "\n";
         usleep(250000); // 0.25sec
     }
-
-    // Get the current accelerometer values
-    device.getAccel(&ax, &ay, &az);
-    std::cout << "Accelerometer Readings: X: " << ax << ", Y: " << ay << ", Z: " << az << "\n";
-
-    // Get the current gyroscope values
-    device.getGyro(&gr, &gp, &gy);
-    std::cout << "Gyroscope Readings: X: " << gr << ", Y: " << gp << ", Z: " << gy << "\n";
 
     return 0;
 }
