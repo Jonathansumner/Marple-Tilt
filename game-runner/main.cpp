@@ -27,8 +27,7 @@ void render(Canvas *canvas) {
     for (auto *obj: Object::instances) {
 //        switch (obj->getType()) {
 //            case MARPLE:
-        if (obj->getType() == MARPLE) {
-            std::cout << "Found marple!\n";
+        if (obj->getType() == MARPLE) { // Object is a Marple
             int d = dynamic_cast<Marple *>(obj)->getDiameter();
             int x_pos = obj->getPos()[0];
             int y_pos = obj->getPos()[1];
@@ -71,10 +70,15 @@ int main(int argc, char *argv[]) {
 
     for(int rep = 0; rep < 50; rep++) {
         render(canvas);
-        std::cout << "Render\n";
         usleep(100000);
-//        canvas->Clear();
+        canvas->Clear();
         marple.move(1, 1);
+    }
+    for(int rep = 0; rep < 50; rep++) {
+        render(canvas);
+        usleep(100000);
+        canvas->Clear();
+        marple.move(-1, -1);
     }
     canvas->Clear();
     delete canvas;
