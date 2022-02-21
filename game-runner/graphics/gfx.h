@@ -23,10 +23,10 @@ public:
         y_pos = y;
         d_shape = shape;
     }
-    ~Object() {
-        instances.erase(std::remove(instances.begin(), instances.end(), *this), instances.end());
-        delete this;
-    }
+//    ~Object() {
+//        instances.erase(std::remove(instances.begin(), instances.end(), *this), instances.end());
+//        delete this;
+//    }
 
     vector<int> getPos();
     vector<int> move(int x, int y);
