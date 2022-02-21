@@ -1,13 +1,8 @@
 #include "gfx.h"
 
 vector<int> Object::move(int x, int y) {
-    x_pos+=x;
-    y_pos+=y;
+    x_pos += x;
+    y_pos += y;
     vector<int> ret{x_pos, y_pos};
     return ret;
-
-}
-
-draw_type Object::getType() {
-    return d_shape;
 }

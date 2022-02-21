@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     Object bing(1,1, IMAGE); //make generic image object at position 1,1
     Marple marple(1, 1, 2, MARPLE); //make a marple at position 1,1 with diameter 2
     for (Object boys : Object::instances) {
-        std::cout << "iterator --> " << boys.getType();
+        std::cout << "iterator --> " << boys.d_shape;
     }
     canvas->Clear();
     delete canvas;

@@ -22,12 +22,10 @@ public:
         d_shape = shape;
     }
 
-    draw_type getType();
-
+    draw_type d_shape;
     vector<int> move(int x, int y);
 
 private:
-    draw_type d_shape;
     int x_pos;
     int y_pos;
 };
