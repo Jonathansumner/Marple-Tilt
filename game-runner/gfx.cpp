@@ -6,3 +6,10 @@ vector<int> Object::move(int x, int y) {
     vector<int> ret{x_pos, y_pos};
     return ret;
 }
+
+vector<int> Object::getPos() {
+    std::vector<int> pos;
+    pos.push_back(x_pos);
+    pos.push_back(y_pos);
+    return pos;
+}

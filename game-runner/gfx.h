@@ -15,6 +15,7 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 class Object {
 public:
     static std::vector<Object> instances;
+
     Object(int x, int y, draw_type shape){
         instances.push_back(*this);
         x_pos = x;
@@ -22,10 +23,11 @@ public:
         d_shape = shape;
     }
 
-    draw_type d_shape;
+    vector<int> getPos();
     vector<int> move(int x, int y);
 
 private:
+    draw_type d_shape;
     int x_pos;
     int y_pos;
 };
