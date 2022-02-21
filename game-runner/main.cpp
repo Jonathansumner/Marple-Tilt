@@ -68,9 +68,11 @@ int main(int argc, char *argv[]) {
 
     Marple marple(10, 10, 2); //make a marple at position 1,1 with diameter 2
 
-    render(canvas);
     while(1) {
-        std::cout << "Done \n";
+        render(canvas);
+        canvas->Clear();
+        usleep(1000000);
+        marple.move(1, 1);
     }
     canvas->Clear();
     delete canvas;

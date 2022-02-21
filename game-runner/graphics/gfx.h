@@ -29,8 +29,8 @@ public:
 //    }
 
     virtual vector<int> getPos();
-    draw_type getType();
-    vector<int> move(int x, int y);
+    virtual draw_type getType();
+    virtual vector<int> move(int x, int y);
 
 private:
     draw_type type;
