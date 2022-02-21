@@ -6,7 +6,7 @@
 #include <signal.h>
 #include <iostream>
 
-#include "gfx.h"
+#include "graphics/gfx.h"
 //#include <Magick++.h>
 //#include <magick/image.h>
 //#include <MPU6050.h>
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     Object bing(1,1, IMAGE); //make generic image object at position 1,1
     Marple marple(1, 1, 2, MARPLE); //make a marple at position 1,1 with diameter 2
-    std::cout << marple.getPos().capacity();
+
     canvas->Clear();
     delete canvas;
     return 0;
