@@ -33,11 +33,11 @@ void render(Canvas *canvas) {
             int x_pos = obj->getPos()[0];
             int y_pos = obj->getPos()[1];
             vector<int> rgb = {255, 255, 255};
-            vector<int> rgb2 = {100, 100, 100};
-            vector<int> rgb3 = {50, 50, 50};
+            vector<int> rgb2 = {150, 150, 150};
+            vector<int> rgb3 = {100, 100, 100};
             drawRect(x_pos, y_pos, x_pos + d, y_pos + d, &rgb, canvas);
-            drawRect(10, 10, 25, 12, &rgb2, canvas);
-            drawRect(30, 24, 35, 22, &rgb3, canvas);
+            drawRect(10, 10, 20, 5, &rgb2, canvas);
+            drawRect(10, 20, 20, 5, &rgb3, canvas);
         }
     }
 }
