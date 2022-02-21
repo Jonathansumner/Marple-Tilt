@@ -15,13 +15,13 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 
 class Object {
 public:
-    static std::vector<Object> instances;
+    static std::vector<Object*> instances;
 
-    Object(int x, int y, draw_type shape){
-        instances.push_back(*this);
+    Object(int x, int y, draw_type d_type){
+        instances.push_back(this);
         x_pos = x;
         y_pos = y;
-        d_shape = shape;
+        type = d_type;
     }
 //    ~Object() {
 //        instances.erase(std::remove(instances.begin(), instances.end(), *this), instances.end());
@@ -29,10 +29,11 @@ public:
 //    }
 
     vector<int> getPos();
+    draw_type getType();
     vector<int> move(int x, int y);
 
 private:
-    draw_type d_shape;
+    draw_type type;
     int x_pos;
     int y_pos;
 };
@@ -40,10 +41,12 @@ private:
 class Marple : public Object {
 private:
     int diameter;
+
 public:
-    Marple(int x, int y, int d, draw_type shape)
-    : Object{x, y, shape}
+    Marple(int x, int y, int d)
+    : Object{x, y, MARPLE}
     {
         diameter = d;
     }
+    int getDiameter();
 };

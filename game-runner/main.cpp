@@ -15,13 +15,23 @@ using rgb_matrix::RGBMatrix;
 using rgb_matrix::Canvas;
 
 //MPU6050 gyro(0x68);
-std::vector<Object> Object::instances;
+std::vector<Object*> Object::instances;
 
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
+//void render() {
+//    for (auto* obj : Object::instances) {
+//        switch (obj->getType()) {
+//            case MARPLE:
+//                break;
+//            case IMAGE:
+//                break;
+//
+//    }
+//}
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
@@ -42,6 +52,8 @@ int main(int argc, char *argv[]) {
 
     Object bing(1,1, IMAGE); //make generic image object at position 1,1
     Marple marple(1, 1, 2, MARPLE); //make a marple at position 1,1 with diameter 2
+
+//    render();
 
     canvas->Clear();
     delete canvas;

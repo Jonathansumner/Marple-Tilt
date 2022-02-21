@@ -13,3 +13,11 @@ vector<int> Object::getPos() {
     pos.push_back(y_pos);
     return pos;
 }
+
+draw_type Object::getType() {
+    return type;
+}
+
+int Marple::getDiameter() {
+    return diameter;
+}
