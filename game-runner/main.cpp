@@ -35,12 +35,12 @@ void render(Canvas *canvas) {
             vector<int> rgb = {255, 255, 255};
             drawRect(x_pos, y_pos, d, d, &rgb, canvas);
             drawRect(10, 0, 20, 5, &rgb, canvas, 1);
-            drawRect(10, 5, 20, 5, &rgb, canvas, 0.5);
-            drawRect(10, 15, 20, 5, &rgb, canvas, 0.4);
-            drawRect(10, 25, 20, 5, &rgb, canvas, 0.3);
-            drawRect(10, 35, 20, 5, &rgb, canvas, 0.2);
-            drawRect(10, 45, 20, 5, &rgb, canvas, 0.1);
-            drawRect(10, 55, 20, 5, &rgb, canvas, 0.05);
+            drawRect(10, 5, 20, 5, &rgb, canvas, 0.4);
+            drawRect(10, 10, 20, 5, &rgb, canvas, 0.3);
+            drawRect(10, 15, 20, 5, &rgb, canvas, 0.25);
+            drawRect(10, 20, 20, 5, &rgb, canvas, 0.1);
+            drawRect(10, 25, 20, 5, &rgb, canvas, 0.05);
+            drawRect(10, 30, 20, 5, &rgb, canvas, 0.01);
 
         }
     }
@@ -86,6 +86,24 @@ int main(int argc, char *argv[]) {
             usleep(100000);
             canvas->Clear();
             marple.move(-1, -1);
+        }
+        for (int rep = 0; rep < 50; rep++) {
+            render(canvas);
+            usleep(100000);
+            canvas->Clear();
+            marple.move(1, 0);
+        }
+        for (int rep = 0; rep < 50; rep++) {
+            render(canvas);
+            usleep(100000);
+            canvas->Clear();
+            marple.move(-1, 1);
+        }
+        for (int rep = 0; rep < 50; rep++) {
+            render(canvas);
+            usleep(100000);
+            canvas->Clear();
+            marple.move(0, -1);
         }
     }
     canvas->Clear();
