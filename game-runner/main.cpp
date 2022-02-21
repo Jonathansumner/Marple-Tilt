@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "graphics/gfx.h"
+#include "graphics/shapes.h"
 //#include <Magick++.h>
 //#include <magick/image.h>
 //#include <MPU6050.h>
@@ -31,11 +32,12 @@ void render(Canvas *canvas) {
             int d = dynamic_cast<Marple *>(obj)->getDiameter();
             int x_pos = obj->getPos()[0];
             int y_pos = obj->getPos()[1];
-            for (int w_curr = 0; w_curr < d; w_curr++) {
-                for (int h_curr = 0; h_curr < d; h_curr++) {
-                    canvas->SetPixel(x_pos + w_curr, y_pos + h_curr, 255, 255, 255);
-                }
-            }
+            vector<int> rgb = {255, 255, 255};
+            vector<int> rgb2 = {100, 100, 100};
+            vector<int> rgb3 = {50, 50, 50};
+            drawRect(x_pos, y_pos, x_pos + d, y_pos + d, &rgb, canvas);
+            drawRect(10, 10, 25, 12, &rgb2, canvas);
+            drawRect(8, 8, 27, 14, &rgb3, canvas);
         }
     }
 }
@@ -68,13 +70,13 @@ int main(int argc, char *argv[]) {
 
     Marple marple(10, 10, 2); //make a marple at position 1,1 with diameter 2
 
-    for(int rep = 0; rep < 50; rep++) {
+    for (int rep = 0; rep < 50; rep++) {
         render(canvas);
         usleep(100000);
         canvas->Clear();
         marple.move(1, 1);
     }
-    for(int rep = 0; rep < 50; rep++) {
+    for (int rep = 0; rep < 50; rep++) {
         render(canvas);
         usleep(100000);
         canvas->Clear();
