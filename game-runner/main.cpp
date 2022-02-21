@@ -68,17 +68,19 @@ int main(int argc, char *argv[]) {
 
     Marple marple(10, 10, 3); //make a marple at position 1,1 with diameter 2
 
-    for (int rep = 0; rep < 50; rep++) {
-        render(canvas);
-        usleep(100000);
-        canvas->Clear();
-        marple.move(1, 1);
-    }
-    for (int rep = 0; rep < 50; rep++) {
-        render(canvas);
-        usleep(100000);
-        canvas->Clear();
-        marple.move(-1, -1);
+    while (1) {
+        for (int rep = 0; rep < 50; rep++) {
+            render(canvas);
+            usleep(100000);
+            canvas->Clear();
+            marple.move(1, 1);
+        }
+        for (int rep = 0; rep < 50; rep++) {
+            render(canvas);
+            usleep(100000);
+            canvas->Clear();
+            marple.move(-1, -1);
+        }
     }
     canvas->Clear();
     delete canvas;
