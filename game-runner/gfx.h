@@ -6,6 +6,7 @@
 
 using std::vector;
 
+
 enum draw_type { //TODO try make some way of automatic handling of assets?
     IMAGE,
     MARPLE,
@@ -13,10 +14,20 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 
 class Object {
 public:
-    Object(int x, int y, draw_type shape);
+    static std::vector<Object> instances;
+    Object(int x, int y, draw_type shape){
+        instances.push_back(*this);
+        x_pos = x;
+        y_pos = y;
+        d_shape = shape;
+    }
+
+    draw_type getType();
+
     vector<int> move(int x, int y);
+
 private:
-    draw_type shape;
+    draw_type d_shape;
     int x_pos;
     int y_pos;
 };
@@ -26,9 +37,8 @@ private:
     int diameter;
 public:
     Marple(int x, int y, int d, draw_type shape)
-    : Object{x, y, shape},
-    diameter{d}
+    : Object{x, y, shape}
     {
+        diameter = d;
     }
-
 };
