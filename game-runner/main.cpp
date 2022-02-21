@@ -35,7 +35,7 @@ void render(Canvas *canvas) {
             vector<int> rgb = {255, 255, 255};
             vector<int> rgb2 = {150, 150, 150};
             vector<int> rgb3 = {100, 100, 100};
-            drawRect(x_pos, y_pos, x_pos + d, y_pos + d, &rgb, canvas);
+            drawRect(x_pos, y_pos, d, d, &rgb, canvas);
             drawRect(10, 10, 20, 5, &rgb2, canvas);
             drawRect(10, 20, 20, 5, &rgb3, canvas);
         }
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Marple marple(10, 10, 2); //make a marple at position 1,1 with diameter 2
+    Marple marple(10, 10, 3); //make a marple at position 1,1 with diameter 2
 
     for (int rep = 0; rep < 50; rep++) {
         render(canvas);
