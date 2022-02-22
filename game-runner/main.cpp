@@ -9,36 +9,53 @@
 #include "graphics/gfx.h"
 //#include <Magick++.h>
 //#include <magick/image.h>
-#include <MPU6050.h>
+//#include <MPU6050.h>
 
-MPU6050 device(0x68);
+using rgb_matrix::RGBMatrix;
+using rgb_matrix::Canvas;
 
-int main()
-{
-    float ax, ay, az, gr, gp, gy; // Variables to store the accel, gyro and angle values
+//MPU6050 gyro(0x68);
+std::vector<Object*> Object::instances;
 
-    sleep(1); // Wait for the MPU6050 to stabilize
+volatile bool interrupt_received = false;
+static void InterruptHandler(int signo) {
+    interrupt_received = true;
+}
 
-    /*
-        //Calculate the offsets
-        std::cout << "Calculating the offsets...\n    Please keep the accelerometer level and still\n    This could take a couple of minutes...";
-        device.getOffsets(&ax, &ay, &az, &gr, &gp, &gy);
-        std::cout << "Gyroscope R,P,Y: " << gr << "," << gp << "," << gy << "\nAccelerometer X,Y,Z: " << ax << "," << ay << "," << az << "\n";
-    */
+//void render() {
+//    for (auto* obj : Object::instances) {
+//        switch (obj->getType()) {
+//            case MARPLE:
+//                break;
+//            case IMAGE:
+//                break;
+//
+//    }
+//}
 
-    // Read the current yaw angle
-    device.calc_yaw = true;
+int main(int argc, char *argv[]) {
+    RGBMatrix::Options defaults;
+    defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
+    defaults.rows = 64;
+    defaults.cols = 64;
+    defaults.disable_hardware_pulsing=true;
+    defaults.chain_length = 1;
+    defaults.parallel = 1;
+    defaults.show_refresh_rate = true;
+    defaults.brightness = 50;
+    Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    if (canvas == nullptr)
+        return 1;
 
-    for (int i = 1; i > 0; i++)
-    {
-        device.getAngle(0, &gr);
-        device.getAngle(1, &gp);
-        device.getAngle(2, &gy);
-        std::cout << "Current angle around the roll axis: " << gr << "\n";
-        std::cout << "Current angle around the pitch axis: " << gp << "\n";
-        std::cout << "Current angle around the yaw axis: " << gy << "\n";
-        usleep(50000); // 0.05sec
-    }
+    signal(SIGTERM, InterruptHandler);
+    signal(SIGINT, InterruptHandler);
 
+    Object bing(1,1, IMAGE); //make generic image object at position 1,1
+    Marple marple(1, 1, 2, MARPLE); //make a marple at position 1,1 with diameter 2
+
+//    render();
+
+    canvas->Clear();
+    delete canvas;
     return 0;
 }
