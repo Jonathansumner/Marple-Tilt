@@ -17,7 +17,7 @@ using rgb_matrix::Canvas;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
-Object* screen[64][64];
+Object *screen[64][64];
 
 volatile bool interrupt_received = false;
 
@@ -41,7 +41,10 @@ void render(Canvas *canvas) {
 //    }
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
-            canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
+            if (screen[i][j]) {
+                std::cout << "set pixel \n";
+                canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
+            }
         }
     }
 }
@@ -64,6 +67,9 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
+    update();
+    render(canvas);
+    usleep(60000000);
 
     canvas->Clear();
     delete canvas;
