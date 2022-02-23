@@ -26,8 +26,9 @@ static void InterruptHandler(int signo) {
 }
 
 void update() {
-    Marple marple(10, 10, 3);
-    fillRect(1, 1, 2, 2, &marple, screen);
+    Marple marple(23, 56, 3);
+    int x = marple.getPos()[0], y = marple.getPos()[1];
+    fillRect(x, y, marple.getDiameter(), marple.getDiameter(), &marple, screen);
 }
 
 void render(Canvas *canvas) {
@@ -42,7 +43,7 @@ void render(Canvas *canvas) {
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
             if (screen[i][j]) {
-                std::cout << "set pixel \n";
+//                std::cout << "set pixel \n";
                 canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
             }
         }
