@@ -17,6 +17,7 @@ using rgb_matrix::Canvas;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
+Object* screen[64][64];
 
 volatile bool interrupt_received = false;
 
@@ -24,36 +25,27 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void render(Canvas *canvas) {
-    for (auto *obj: Object::instances) {
-//        switch (obj->getType()) {
-//            case MARPLE:
-        if (obj->getType() == MARPLE) { // Object is a Marple
-            int d = dynamic_cast<Marple *>(obj)->getDiameter();
-            int x_pos = obj->getPos()[0];
-            int y_pos = obj->getPos()[1];
-            vector<int> rgb = {255, 255, 255};
-            drawRect(x_pos, y_pos, d, d, &rgb, canvas);
-            drawRect(10, 0, 20, 5, &rgb, canvas, 1);
-            drawRect(10, 5, 20, 5, &rgb, canvas, 0.4);
-            drawRect(10, 10, 20, 5, &rgb, canvas, 0.3);
-            drawRect(10, 15, 20, 5, &rgb, canvas, 0.25);
-            drawRect(10, 20, 20, 5, &rgb, canvas, 0.1);
-            drawRect(10, 25, 20, 5, &rgb, canvas, 0.05);
-            drawRect(10, 30, 20, 5, &rgb, canvas, 0.01);
+void update() {
+    Marple marple(10, 10, 3);
+    fillRect(1, 1, 2, 2, &marple, screen);
+}
 
+void render(Canvas *canvas) {
+//    for (auto *obj: Object::instances) {
+//        if (obj->getType() == MARPLE) { // Object is a Marple
+//            int d = dynamic_cast<Marple *>(obj)->getDiameter();
+//            int x_pos = obj->getPos()[0];
+//            int y_pos = obj->getPos()[1];
+//            vector<int> rgb = {255, 255, 255};
+//        }
+//    }
+    for (int i = 0; i < 64; i++) {
+        for (int j = 0; j < 64; j++) {
+            canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
         }
     }
 }
-//                break;
-//                }
-//            case IMAGE:
-//                break;
-//            case HOLE:
-//                break;
-//        }
-//    }
-//}
+
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
@@ -72,40 +64,7 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Marple marple(10, 10, 3); //make a marple at position 1,1 with diameter 2
 
-    while (1) {
-        for (int rep = 0; rep < 50; rep++) {
-            render(canvas);
-            usleep(100000);
-            canvas->Clear();
-            marple.move(1, 1);
-        }
-        for (int rep = 0; rep < 50; rep++) {
-            render(canvas);
-            usleep(100000);
-            canvas->Clear();
-            marple.move(-1, -1);
-        }
-        for (int rep = 0; rep < 50; rep++) {
-            render(canvas);
-            usleep(100000);
-            canvas->Clear();
-            marple.move(1, 0);
-        }
-        for (int rep = 0; rep < 50; rep++) {
-            render(canvas);
-            usleep(100000);
-            canvas->Clear();
-            marple.move(-1, 1);
-        }
-        for (int rep = 0; rep < 50; rep++) {
-            render(canvas);
-            usleep(100000);
-            canvas->Clear();
-            marple.move(0, -1);
-        }
-    }
     canvas->Clear();
     delete canvas;
     return 0;

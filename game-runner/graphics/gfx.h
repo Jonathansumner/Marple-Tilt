@@ -16,18 +16,17 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 
 class Object {
 public:
+    int red, green, blue;
     static std::vector<Object*> instances;
 
     Object(int x, int y, draw_type d_type){
         x_pos = x;
         y_pos = y;
         type = d_type;
+        red = 255, green = 255, blue = 255;
     }
-//    ~Object() {
-//        instances.erase(std::remove(instances.begin(), instances.end(), *this), instances.end());
-//        delete this;
-//    }
 
+    virtual void setColour(std::vector<int> colour);
     virtual vector<int> getPos();
     virtual draw_type getType();
     virtual vector<int> move(int x, int y);
