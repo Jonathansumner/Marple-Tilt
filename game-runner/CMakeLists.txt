@@ -18,6 +18,7 @@ set_target_properties(mpu6050API PROPERTIES IMPORTED_SONAME "libMPU6050.so")
 
 include_directories(${CMAKE_SOURCE_DIR}/external/matrix-api/include)
 include_directories(${CMAKE_SOURCE_DIR}/external/mpu6050-api)
+include_directories(${CMAKE_SYSROOT}/usr/include/GraphicsMagick)
 
 target_link_libraries(${PROJECT_NAME} 
     mpu6050API
