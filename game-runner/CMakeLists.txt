@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.18.4)
 
 project(MarpleTilt)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} GraphicsMagick++-config --cxxflags --libs")
+
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
