@@ -27,6 +27,7 @@ static void InterruptHandler(int signo) {
 
 void update() {
     Marple marple(23, 56, 3);
+    marple.setColour({0, 0, 255});
     int x = marple.getPos()[0], y = marple.getPos()[1];
     fillRect(x, y, marple.getDiameter(), marple.getDiameter(), &marple, screen);
 }
