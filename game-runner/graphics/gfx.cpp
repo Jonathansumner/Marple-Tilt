@@ -1,10 +1,13 @@
 #include "gfx.h"
 
 
-
 vector<int> Object::move(int x, int y) {
-    x_pos += x;
-    y_pos += y;
+    if (x_pos + x >= 0 && x_pos + x < 64) {
+        x_pos += x;
+    }
+    if (x_pos + y >= 0 && x_pos + y < 64) {
+        y_pos += y;
+    }
     vector<int> ret{x_pos, y_pos};
     return ret;
 }

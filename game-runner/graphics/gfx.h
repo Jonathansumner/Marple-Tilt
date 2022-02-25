@@ -40,6 +40,8 @@ private:
 class Marple : public Object {
 private:
     int diameter;
+    float x_velocity;
+    float y_velocity;
 public:
     Marple(int x, int y, int d)
     : Object{x, y, MARPLE}

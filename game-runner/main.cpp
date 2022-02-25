@@ -57,6 +57,30 @@ void render(Canvas *canvas) {
     }
 }
 
+void wallTest(){
+    Marple marple(20, 20, 3);
+    Hole hole(30, 30, 5);
+    hole.setColour({255, 0, 0});
+    marple.setColour({0, 0, 255});
+    Wall *walls[64];
+    for (int x = 0; x < 16; x++) {
+        walls[x] = new Wall(x * 4, 0, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x + 16] = new Wall(x * 4, 60, 4);
+        walls[x + 16]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x + 32] = new Wall(0, x * 4, 4);
+        walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x + 47] = new Wall(60, x * 4, 4);
+        walls[x + 47]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+
+}
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
@@ -75,30 +99,10 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Marple marple(20, 20, 3);
-    Hole hole(30, 30, 5);
-    hole.setColour({255, 0, 0});
-    marple.setColour({0, 0, 255});
-    Wall *walls[64];
-    for (int x = 0; x < 16; x++) {
-        walls[x] = new Wall(x * 4, 0, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 1; x < 16; x++) {
-        walls[x+16] = new Wall(x * 4, 60, 4);
-        walls[x+16]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 1; x < 16; x++) {
-        walls[x+32] = new Wall(0, x*4, 4);
-        walls[x+32]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 1; x < 16; x++) {
-        walls[x+47] = new Wall(60, x*4, 4);
-        walls[x+47]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
+    wallTest(); // spawn marple, hole and walls
 
-    update();
-    render(canvas);
+    update(); // update matrix array from object list
+    render(canvas); // draw from matrix array
     usleep(60000000);
 
     canvas->Clear();
