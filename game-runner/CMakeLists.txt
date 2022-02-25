@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18.4)
 
 project(MarpleTilt)
 
-execute_process(COMMAND GraphicsMagick++-config --cppflags --cxxflags --ldflags --libs OUTPUT_VARIABLE MAGICK_FLAGS)
+execute_process(COMMAND GraphicsMagick++-config --cppflags --cxxflags --ldflags --libs OUTPUT_VARIABLE MAGICK_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_FLAGS}")
 
