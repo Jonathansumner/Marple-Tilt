@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
-    Wall *walls[61];
+    Wall *walls[64];
     for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
