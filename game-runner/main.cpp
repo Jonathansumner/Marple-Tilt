@@ -25,24 +25,24 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() {
+void update() { //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         switch (obj->getType()) {
             case MARPLE: {
-                Object &marp = dynamic_cast<Marple &>(*obj);
-                std::cout << marp.blue;
+//                Object &marp = dynamic_cast<Marple &>(*obj);
                 int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                vector<int> pos = dynamic_cast<Marple *>(obj)->getPos();
-                fillRect(pos[0], pos[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
                 break;
             }
             case HOLE: {
-                Object &hol = dynamic_cast<Hole &>(*obj);
                 int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                std::cout << hol.blue << "\n";
-                fillRect(hol.getPos()[0], hol.getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
                 break;
             }
+            case WALL:
+                int d = dynamic_cast<Wall *>(obj)->diameter;
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
+                break;
         }
     }
 }
@@ -75,10 +75,15 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    Marple marple(20, 20, 5);
+    Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
+    Wall *walls[16];
+    for (int x = 0; x < 16; x++) {
+        walls[x] = new Wall(x * 4, 0, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
 
     update();
     render(canvas);
