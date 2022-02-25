@@ -9,7 +9,6 @@ using std::vector;
 
 
 enum draw_type { //TODO try make some way of automatic handling of assets?
-    IMAGE,
     MARPLE,
     HOLE
 };

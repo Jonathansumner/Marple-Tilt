@@ -26,25 +26,31 @@ static void InterruptHandler(int signo) {
 }
 
 void update() {
-    Marple marple(23, 56, 3);
-    marple.setColour({0, 0, 255});
-    int x = marple.getPos()[0], y = marple.getPos()[1];
-    fillRect(x, y, marple.getDiameter(), marple.getDiameter(), &marple, screen);
+    for (Object *obj: Object::instances) {
+        switch (obj->getType()) {
+            case MARPLE: {
+                Object &marp = dynamic_cast<Marple &>(*obj);
+                std::cout << marp.blue;
+                int d = dynamic_cast<Marple *>(obj)->getDiameter();
+                vector<int> pos = dynamic_cast<Marple *>(obj)->getPos();
+                fillRect(pos[0], pos[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                break;
+            }
+            case HOLE: {
+                Object &hol = dynamic_cast<Hole &>(*obj);
+                int d = dynamic_cast<Hole *>(obj)->getDiameter();
+                std::cout << hol.blue << "\n";
+                fillRect(hol.getPos()[0], hol.getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                break;
+            }
+        }
+    }
 }
 
 void render(Canvas *canvas) {
-//    for (auto *obj: Object::instances) {
-//        if (obj->getType() == MARPLE) { // Object is a Marple
-//            int d = dynamic_cast<Marple *>(obj)->getDiameter();
-//            int x_pos = obj->getPos()[0];
-//            int y_pos = obj->getPos()[1];
-//            vector<int> rgb = {255, 255, 255};
-//        }
-//    }
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
             if (screen[i][j]) {
-//                std::cout << "set pixel \n";
                 canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
             }
         }
@@ -68,6 +74,11 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
+
+    Marple marple(20, 20, 5);
+    Hole hole(30, 30, 5);
+    hole.setColour({255, 0, 0});
+    marple.setColour({0, 0, 255});
 
     update();
     render(canvas);
