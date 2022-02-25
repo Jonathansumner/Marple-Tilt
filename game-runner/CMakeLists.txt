@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.18.4)
 
 project(MarpleTilt)
 
-set(MAGICK_CXXFLAGS "/usr/bin/GraphicsMagick++-config --cppflags --cxxflags")
-set(MAGICK_LDFLAGS "/usr/bin/GraphicsMagick++-config --ldflags --libs")
+execute_process(COMMAND GraphicsMagick++-config --cppflags --cxxflags --ldflags --libs OUTPUT_VARIABLE MAGICK_FLAGS)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_CXXFLAGS} ${MAGICK_LDFLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_FLAGS}")
 
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
