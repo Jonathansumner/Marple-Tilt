@@ -79,10 +79,22 @@ int main(int argc, char *argv[]) {
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
-    Wall *walls[16];
+    Wall *walls[61];
     for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x+16] = new Wall(x * 4, 60, 4);
+        walls[x+16]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x+32] = new Wall(0, x*4, 4);
+        walls[x+32]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x+48] = new Wall(60, x*4, 4);
+        walls[x+48]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
 
     update();
