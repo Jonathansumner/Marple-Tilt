@@ -6,7 +6,7 @@ execute_process(COMMAND GraphicsMagick++-config --cppflags --cxxflags --ldflags 
 
 string(STRIP ${MAGICK_FLAGS} MAGICK_FLAGS_STRIPPED)
 
-set(CMAKE_CXX_FLAGS "$CMAKE_CXX_FLAGS `${MAGICK_FLAGS_STRIPPED}`")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/include/GraphicsMagick -g -O2 -ffile-prefix-map=/build/graphicsmagick-t7apbd/graphicsmagick-1.4+really1.3.36+hg16481=. -fstack-protector-strong -Wformat -Werror=format-security -pthread -L/usr/lib -Wl,-z,relro -Wl,-z,now -L/usr/lib/X11 -lGraphicsMagick++ -lGraphicsMagick -ljbig -lwebp -lwebpmux -llcms2 -ltiff -lfreetype -ljpeg -lpng16 -lwmflite -lXext -lSM -lICE -lX11 -llzma -lbz2 -lxml2 -lz -lzstd -lm -lpthread -lgomp -pthread")
 
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
