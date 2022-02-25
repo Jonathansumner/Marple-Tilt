@@ -93,8 +93,8 @@ int main(int argc, char *argv[]) {
         walls[x+32]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 1; x < 16; x++) {
-        walls[x+48] = new Wall(60, x*4, 4);
-        walls[x+48]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x+47] = new Wall(60, x*4, 4);
+        walls[x+47]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
 
     update();
