@@ -13,152 +13,97 @@ using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
 
-// Make sure we can exit gracefully when Ctrl-C is pressed.
+//MPU6050 gyro(0x68);
+std::vector<Object *> Object::instances;
+Object *screen[64][64];
+
 volatile bool interrupt_received = false;
 static void InterruptHandler(int signo)
 {
     interrupt_received = true;
 }
 
-using ImageVector = std::vector<Magick::Image>;
-
-// Given the filename, load the image and scale to the size of the
-// matrix.
-// // If this is an animated image, the resutlting vector will contain multiple.
-static ImageVector LoadImageAndScaleImage(const char *filename,
-                                          int target_width,
-                                          int target_height)
-{
-    ImageVector result;
-
-    ImageVector frames;
-    try
-    {
-        readImages(&frames, filename);
+void update() { //TODO get advice about handling polymorphic pointer arrays
+    for (Object *obj: Object::instances) {
+        switch (obj->getType()) {
+            case MARPLE: {
+//                Object &marp = dynamic_cast<Marple &>(*obj);
+                int d = dynamic_cast<Marple *>(obj)->getDiameter();
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                break;
+            }
+            case HOLE: {
+                int d = dynamic_cast<Hole *>(obj)->getDiameter();
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                break;
+            }
+            case WALL:
+                int d = dynamic_cast<Wall *>(obj)->diameter;
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
+                break;
+        }
     }
-    catch (std::exception &e)
-    {
-        if (e.what())
-            fprintf(stderr, "%s\n", e.what());
-        return result;
-    }
-
-    if (frames.empty())
-    {
-        fprintf(stderr, "No image found.");
-        return result;
-    }
-
-    // Animated images have partial frames that need to be put together
-    if (frames.size() > 1)
-    {
-        Magick::coalesceImages(&result, frames.begin(), frames.end());
-    }
-    else
-    {
-        result.push_back(frames[0]); // just a single still image.
-    }
-
-    for (Magick::Image &image : result)
-    {
-        image.scale(Magick::Geometry(target_width, target_height));
-    }
-
-    return result;
 }
 
-// Copy an image to a Canvas. Note, the RGBMatrix is implementing the Canvas
-// interface as well as the FrameCanvas we use in the double-buffering of the
-// animted image.
-void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas)
-{
-    const int offset_x = 0, offset_y = 0; // If you want to move the image.
-    // Copy all the pixels to the canvas.
-    for (size_t y = 0; y < image.rows(); ++y)
-    {
-        for (size_t x = 0; x < image.columns(); ++x)
-        {
-            const Magick::Color &c = image.pixelColor(x, y);
-            if (c.alphaQuantum() < 256)
-            {
-                canvas->SetPixel(x + offset_x, y + offset_y,
-                                 ScaleQuantumToChar(c.redQuantum()),
-                                 ScaleQuantumToChar(c.greenQuantum()),
-                                 ScaleQuantumToChar(c.blueQuantum()));
+void render(Canvas *canvas) {
+    for (int i = 0; i < 64; i++) {
+        for (int j = 0; j < 64; j++) {
+            if (screen[i][j]) {
+                canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
             }
         }
     }
 }
 
-// An animated image has to constantly swap to the next frame.
-// We're using double-buffering and fill an offscreen buffer first, then show.
-void ShowAnimatedImage(const ImageVector &images, RGBMatrix *matrix)
-{
-    FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
-    while (!interrupt_received)
-    {
-        for (const auto &image : images)
-        {
-            if (interrupt_received)
-                break;
-            CopyImageToCanvas(image, offscreen_canvas);
-            offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
-            usleep(image.animationDelay() * 10000); // 1/100s converted to usec
-        }
+void wallTest(){
+    Marple marple(20, 20, 3);
+    Hole hole(30, 30, 5);
+    hole.setColour({255, 0, 0});
+    marple.setColour({0, 0, 255});
+    Wall *walls[64];
+    for (int x = 0; x < 16; x++) {
+        walls[x] = new Wall(x * 4, 0, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-}
-
-int usage(const char *progname)
-{
-    fprintf(stderr, "Usage: %s [led-matrix-options] <image-filename>\n",
-            progname);
-    rgb_matrix::PrintMatrixFlags(stderr);
-    return 1;
-}
-
-int main(int argc, char *argv[])
-{
-    Magick::InitializeMagick(*argv);
-
-    // Initialize the RGB matrix with
-    RGBMatrix::Options matrix_options;
-    rgb_matrix::RuntimeOptions runtime_opt;
-    if (!rgb_matrix::ParseOptionsFromFlags(&argc, &argv,
-                                           &matrix_options, &runtime_opt))
-    {
-        return usage(argv[0]);
+    for (int x = 1; x < 16; x++) {
+        walls[x + 16] = new Wall(x * 4, 60, 4);
+        walls[x + 16]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x + 32] = new Wall(0, x * 4, 4);
+        walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 1; x < 16; x++) {
+        walls[x + 47] = new Wall(60, x * 4, 4);
+        walls[x + 47]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
 
-    if (argc != 2)
-        return usage(argv[0]);
-    const char *filename = argv[1];
+}
+
+int main(int argc, char *argv[]) {
+    RGBMatrix::Options defaults;
+    defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
+    defaults.rows = 64;
+    defaults.cols = 64;
+    defaults.disable_hardware_pulsing = true;
+    defaults.chain_length = 1;
+    defaults.parallel = 1;
+    defaults.show_refresh_rate = true;
+    defaults.brightness = 50;
+    Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    if (canvas == nullptr)
+        return 1;
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    RGBMatrix *matrix = RGBMatrix::CreateFromOptions(matrix_options, runtime_opt);
-    if (matrix == NULL)
-        return 1;
+    wallTest(); // spawn marple, hole and walls
 
-    ImageVector images = LoadImageAndScaleImage(filename,
-                                                matrix->width(),
-                                                matrix->height());
-    switch (images.size())
-    {
-    case 0: // failed to load image.
-        break;
-    case 1: // Simple example: one image to show
-        CopyImageToCanvas(images[0], matrix);
-        while (!interrupt_received)
-            sleep(1000); // Until Ctrl-C is pressed
-        break;
-    default: // More than one image: this is an animation.
-        ShowAnimatedImage(images, matrix);
-        break;
-    }
+    update(); // update matrix array from object list
+    render(canvas); // draw from matrix array
+    usleep(60000000);
 
-    matrix->Clear();
-    delete matrix;
-
+    canvas->Clear();
+    delete canvas;
     return 0;
 }
