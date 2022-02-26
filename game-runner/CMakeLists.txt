@@ -8,6 +8,12 @@ string(REPLACE "\n" " " MAGICK_CXX_FLAGS_STRIPPED ${MAGICK_CXX_FLAGS})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_CXX_FLAGS_STRIPPED}")
 
+execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE MAGICK_LDF_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
+
+add_link_options(${MAGICK_LDF_FLAGS_STRIPPED})
+
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
