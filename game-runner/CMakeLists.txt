@@ -12,8 +12,6 @@ execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE
 
 string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
-add_link_options(${MAGICK_LDF_FLAGS_STRIPPED})
-
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -36,6 +34,7 @@ target_link_libraries(${PROJECT_NAME}
     mpu6050API
     matrixAPI
     Threads::Threads
+    ${MAGICK_LDF_FLAGS_STRIPPED}
     )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
