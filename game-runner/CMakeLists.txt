@@ -4,9 +4,9 @@ project(MarpleTilt)
 
 execute_process(COMMAND GraphicsMagick++-config --cppflags --cxxflags OUTPUT_VARIABLE MAGICK_CXX_FLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-string(REGEX REPLACE "\n$" "" MAGICK_CXX_FLAGS "${MAGICK_CXX_FLAGS}")
+string(REPLACE "\n" " " MAGICK_CXX_FLAGS_STRIPPED ${MAGICK_CXX_FLAGS})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${MAGICK_CXX_FLAGS_STRIPPED}")
 
 add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
 
