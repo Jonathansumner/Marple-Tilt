@@ -1,27 +1,28 @@
-#include <led-matrix.h>
+#include "led-matrix.h"
 
-#include <unistd.h>
 #include <math.h>
-#include <stdio.h>
 #include <signal.h>
-#include <iostream>
+#include <stdio.h>
+#include <unistd.h>
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
-//#include <Magick++.h>
-//#include <magick/image.h>
-//#include <MPU6050.h>
 
-using rgb_matrix::RGBMatrix;
+#include <exception>
+#include <Magick++.h>
+#include <magick/image.h>
+
 using rgb_matrix::Canvas;
+using rgb_matrix::FrameCanvas;
+using rgb_matrix::RGBMatrix;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
 Object *screen[64][64];
 
 volatile bool interrupt_received = false;
-
-static void InterruptHandler(int signo) {
+static void InterruptHandler(int signo)
+{
     interrupt_received = true;
 }
 
