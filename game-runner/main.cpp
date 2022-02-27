@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "graphics/gfx.h"
+#include "graphics/shapes.h"
+
 #include <exception>
 #include <Magick++.h>
 #include <magick/image.h>
