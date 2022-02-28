@@ -119,17 +119,17 @@ int main(int argc, char *argv[]) {
     Marple marple(32, 32, 1);
 
     while (!interrupt_received) {
-//        timestamp1 = high_resolution_clock::to_time_t(high_resolution_clock::now());
+        gettimeofday(&time, NULL);
+        timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
         update();
         render(canvas);
-//        timestamp2 = high_resolution_clock::to_time_t(high_resolution_clock::now());
+        timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
+        std::cout << "time1: " << timestamp1 << ", time2: " << timestamp2 << ", diff: " << elapsed_time << "\n";
         canvas->Clear();
-//        std::cout << "elapsed: " << high_resolution_clock::to_time_t(high_resolution_clock::now()) << ", current timer: " << elapsed_time << "\n";
-        printf("usec: %ld", t.tv_usec / 1000L);
     }
     std::cout << "Program terminated\n";
     canvas->Clear();
