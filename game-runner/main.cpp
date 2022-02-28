@@ -12,15 +12,7 @@
 #include <Magick++.h>
 #include <magick/image.h>
 #include <iostream>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
-#include <string.h>
 #include <sys/time.h>
-
-#define SYST_BASE 0x20003000
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
@@ -35,6 +27,7 @@ volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
 long long elapsed_time;
+struct timeval t;
 long long frame_time = 16666; //time period for 60Hz in useconds
 
 
@@ -42,7 +35,8 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void
+update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
@@ -124,27 +118,6 @@ int main(int argc, char *argv[]) {
 
     Marple marple(32, 32, 1);
 
-    struct timeval now{}, pulse{};
-    int cycles, micros, delay_micros;
-
-    while (!interrupt_received)
-    {
-        cycles = 0;
-        gettimeofday(&pulse, nullptr);
-
-        micros = 0;
-        while (micros < delay_micros)
-        {
-            ++cycles;
-            gettimeofday(&now, nullptr);
-            if (now.tv_sec > pulse.tv_sec) micros = 1000000L; else micros = 0;
-            micros = micros + (now.tv_usec - pulse.tv_usec);
-
-        }
-        usleep(500000);
-        std::cout << "timer: " << micros << ", " << (uint32_t)SYST_BASE << "\n";
-    }
-
     while (!interrupt_received) {
 //        timestamp1 = high_resolution_clock::to_time_t(high_resolution_clock::now());
         update();
@@ -156,6 +129,7 @@ int main(int argc, char *argv[]) {
         }
         canvas->Clear();
 //        std::cout << "elapsed: " << high_resolution_clock::to_time_t(high_resolution_clock::now()) << ", current timer: " << elapsed_time << "\n";
+        printf("usec: %ld", t.tv_usec / 1000L);
     }
     std::cout << "Program terminated\n";
     canvas->Clear();
