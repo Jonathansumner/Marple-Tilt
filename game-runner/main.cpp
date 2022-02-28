@@ -4,7 +4,7 @@
 #include <csignal>
 #include <cstdio>
 #include <unistd.h>
-#include <ctime>
+#include <time.h>
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
@@ -126,7 +126,8 @@ int main(int argc, char *argv[]) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-        std::cout << "elapsed: " << elapsed_time << ", current timer: " << elapsed.tv_nsec << "\n";
+        uint64_t now = (uint64_t)elapsed.tv_sec * 1000000000U + (uint64_t)elapsed.tv_nsec;
+        std::cout << "elapsed: " << now << ", current timer: " << elapsed.tv_nsec << "\n";
         elapsed.tv_nsec = 0;
     }
     std::cout << "Program terminated\n";
