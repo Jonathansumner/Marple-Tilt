@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 
     Marple marple(32, 32, 1);
 
-    struct timeval now, pulse;
+    struct timeval now{}, pulse{};
     int cycles, micros, delay_micros;
 
     while (!interrupt_received)
@@ -138,7 +138,6 @@ int main(int argc, char *argv[]) {
             micros = micros + (now.tv_usec - pulse.tv_usec);
 
         }
-        printf("delay %d microseconds took %d cycles\n", delay_micros, cycles);
         usleep(500000);
     }
 
