@@ -21,29 +21,31 @@ std::vector<Object *> Object::instances;
 Object *screen[64][64];
 
 volatile bool interrupt_received = false;
-static void InterruptHandler(int signo)
-{
+
+static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
 void update() { //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
-        switch (obj->getType()) {
-            case MARPLE: {
+        if (obj) {
+            switch (obj->getType()) {
+                case MARPLE: {
 //                Object &marp = dynamic_cast<Marple &>(*obj);
-                int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
-                break;
+                    int d = dynamic_cast<Marple *>(obj)->getDiameter();
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                    break;
+                }
+                case HOLE: {
+                    int d = dynamic_cast<Hole *>(obj)->getDiameter();
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                    break;
+                }
+                case WALL:
+                    int d = dynamic_cast<Wall *>(obj)->diameter;
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
+                    break;
             }
-            case HOLE: {
-                int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
-                break;
-            }
-            case WALL:
-                int d = dynamic_cast<Wall *>(obj)->diameter;
-                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
-                break;
         }
     }
 }
@@ -58,29 +60,31 @@ void render(Canvas *canvas) {
     }
 }
 
-void wallTest(){
+void wallTest(Canvas* canvas) {
     Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
-    Wall *walls[70];
+    Wall *walls[64];
     for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 16; x < 32; x++) {
-        walls[x] = new Wall((x-16) * 4, 60, 4);
+        walls[x] = new Wall((x - 16) * 4, 60, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 32; x < 48; x++) {
-        walls[x] = new Wall(0, (x-32) * 4, 4);
-        walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 48; x < 64; x++) {
-        walls[x] = new Wall(60, (x-48) * 4, 4);
+        walls[x] = new Wall(0, (x - 32) * 4, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-
+    for (int x = 48; x < 64; x++) {
+        walls[x] = new Wall(60, (x - 48) * 4, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    update(); // update matrix array from object list
+    render(canvas); // draw from matrix array
+    usleep(60000000);
 }
 
 int main(int argc, char *argv[]) {
@@ -100,11 +104,7 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    wallTest(); // spawn marple, hole and walls
-
-    update(); // update matrix array from object list
-    render(canvas); // draw from matrix array
-    usleep(60000000);
+    wallTest(canvas);
 
     canvas->Clear();
     delete canvas;
