@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
     clock_gettime( CLOCK_MONOTONIC, &elapsed);
 
 //    wallTest(canvas); // Display test function
-    Marple marple(32, 32, 2);
+    Marple marple(32, 32, 9);
     while (!interrupt_received) {
         timestamp1 = elapsed.tv_nsec;
         update();
@@ -126,8 +126,8 @@ int main(int argc, char *argv[]) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-//        uint64_t now = (uint64_t) elapsed.tv_sec * 1000000000U + (uint64_t) elapsed.tv_nsec;
-        std::cout << "elapsed: " << elapsed_time << ", current timer: " << elapsed.tv_nsec << "\n";
+        uint64_t now = (uint64_t) elapsed.tv_sec * 1000000000U + (uint64_t) elapsed.tv_nsec;
+        std::cout << "elapsed: " << now << ", current timer: " << elapsed.tv_nsec << "\n";
         elapsed.tv_nsec = 0;
     }
     std::cout << "Program terminated\n";
