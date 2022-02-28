@@ -12,12 +12,17 @@
 #include <Magick++.h>
 #include <magick/image.h>
 #include <iostream>
-#include <chrono>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
+#include <sys/time.h>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
-using std::chrono::high_resolution_clock;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
@@ -114,18 +119,40 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, InterruptHandler);
 
 //    wallTest(canvas); // Display test function
+
     Marple marple(32, 32, 1);
+
+    struct timeval now, pulse;
+    int cycles, micros, delay_micros;
+
+    while (!interrupt_received)
+    {
+        cycles = 0;
+        gettimeofday(&pulse, nullptr);
+        micros = 0;
+        while (micros < delay_micros)
+        {
+            ++cycles;
+            gettimeofday(&now, nullptr);
+            if (now.tv_sec > pulse.tv_sec) micros = 1000000L; else micros = 0;
+            micros = micros + (now.tv_usec - pulse.tv_usec);
+
+        }
+        printf("delay %d microseconds took %d cycles\n", delay_micros, cycles);
+        usleep(500000);
+    }
+
     while (!interrupt_received) {
-        timestamp1 = high_resolution_clock::to_time_t(high_resolution_clock::now());
+//        timestamp1 = high_resolution_clock::to_time_t(high_resolution_clock::now());
         update();
         render(canvas);
-        timestamp2 = high_resolution_clock::to_time_t(high_resolution_clock::now());
+//        timestamp2 = high_resolution_clock::to_time_t(high_resolution_clock::now());
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-        std::cout << "elapsed: " << high_resolution_clock::to_time_t(high_resolution_clock::now()) << ", current timer: " << elapsed_time << "\n";
+//        std::cout << "elapsed: " << high_resolution_clock::to_time_t(high_resolution_clock::now()) << ", current timer: " << elapsed_time << "\n";
     }
     std::cout << "Program terminated\n";
     canvas->Clear();
