@@ -13,10 +13,12 @@
 #include <Magick++.h>
 #include <magick/image.h>
 #include <iostream>
+#include <chrono>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
+using std::chrono::system_clock;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
@@ -24,11 +26,10 @@ Object *screen[64][64];
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
-long int timestamp1;
-long int timestamp2;
-struct timespec elapsed;
-long int elapsed_time;
-long int frame_time = 16666; //time period for 60Hz in useconds
+long long timestamp1;
+long long timestamp2;
+long long elapsed_time;
+long long frame_time = 16666; //time period for 60Hz in useconds
 
 
 static void InterruptHandler(int signo) {
@@ -112,23 +113,20 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-    clock_gettime( CLOCK_MONOTONIC, &elapsed);
 
 //    wallTest(canvas); // Display test function
     Marple marple(32, 32, 9);
     while (!interrupt_received) {
-        timestamp1 = elapsed.tv_nsec;
+        timestamp1 = system_clock::to_time_t(system_clock::now());
         update();
         render(canvas);
-        timestamp2 = elapsed.tv_nsec;
+        timestamp2 = system_clock::to_time_t(system_clock::now());
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-        uint64_t now = (uint64_t) elapsed.tv_sec * 1000000000U + (uint64_t) elapsed.tv_nsec;
-        std::cout << "elapsed: " << now << ", current timer: " << elapsed.tv_nsec << "\n";
-        elapsed.tv_nsec = 0;
+        std::cout << "elapsed: " << system_clock::to_time_t(system_clock::now()) << ", current timer: " << elapsed_time << "\n";
     }
     std::cout << "Program terminated\n";
     canvas->Clear();
