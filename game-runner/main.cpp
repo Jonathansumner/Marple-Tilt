@@ -129,6 +129,7 @@ int main(int argc, char *argv[]) {
     {
         cycles = 0;
         gettimeofday(&pulse, nullptr);
+
         micros = 0;
         while (micros < delay_micros)
         {
@@ -139,6 +140,7 @@ int main(int argc, char *argv[]) {
 
         }
         usleep(500000);
+        std::cout << "timer: " << micros << ", " << cycles << "\n";
     }
 
     while (!interrupt_received) {
