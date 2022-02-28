@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
     Marple marple(32, 32, 1);
 
     while (!interrupt_received) {
-        gettimeofday(&t, NULL);
+        gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
         update();
         render(canvas);
