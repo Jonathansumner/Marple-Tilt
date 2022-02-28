@@ -20,6 +20,8 @@
 #include <string.h>
 #include <sys/time.h>
 
+#define SYST_BASE 0x20003000
+
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
@@ -140,7 +142,7 @@ int main(int argc, char *argv[]) {
 
         }
         usleep(500000);
-        std::cout << "timer: " << micros << ", " << cycles << "\n";
+        std::cout << "timer: " << micros << ", " << (uint32_t)SYST_BASE << "\n";
     }
 
     while (!interrupt_received) {
