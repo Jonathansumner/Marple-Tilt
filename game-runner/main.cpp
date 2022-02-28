@@ -116,20 +116,21 @@ int main(int argc, char *argv[]) {
 
 //    wallTest(canvas); // Display test function
 
-    Marple marple(32, 32, 1);
-
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        //Before game updates
+
         update();
         render(canvas);
+
+        //After game updates
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
-        std::cout << "time1: " << timestamp1 << ", time2: " << timestamp2 << ", diff: " << elapsed_time << "\n";
         canvas->Clear();
     }
     std::cout << "Program terminated\n";
