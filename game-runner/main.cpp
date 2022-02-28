@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, InterruptHandler);
 
 //    wallTest(canvas); // Display test function
-
+    Marple marple(32, 32, 2);
     while (!interrupt_received) {
         timestamp1 = elapsed.tv_nsec;
         update();
