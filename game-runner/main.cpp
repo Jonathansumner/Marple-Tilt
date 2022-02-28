@@ -4,7 +4,6 @@
 #include <csignal>
 #include <cstdio>
 #include <unistd.h>
-#include <time.h>
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
@@ -18,7 +17,7 @@
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
-using std::chrono::system_clock;
+using std::chrono::high_resolution_clock;
 
 //MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
@@ -115,18 +114,18 @@ int main(int argc, char *argv[]) {
     signal(SIGINT, InterruptHandler);
 
 //    wallTest(canvas); // Display test function
-    Marple marple(32, 32, 9);
+    Marple marple(32, 32, 1);
     while (!interrupt_received) {
-        timestamp1 = system_clock::to_time_t(system_clock::now());
+        timestamp1 = high_resolution_clock::to_time_t(high_resolution_clock::now());
         update();
         render(canvas);
-        timestamp2 = system_clock::to_time_t(system_clock::now());
+        timestamp2 = high_resolution_clock::to_time_t(high_resolution_clock::now());
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-        std::cout << "elapsed: " << system_clock::to_time_t(system_clock::now()) << ", current timer: " << elapsed_time << "\n";
+        std::cout << "elapsed: " << high_resolution_clock::to_time_t(high_resolution_clock::now()) << ", current timer: " << elapsed_time << "\n";
     }
     std::cout << "Program terminated\n";
     canvas->Clear();
