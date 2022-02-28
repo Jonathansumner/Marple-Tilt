@@ -35,8 +35,7 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void
-update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
@@ -113,6 +112,7 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
+    clock_gettime( CLOCK_MONOTONIC, &elapsed);
 
 //    wallTest(canvas); // Display test function
     Marple marple(32, 32, 2);
@@ -126,8 +126,8 @@ int main(int argc, char *argv[]) {
             usleep(frame_time - elapsed_time);
         }
         canvas->Clear();
-        uint64_t now = (uint64_t)elapsed.tv_sec * 1000000000U + (uint64_t)elapsed.tv_nsec;
-        std::cout << "elapsed: " << now << ", current timer: " << elapsed.tv_nsec << "\n";
+//        uint64_t now = (uint64_t) elapsed.tv_sec * 1000000000U + (uint64_t) elapsed.tv_nsec;
+        std::cout << "elapsed: " << elapsed_time << ", current timer: " << elapsed.tv_nsec << "\n";
         elapsed.tv_nsec = 0;
     }
     std::cout << "Program terminated\n";
