@@ -63,22 +63,22 @@ void wallTest(){
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
-    Wall *walls[64];
+    Wall *walls[70];
     for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 1; x < 16; x++) {
-        walls[x + 16] = new Wall(x * 4, 60, 4);
-        walls[x + 16]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    for (int x = 16; x < 32; x++) {
+        walls[x] = new Wall((x-16) * 4, 60, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 1; x < 16; x++) {
-        walls[x + 32] = new Wall(0, x * 4, 4);
+    for (int x = 32; x < 48; x++) {
+        walls[x] = new Wall(0, (x-32) * 4, 4);
         walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 1; x < 16; x++) {
-        walls[x + 47] = new Wall(60, x * 4, 4);
-        walls[x + 47]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    for (int x = 48; x < 64; x++) {
+        walls[x] = new Wall(60, (x-48) * 4, 4);
+        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
 
 }
