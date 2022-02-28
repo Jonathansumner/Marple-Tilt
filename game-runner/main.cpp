@@ -1,8 +1,8 @@
 #include "led-matrix.h"
 
-#include <math.h>
-#include <signal.h>
-#include <stdio.h>
+#include <cmath>
+#include <csignal>
+#include <cstdio>
 #include <unistd.h>
 
 #include "graphics/gfx.h"
@@ -11,6 +11,8 @@
 #include <exception>
 #include <Magick++.h>
 #include <magick/image.h>
+#include <iostream>
+#include <sys/time.h>
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
@@ -20,13 +22,20 @@ using rgb_matrix::RGBMatrix;
 std::vector<Object *> Object::instances;
 Object *screen[64][64];
 
+//Interrupt flags and Timers
 volatile bool interrupt_received = false;
+long long timestamp1;
+long long timestamp2;
+long long elapsed_time;
+struct timeval t;
+long long frame_time = 16666; //time period for 60Hz in useconds
+
 
 static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() { //TODO get advice about handling polymorphic pointer arrays
+void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
@@ -50,7 +59,7 @@ void update() { //TODO get advice about handling polymorphic pointer arrays
     }
 }
 
-void render(Canvas *canvas) {
+void render(Canvas *canvas) { // render each pixel with respect to the object reference
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
             if (screen[i][j]) {
@@ -60,7 +69,7 @@ void render(Canvas *canvas) {
     }
 }
 
-void wallTest(Canvas* canvas) {
+void wallTest(Canvas *canvas) {
     Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
@@ -104,8 +113,26 @@ int main(int argc, char *argv[]) {
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
 
-    wallTest(canvas);
+//    wallTest(canvas); // Display test function
 
+    while (!interrupt_received) {
+        gettimeofday(&t, nullptr);
+        timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        //Before game updates
+
+        update();
+        render(canvas);
+
+        //After game updates
+        gettimeofday(&t, nullptr);
+        timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        elapsed_time = timestamp2 - timestamp1;
+        if (elapsed_time < frame_time) {
+            usleep(frame_time - elapsed_time);
+        }
+        canvas->Clear();
+    }
+    std::cout << "Program terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;
