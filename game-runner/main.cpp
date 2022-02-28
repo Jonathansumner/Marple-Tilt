@@ -35,8 +35,7 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void
-update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
