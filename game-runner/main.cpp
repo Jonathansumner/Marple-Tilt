@@ -71,6 +71,15 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
+void clear(Canvas * canvas) {
+    canvas->Clear();
+    for (int x = 0; x < 64; x++) {
+        for (int y = 0; y < 64; y++) {
+            screen[x][y] = nullptr;
+        }
+    }
+}
+
 void wallTest(Canvas *canvas) {
     Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
@@ -138,7 +147,7 @@ int main(int argc, char *argv[]) {
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
-        canvas->Clear();
+        clear(canvas);
     }
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
