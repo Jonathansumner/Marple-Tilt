@@ -7,6 +7,7 @@
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
+#inclide "MPU6050.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -18,7 +19,7 @@ using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
 
-//MPU6050 gyro(0x68);
+MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
 Object *screen[64][64];
 
