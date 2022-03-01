@@ -1,11 +1,16 @@
-//
-// Created by Jonat on 01/03/2022.
-//
 
 #include "dynamics.h"
+#include "../graphics/gfx.h"
+#include <iostream>
+#include "MPU6050.h"
 
-void updateMarple(Marple marple) {
-
+void updateMarple(Marple* marple, MPU6050* gyro) {
+    float x, y;
+    int x_pos = marple->getPos()[0], y_pos = marple->getPos()[1];
+    gyro->getAngle(0, &x);
+    gyro->getAngle(1, &y);
+    std::cout << "\npos: " << x_pos << ", " << y_pos << "\n";
+    std::cout << "gyro: " << x << ", " << y << "\n";
 }
 
 /*pass in marple object

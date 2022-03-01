@@ -1,13 +1,11 @@
-//
-// Created by Jonat on 01/03/2022.
-//
 
 #ifndef MARPLE_TILT_DYNAMICS_H
 #define MARPLE_TILT_DYNAMICS_H
 
 #endif //MARPLE_TILT_DYNAMICS_H
 
-#include "graphics/gfx.h"
+#include "../graphics/gfx.h"
+#include "MPU6050.h"
 
-void updateMarple(Marple marple);
+void updateMarple(Marple *marple, MPU6050* gyro);
 

@@ -114,7 +114,10 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-    float a, b, c;
+    // Test objects
+    int x_start = 10, y_start = 10, diameter = 3;
+    Marple marple(x_start, y_start, diameter);
+
 //    wallTest(canvas); // Display test function
 
     while (!interrupt_received) {
@@ -122,6 +125,7 @@ int main(int argc, char *argv[]) {
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
         //Before game updates
 
+        updateMarple(&marple, &gyro);
         update();
         render(canvas);
 
