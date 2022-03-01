@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
     Marple marple(x_start, y_start, diameter);
 
 //    wallTest(canvas); // Display test function
-
+    std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
         }
         canvas->Clear();
     }
-    std::cout << "Program terminated\n";
+    std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;
