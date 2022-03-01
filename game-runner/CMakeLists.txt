@@ -12,7 +12,8 @@ execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE
 
 string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
-add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h external/mpu6050-api/MPU6050.cpp external/mpu6050-api/MPU6050.h)
+add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
+add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
@@ -23,24 +24,28 @@ set_target_properties(matrixAPI PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/external/matrix-api/include
     )
 
-add_library(mpu6050API SHARED IMPORTED GLOBAL)
-set_target_properties(mpu6050API PROPERTIES
-    IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/external/mpu6050-api/libMPU6050.so
-    INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/external/mpu6050-api
-    IMPORTED_SONAME "libMPU6050.so"
-    )
+# add_library(mpu6050API SHARED IMPORTED GLOBAL)
+# set_target_properties(mpu6050API PROPERTIES
+#     IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/external/mpu6050-api/libMPU6050.so
+#     INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}/external/mpu6050-api
+#     IMPORTED_SONAME "libMPU6050.so"
+#     )
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/external/matrix-api/include
-    ${CMAKE_SOURCE_DIR}/external/mpu6050-api
+    ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/src
     )
 
+target_link_directories(${PROJECT_NAME}
+    PRIVATE ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/build/
+)
+
 target_link_libraries(${PROJECT_NAME} 
-    mpu6050API
     matrixAPI
     Threads::Threads
     ${MAGICK_LDF_FLAGS_STRIPPED}
     "-lrt"
+    mpu6050
     )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
