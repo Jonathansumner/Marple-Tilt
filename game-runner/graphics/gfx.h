@@ -2,6 +2,7 @@
 #define MARPLETILT_GFX_H
 
 #endif
+
 #include <vector>
 #include <algorithm>
 #pragma once
@@ -19,7 +20,7 @@ public:
     int red, green, blue;
     static std::vector<Object*> instances;
 
-    Object(int x, int y, draw_type d_type){
+    Object(float x, float y, draw_type d_type){
         x_pos = x;
         y_pos = y;
         type = d_type;
@@ -27,36 +28,39 @@ public:
     }
 
     virtual void setColour(std::vector<int> colour);
-    virtual vector<int> getPos();
+    virtual vector<float> getPos();
     virtual draw_type getType();
-    virtual vector<int> move(int x, int y);
+    virtual vector<float> move(float x, float y);
 
 private:
     draw_type type;
-    int x_pos;
-    int y_pos;
+    float x_pos;
+    float y_pos;
 };
 
 class Marple : public Object {
 private:
     int diameter;
-    float x_velocity;
-    float y_velocity;
 public:
-    Marple(int x, int y, int d)
+    Marple(float x, float y, int d)
     : Object{x, y, MARPLE}
     {
         instances.push_back(this);
         diameter = d;
+        x_velocity = 0;
+        y_velocity = 0;
     }
     int getDiameter();
+
+    float x_velocity;
+    float y_velocity;
 };
 
 class Hole : public Object {
 private:
     int diameter;
 public:
-    Hole(int x, int y, int d)
+    Hole(float x, float y, int d)
             : Object{x, y, HOLE}
     {
         instances.push_back(this);
@@ -68,7 +72,7 @@ public:
 class Wall : public Object {
 public:
     int diameter;
-    Wall(int x, int y, int d)
+    Wall(float x, float y, int d)
             : Object{x, y, WALL}
     {
         instances.push_back(this);

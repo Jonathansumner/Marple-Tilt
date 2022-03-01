@@ -5,10 +5,14 @@
 #include "MPU6050.h"
 
 void updateMarple(Marple* marple, MPU6050* gyro) {
-    float x, y;
-    int x_pos = marple->getPos()[0], y_pos = marple->getPos()[1];
-    gyro->getAngle(0, &x);
-    gyro->getAngle(1, &y);
+    float x, y, z;
+    float weighting_factor = 0.002;
+    float x_pos = marple->getPos()[0], y_pos = marple->getPos()[1];
+    gyro->getGyro(&x, &y, &z);
+    marple->x_velocity += (x * weighting_factor);
+    marple->y_velocity += (y * weighting_factor);
+    marple->move(marple->x_velocity, marple->y_velocity);
+
     std::cout << "\npos: " << x_pos << ", " << y_pos << "\n";
     std::cout << "gyro: " << x << ", " << y << "\n";
 }
