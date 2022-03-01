@@ -8,7 +8,7 @@
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
 #include "MPU6050.h"
-#include "images.h"
+#include "graphics/images.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -103,22 +103,7 @@ int main(int argc, char *argv[]) {
     defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
     defaults.rows = 64;
     defaults.cols = 64;
-    defaults.disable_hardwvoid ShowAnimatedImage(const ImageVector &images, RGBMatrix *matrix)
-    {
-        FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
-        while (!interrupt_received)
-        {
-            for (const auto &image : images)
-            {
-                if (interrupt_received)
-                    break;
-                CopyImageToCanvas(image, offscreen_canvas);
-                offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
-                usleep(image.animationDelay() * 10000); // 1/100s converted to usec
-            }
-        }
-    }
-    are_pulsing = true;
+    defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.show_refresh_rate = true;
@@ -142,9 +127,9 @@ int main(int argc, char *argv[]) {
         std::cout << "Gyroscope angles: X: " << a << ", Y: " << b << ", Z: " << c << "\n";
         update();
         render(canvas);
-        @id : ms - vscode.cpptools - extension - pack
-                                                     // After game updates
-                                                     gettimeofday(&t, nullptr);
+
+        //After game updates
+        gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
@@ -153,7 +138,7 @@ int main(int argc, char *argv[]) {
         canvas->Clear();
     }
 
-    drawImage("img/logo.ppm", 5, argv, canvas);
+    drawImage("img/log.ppm", 10, argv, canvas);
 
     std::cout << "Program terminated\n";
     canvas->Clear();

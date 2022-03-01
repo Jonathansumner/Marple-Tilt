@@ -97,7 +97,7 @@ void ShowAnimatedImage(const ImageVector &images, RGBMatrix *matrix)
     }
 }
 
-void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas, ) {
+void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas) {
     Magick::InitializeMagick(*argv);
 
     ImageVector images = LoadImageAndScaleImage(filename,
