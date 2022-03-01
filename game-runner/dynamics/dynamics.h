@@ -6,3 +6,8 @@
 #define MARPLE_TILT_DYNAMICS_H
 
 #endif //MARPLE_TILT_DYNAMICS_H
+
+#include "graphics/gfx.h"
+
+void updateMarple(Marple marple);
+
