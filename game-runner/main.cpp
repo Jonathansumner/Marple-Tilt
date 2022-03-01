@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.show_refresh_rate = true;
+//    defaults.show_refresh_rate = true;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == nullptr)
