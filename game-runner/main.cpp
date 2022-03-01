@@ -7,7 +7,7 @@
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
-#inclide "MPU6050.h"
+#include "MPU6050.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -113,14 +113,17 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-
+    float a, b, c;
 //    wallTest(canvas); // Display test function
 
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
         //Before game updates
-
+        gyro.getAngle(0, &a);
+        gyro.getAngle(1, &b);
+        gyro.getAngle(2, &c);
+        std::cout << "Gyroscope angles: X: " << a << ", Y: " << b << ", Z: " << c << "\n";
         update();
         render(canvas);
 
