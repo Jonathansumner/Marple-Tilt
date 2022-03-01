@@ -4,7 +4,7 @@
 #endif
 #include <vector>
 #include <algorithm>
-
+#pragma once
 using std::vector;
 
 
