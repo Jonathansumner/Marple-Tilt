@@ -119,6 +119,7 @@ int main(int argc, char *argv[]) {
     Marple marple(x_start, y_start, diameter);
 
 //    wallTest(canvas); // Display test function
+    std::cout << "before offset\n";
     std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
