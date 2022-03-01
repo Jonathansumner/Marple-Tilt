@@ -40,6 +40,7 @@ target_link_libraries(${PROJECT_NAME}
     matrixAPI
     Threads::Threads
     ${MAGICK_LDF_FLAGS_STRIPPED}
+    "-lrt"
     )
 
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX})
