@@ -125,6 +125,7 @@ int main(int argc, char *argv[]) {
         timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
         //Before game updates
 
+        std::cout << "tick ------\n";
         updateMarple(&marple, &gyro);
         update();
         render(canvas);
