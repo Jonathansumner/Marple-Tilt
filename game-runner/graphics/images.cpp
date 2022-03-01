@@ -81,21 +81,21 @@ void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas)
     }
 }
 
-void ShowAnimatedImage(const ImageVector &images, RGBMatrix *matrix)
-{
-    FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
-    while (!interrupt_received)
-    {
-        for (const auto &image : images)
-        {
-            if (interrupt_received)
-                break;
-            CopyImageToCanvas(image, offscreen_canvas);
-            offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
-            usleep(image.animationDelay() * 10000); // 1/100s converted to usec
-        }
-    }
-}
+// void ShowAnimatedImage(const ImageVector &images, RGBMatrix *matrix)
+// {
+//     FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
+//     while (!interrupt_received)
+//     {
+//         for (const auto &image : images)
+//         {
+//             if (interrupt_received)
+//                 break;
+//             CopyImageToCanvas(image, offscreen_canvas);
+//             offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
+//             usleep(image.animationDelay() * 10000); // 1/100s converted to usec
+//         }
+//     }
+// }
 
 void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas) {
     Magick::InitializeMagick(*argv);
