@@ -90,11 +90,11 @@ void wallTest() {
 //    Wall *snake2[64];
 //    Wall *snake3[64];
     walls[0] = new Wall(45, 0, 4);
-    walls[10] = new Wall(40, 0, 4);
-//    for (int x = 0; x < 16; x++) {
-//        walls[x] = new Wall((float)x * 4, 0, 4);
+    walls[17] = new Wall(40, 0, 4);
+    for (int x = 1; x < 16; x++) {
+        walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
 //        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-//    }
+    }
 //    for (int x = 16; x < 32; x++) {
 //        walls[x] = new Wall((x - 16) * 4, 60, 4);
 //        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
