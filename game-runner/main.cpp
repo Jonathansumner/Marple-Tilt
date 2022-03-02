@@ -123,6 +123,8 @@ void wallTest() {
         snake4[x] = new Wall(60, static_cast<float>(x * 4), 4);
         snake4[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
+    Hole hollow(50, 6, 4);
+    hollow.setColour({100, 0, 0});
 }
 
 int main(int argc, char *argv[]) {
