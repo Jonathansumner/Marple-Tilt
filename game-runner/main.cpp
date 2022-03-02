@@ -80,12 +80,15 @@ void clear(Canvas * canvas) { //TODO: find more efficient method of clearing arr
     }
 }
 
-void wallTest(Canvas *canvas) {
+void wallTest() {
     Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
     marple.setColour({0, 0, 255});
     Wall *walls[64];
+    Wall *snake1[64];
+    Wall *snake2[64];
+    Wall *snake3[64];
     for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
@@ -102,9 +105,14 @@ void wallTest(Canvas *canvas) {
         walls[x] = new Wall(60, (x - 48) * 4, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    update(); // update matrix array from object list
-    render(canvas); // draw from matrix array
-    usleep(60000000);
+    for (int x = 0; x < 10; x++) {
+        snake1[x] = new Wall(18, x*4, 4);
+        snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 0; x < 10; x++) {
+        snake2[x] = new Wall(36, x*4, 4);
+        snake2[x]->setColour({rand()%255, rand()%255, rand()%255});
+    }
 }
 
 int main(int argc, char *argv[]) {
@@ -127,7 +135,7 @@ int main(int argc, char *argv[]) {
     int x_start = 10, y_start = 10, diameter = 3;
     Marple marple(x_start, y_start, diameter);
 
-//    wallTest(canvas); // Display test function
+    wallTest(); // Display test function
     std::cout << "before offset\n";
     std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
     while (!interrupt_received) {
