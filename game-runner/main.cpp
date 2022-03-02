@@ -140,16 +140,18 @@ int main(int argc, char *argv[]) {
         canvas->Clear();
     }
 
-    drawImage("img/new_logo.ppm", 5, argv, canvas);
+    //drawImage("img/new_logo.ppm", 5, argv, canvas);
 
-    char line[1024] = "Marple";
+    char line[1024] = "Slava";
+    char line2[1024] = "Ukraini";
     rgb_matrix::Font font;
     font.LoadFont("img/5x8.bdf");
 
     Color fontColor(0,40,100);
 
     while(true) {
-        rgb_matrix::DrawText(canvas, font, 10, 10, fontColor, NULL, line, 0);
+        rgb_matrix::DrawText(canvas, font, 10, 10 + font.baseline(), fontColor, NULL, line, 0);
+        rgb_matrix::DrawText(canvas, font, 10, 20 + font.baseline(), fontColor, NULL, line2, 0);
     }
 
     std::cout << "Program terminated\n";
