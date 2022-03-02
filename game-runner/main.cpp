@@ -29,6 +29,7 @@ volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
 long long elapsed_time;
+long long tick = 0;
 struct timeval t;
 long long frame_time = 16666; //time period for 60Hz in useconds
 
@@ -81,10 +82,8 @@ void clear(Canvas * canvas) { //TODO: find more efficient method of clearing arr
 }
 
 void wallTest() {
-    Marple marple(20, 20, 3);
     Hole hole(30, 30, 5);
     hole.setColour({255, 0, 0});
-    marple.setColour({0, 0, 255});
     Wall *walls[64];
     Wall *snake1[64];
     Wall *snake2[64];
@@ -112,6 +111,10 @@ void wallTest() {
     for (int x = 0; x < 8; x++) {
         snake2[x] = new Wall(36, x*4, 4);
         snake2[x]->setColour({rand()%255, rand()%255, rand()%255});
+    }
+    for (int x = 0; x < 8; x++) {
+        snake3[x] = new Wall(48, x*4, 4);
+        snake3[x]->setColour({rand()%255, rand()%255, rand()%255});
     }
 }
 
@@ -147,6 +150,9 @@ int main(int argc, char *argv[]) {
         updateMarple(&marple, &gyro);
         update();
         render(canvas);
+        if (tick % 60 == 0) {
+            marple.setColour({rand()%255, rand()%255, rand()%255});
+        }
 
         //After game updates
         gettimeofday(&t, nullptr);
@@ -156,6 +162,7 @@ int main(int argc, char *argv[]) {
             usleep(frame_time - elapsed_time);
         }
         clear(canvas);
+        tick++;
     }
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
