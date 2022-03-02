@@ -147,8 +147,10 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
 
     Color fontColor(0,40,100);
-    rgb_matrix::DrawText(canvas, font, 10, 10, fontColor, NULL, line, 0);
 
+    while(true) {
+        rgb_matrix::DrawText(canvas, font, 10, 10, fontColor, NULL, line, 0);
+    }
 
     std::cout << "Program terminated\n";
     canvas->Clear();
