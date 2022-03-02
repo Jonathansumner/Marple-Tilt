@@ -160,11 +160,9 @@ int main(int argc, char *argv[]) {
         rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
         rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
 
-        count++;
-        if (count > 100) {
-            ypos++;
-            count = 0;
-        }
+        sleep(1);
+        ypos++;
+        canvas->Clear();
     }
 
     std::cout << "Program terminated\n";
