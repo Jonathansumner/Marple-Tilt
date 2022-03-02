@@ -105,11 +105,11 @@ void wallTest() {
         walls[x] = new Wall(60, (x - 48) * 4, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 0; x < 10; x++) {
+    for (int x = 0; x < 8; x++) {
         snake1[x] = new Wall(18, x*4, 4);
         snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 0; x < 10; x++) {
+    for (int x = 0; x < 8; x++) {
         snake2[x] = new Wall(36, x*4, 4);
         snake2[x]->setColour({rand()%255, rand()%255, rand()%255});
     }
