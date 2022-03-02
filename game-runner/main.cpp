@@ -38,7 +38,8 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void
+update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
@@ -72,7 +73,7 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-void clear(Canvas * canvas) { //TODO: find more efficient method of clearing array
+void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
     canvas->Clear();
     for (int x = 0; x < 64; x++) {
         for (int y = 0; y < 64; y++) {
@@ -92,30 +93,30 @@ void wallTest() {
         walls[x] = new Wall(x * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 16; x < 32; x++) {
-        walls[x] = new Wall((x - 16) * 4, 60, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 32; x < 48; x++) {
-        walls[x] = new Wall(0, (x - 32) * 4, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 48; x < 64; x++) {
-        walls[x] = new Wall(60, (x - 48) * 4, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 0; x < 8; x++) {
-        snake1[x] = new Wall(18, x*4, 4);
-        snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 0; x < 8; x++) {
-        snake2[x] = new Wall(36, x*4, 4);
-        snake2[x]->setColour({rand()%255, rand()%255, rand()%255});
-    }
-    for (int x = 0; x < 8; x++) {
-        snake3[x] = new Wall(48, x*4, 4);
-        snake3[x]->setColour({rand()%255, rand()%255, rand()%255});
-    }
+//    for (int x = 16; x < 32; x++) {
+//        walls[x] = new Wall((x - 16) * 4, 60, 4);
+//        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//    }
+//    for (int x = 32; x < 48; x++) {
+//        walls[x] = new Wall(0, (x - 32) * 4, 4);
+//        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//    }
+//    for (int x = 48; x < 64; x++) {
+//        walls[x] = new Wall(60, (x - 48) * 4, 4);
+//        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//    }
+//    for (int x = 0; x < 8; x++) {
+//        snake1[x] = new Wall(18, x*4, 4);
+//        snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//    }
+//    for (int x = 0; x < 8; x++) {
+//        snake2[x] = new Wall(36, x*4, 4);
+//        snake2[x]->setColour({rand()%255, rand()%255, rand()%255});
+//    }
+//    for (int x = 0; x < 8; x++) {
+//        snake3[x] = new Wall(48, x*4, 4);
+//        snake3[x]->setColour({rand()%255, rand()%255, rand()%255});
+//    }
 }
 
 int main(int argc, char *argv[]) {
@@ -143,20 +144,19 @@ int main(int argc, char *argv[]) {
     std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before game updates
 
-        std::cout << "tick ------\n";
         updateMarple(&marple, &gyro);
         update();
         render(canvas);
         if (tick % 60 == 0) {
-            marple.setColour({rand()%255, rand()%255, rand()%255});
+            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
         }
 
         //After game updates
         gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
