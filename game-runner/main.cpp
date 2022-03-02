@@ -110,19 +110,19 @@ void wallTest() {
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
-        snake1[x] = new Wall(18, 32+static_cast<float>(x * 4), 4);
+        snake1[x] = new Wall(12, 32+static_cast<float>(x * 4), 4);
         snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
-        snake2[x] = new Wall(32, static_cast<float>(x * 4), 4);
+        snake2[x] = new Wall(24, static_cast<float>(x * 4), 4);
         snake2[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
-        snake3[x] = new Wall(46, 32+static_cast<float>(x * 4), 4);
+        snake3[x] = new Wall(36, 32+static_cast<float>(x * 4), 4);
         snake3[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
-        snake4[x] = new Wall(60, static_cast<float>(x * 4), 4);
+        snake4[x] = new Wall(48, static_cast<float>(x * 4), 4);
         snake4[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     Wall *oop = new Wall(50, 6, 4);
