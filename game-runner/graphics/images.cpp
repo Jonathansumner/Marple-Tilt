@@ -112,7 +112,7 @@ void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas)
         sleep(duration); // Until Ctrl-C is pressed
         break;
     default: // More than one image: this is an animation.
-        ShowAnimatedImage(images, canvas);
+        //ShowAnimatedImage(images, canvas);
         break;
     }
 
