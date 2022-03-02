@@ -149,9 +149,17 @@ int main(int argc, char *argv[]) {
 
     Color fontColor(0,40,100);
 
+    int ypos = 5;
+
     while(true) {
-        rgb_matrix::DrawText(canvas, font, 10, 10 + font.baseline(), fontColor, NULL, line, 0);
-        rgb_matrix::DrawText(canvas, font, 10, 20 + font.baseline(), fontColor, NULL, line2, 0);
+        if (ypos+10+font.baseline > 64) {
+            ypos = 5;
+        }
+
+        rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
+        rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
+
+        ypos++;
     }
 
     std::cout << "Program terminated\n";
