@@ -143,10 +143,10 @@ int main(int argc, char *argv[]) {
     drawImage("img/new_logo.ppm", 5, argv, canvas);
 
     rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf")
+    font.LoadFont("img/5x8.bdf");
 
     Color fontColor(0,40,100);
-    rgb_matrix::drawText(canvas, font, 10, 10, fontColor, NULL, "Marple",0);
+    rgb_matrix::DrawText(canvas, font.baseline(), 10, 10, fontColor, NULL, "Marple",0);
 
 
     std::cout << "Program terminated\n";
