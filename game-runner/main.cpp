@@ -75,9 +75,11 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
 
 void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
     canvas->Clear();
-    for (int x = 0; x < 64; x++) {
-        for (int y = 0; y < 64; y++) {
-            screen[x][y] = nullptr;
+    for (auto & x : screen) {
+        for (auto & y : x) {
+            if (y) {
+                y = nullptr;
+            }
         }
     }
 }
@@ -123,8 +125,8 @@ void wallTest() {
         snake4[x] = new Wall(60, static_cast<float>(x * 4), 4);
         snake4[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    Hole hollow(50, 6, 4);
-    hollow.setColour({100, 0, 0});
+    Wall *oop = new Wall(50, 6, 4);
+    oop->setColour({250, 0, 0});
 }
 
 int main(int argc, char *argv[]) {
