@@ -116,5 +116,9 @@ void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas)
         break;
     }
 
-    canvas->Clear();
+    for (int i=0; i<duration*60; i++) {
+        CopyImageToCanvas(images[0], canvas);
+        usleep(16);
+        canvas->Clear();
+    }
 }
