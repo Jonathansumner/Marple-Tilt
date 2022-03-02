@@ -83,12 +83,13 @@ void clear(Canvas *canvas) { //TODO: find more efficient method of clearing arra
 }
 
 void wallTest() {
-    Hole hole(30, 30, 5);
-    hole.setColour({255, 0, 0});
+//    Hole hole(30, 30, 5);
+//    hole.setColour({255, 0, 0});
     Wall *walls[64];
-    Wall *snake1[64];
-    Wall *snake2[64];
-    Wall *snake3[64];
+//    Wall *snake1[64];
+//    Wall *snake2[64];
+//    Wall *snake3[64];
+    walls[0] = new Wall(45, 0, 4);
     walls[10] = new Wall(40, 0, 4);
 //    for (int x = 0; x < 16; x++) {
 //        walls[x] = new Wall((float)x * 4, 0, 4);
