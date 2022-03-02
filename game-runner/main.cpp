@@ -150,16 +150,21 @@ int main(int argc, char *argv[]) {
     Color fontColor(0,40,100);
 
     int ypos = 5;
+    int count = 0;
 
     while(true) {
-        if (ypos+10+font.baseline > 64) {
+        if (ypos+10+font.baseline() > 64) {
             ypos = 5;
         }
 
         rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
         rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
 
-        ypos++;
+        count++;
+        if (count > 100) {
+            ypos++;
+            count = 0;
+        }
     }
 
     std::cout << "Program terminated\n";
