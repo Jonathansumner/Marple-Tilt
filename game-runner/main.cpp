@@ -1,4 +1,5 @@
 #include "led-matrix.h"
+#include "graphics.h"
 
 #include <cmath>
 #include <csignal>
@@ -16,6 +17,7 @@
 #include <iostream>
 #include <sys/time.h>
 
+using namespace rgb_matrix;
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
@@ -139,6 +141,11 @@ int main(int argc, char *argv[]) {
     }
 
     drawImage("img/new_logo.ppm", 5, argv, canvas);
+
+    rgb_matrix::Font font = "img/5x8.bdf";
+    Color fontColor(0,40,100);
+    drawText(canvas, font, 10, 10, fontColor, NULL, "Marple",0);
+
 
     std::cout << "Program terminated\n";
     canvas->Clear();
