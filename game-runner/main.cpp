@@ -71,7 +71,7 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-void clear(Canvas * canvas) {
+void clear(Canvas * canvas) { //TODO: find more efficient method of clearing array
     canvas->Clear();
     for (int x = 0; x < 64; x++) {
         for (int y = 0; y < 64; y++) {
