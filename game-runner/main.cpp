@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
         canvas->Clear();
     }
 
-    drawImage("img/new_logo.ppm", 10, argv, canvas);
+    drawImage("img/new_logo.ppm", 5, argv, canvas);
 
     std::cout << "Program terminated\n";
     canvas->Clear();

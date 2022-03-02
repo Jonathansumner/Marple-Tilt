@@ -103,18 +103,21 @@ void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas)
     ImageVector images = LoadImageAndScaleImage(filename,
                                                 canvas->width(),
                                                 canvas->height());
-    switch (images.size())
-    {
-    case 0: // failed to load image.
-        break;
-    case 1: // Simple example: one image to show
-        CopyImageToCanvas(images[0], canvas);
-        sleep(duration); // Until Ctrl-C is pressed
-        break;
-    default: // More than one image: this is an animation.
-        //ShowAnimatedImage(images, canvas);
-        break;
-    }
-
-    canvas->Clear();
+//    switch (images.size())
+//    {
+//    case 0: // failed to load image.
+//       break;
+//    case 1: // Simple example: one image to show
+//        CopyImageToCanvas(images[0], canvas);
+//       sleep(duration); // Until Ctrl-C is pressed
+//        break;
+//    default: // More than one image: this is an animation.
+//        //ShowAnimatedImage(images, canvas);
+//        break;
+//    }
+    for (int i=0;i<duration*60;i++){
+	CopyImageToCanvas(images[0], canvas);
+	usleep(16);
+    	canvas->Clear();
+}
 }
