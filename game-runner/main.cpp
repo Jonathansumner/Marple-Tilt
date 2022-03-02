@@ -89,10 +89,11 @@ void wallTest() {
     Wall *snake1[64];
     Wall *snake2[64];
     Wall *snake3[64];
-    for (int x = 0; x < 16; x++) {
-        walls[x] = new Wall((float)x * 4, 0, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
+    walls[10] = new Wall(40, 0, 4);
+//    for (int x = 0; x < 16; x++) {
+//        walls[x] = new Wall((float)x * 4, 0, 4);
+//        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//    }
 //    for (int x = 16; x < 32; x++) {
 //        walls[x] = new Wall((x - 16) * 4, 60, 4);
 //        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
