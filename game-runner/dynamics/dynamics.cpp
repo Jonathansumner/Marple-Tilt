@@ -6,7 +6,7 @@
 
 void updateMarple(Marple* marple, MPU6050* gyro) {
     float x, y, z;
-    float weighting_factor = 0.0001;
+    float weighting_factor = 0.001;
     float x_pos = marple->getPos()[0], y_pos = marple->getPos()[1];
     gyro->getGyro(&x, &y, &z);
     marple->x_velocity += (x * weighting_factor);
