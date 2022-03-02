@@ -116,7 +116,7 @@ void wallTest() {
         snake2[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
-        snake3[x] = new Wall(46, static_cast<float>(x * 4), 4);
+        snake3[x] = new Wall(46, 32+static_cast<float>(x * 4), 4);
         snake3[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 0; x < 8; x++) {
