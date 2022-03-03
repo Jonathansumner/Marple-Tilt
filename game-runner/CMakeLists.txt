@@ -12,7 +12,7 @@ execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE
 
 string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
-add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h)
+add_executable(${PROJECT_NAME} main.cpp graphics/gfx.cpp graphics/gfx.h dynamics/dynamics.cpp dynamics/dynamics.h)
 add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
