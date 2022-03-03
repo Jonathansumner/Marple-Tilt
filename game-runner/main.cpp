@@ -41,25 +41,32 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void
-update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void update(bool clear = false) { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
                 case MARPLE: {
-//                Object &marp = dynamic_cast<Marple &>(*obj);
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                    Marple * ref;
+                    if (!clear) ref = dynamic_cast<Marple *>(obj);
+                    else ref = nullptr;
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
                     break;
                 }
                 case HOLE: {
                     int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                    Hole * ref;
+                    if (!clear) ref = dynamic_cast<Hole *>(obj);
+                    else ref = nullptr;
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
                     break;
                 }
                 case WALL:
                     int d = dynamic_cast<Wall *>(obj)->diameter;
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
+                    Wall * ref;
+                    if (!clear) ref = dynamic_cast<Wall *>(obj);
+                    else ref = nullptr;
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
                     break;
             }
         }
@@ -78,13 +85,7 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
 
 void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
     canvas->Clear();
-    for (auto &x: screen) {
-        for (auto &y: x) {
-            if (y) {
-                y = nullptr;
-            }
-        }
-    }
+    update(true);
 }
 
 void wallTest() {
