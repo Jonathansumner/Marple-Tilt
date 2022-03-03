@@ -55,17 +55,13 @@ void update(bool clear = false) { // Update object references within the matrix 
                 }
                 case HOLE: {
                     int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                    Hole * ref;
-                    if (!clear) ref = dynamic_cast<Hole *>(obj);
-                    else ref = nullptr;
+                    Hole * ref = dynamic_cast<Hole *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
                     break;
                 }
                 case WALL:
                     int d = dynamic_cast<Wall *>(obj)->diameter;
-                    Wall * ref;
-                    if (!clear) ref = dynamic_cast<Wall *>(obj);
-                    else ref = nullptr;
+                    Wall * ref = dynamic_cast<Wall *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
                     break;
             }
