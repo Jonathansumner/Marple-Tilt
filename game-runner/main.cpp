@@ -78,8 +78,8 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
 
 void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
     canvas->Clear();
-    for (auto & x : screen) {
-        for (auto & y : x) {
+    for (auto &x: screen) {
+        for (auto &y: x) {
             if (y) {
                 y = nullptr;
             }
@@ -102,14 +102,14 @@ void wallTest() {
     }
 
     for (int x = 0; x < 8; x++) {
-        walls[x+64] = new Wall(12, 32+static_cast<float>(x * 4), 4);
-        walls[x+64]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x+72] = new Wall(24, static_cast<float>(x * 4), 4);
-        walls[x+72]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x+80] = new Wall(36, 32+static_cast<float>(x * 4), 4);
-        walls[x+80]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x+88] = new Wall(48, static_cast<float>(x * 4), 4);
-        walls[x+88]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 64] = new Wall(12, 32 + static_cast<float>(x * 4), 4);
+        walls[x + 64]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
+        walls[x + 72]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
+        walls[x + 80]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 88] = new Wall(48, static_cast<float>(x * 4), 4);
+        walls[x + 88]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
 }
 
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
     wallTest(); // Display test function
     std::cout << "before offset\n";
     std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
-    while (!interrupt_received) {
+    while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before game updates
@@ -145,7 +145,8 @@ int main(int argc, char *argv[]) {
         updateMarple(&marple, &gyro, true);
         update();
         render(canvas);
-        if (tick % 60 == 0) {
+
+        if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
         }
 
@@ -167,13 +168,13 @@ int main(int argc, char *argv[]) {
     rgb_matrix::Font font;
     font.LoadFont("img/5x8.bdf");
 
-    Color fontColor(0,40,100);
+    Color fontColor(0, 40, 100);
 
     int ypos = 5;
     int count = 0;
 
-    while(true) {
-        if (ypos+10+font.baseline() > 64) {
+    while (true) {
+        if (ypos + 10 + font.baseline() > 64) {
             ypos = 5;
         }
 
