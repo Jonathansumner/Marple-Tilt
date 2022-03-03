@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
-        if (tick % 2 == 0) { // every 2nd tick, refresh
+        if (tick % 1 == 0) { // every tick, refresh
             clear(canvas);
         }
         tick++;
