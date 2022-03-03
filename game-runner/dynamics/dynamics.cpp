@@ -15,7 +15,7 @@ void updateMarple(Marple* marple, MPU6050* gyro, bool debug=false) {
     if (debug) {
         std::cout << "pos: " << x_pos << ", " << y_pos << "\n";
         std::cout << "gyro: " << x << ", " << y << "\n";
-        std::cout << "x_velocity: " << marple->x_velocity << ", y_velocity" << marple->y_velocity << "\n";
+        std::cout << "x_velocity: " << marple->x_velocity << ", y_velocity: " << marple->y_velocity << "\n";
     }
 }
 
