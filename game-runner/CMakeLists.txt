@@ -12,7 +12,7 @@ execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE
 
 string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
-add_executable(${PROJECT_NAME} main.cpp graphics/*.cpp graphics/*.h dynamics/*.cpp dynamics/*.h)
+add_executable(${PROJECT_NAME} main.cpp graphics/gfx.h graphics/gfx.cpp graphics/images.h graphics/images.cpp graphics/shapes.h dynamics /dynamics.cpp dynamics/dynamics.h)
 
 add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
 
@@ -34,7 +34,7 @@ target_link_directories(${PROJECT_NAME}
     PRIVATE ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/build/
 )
 
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${PROJECT_NAME}
     matrixAPI
     Threads::Threads
     ${MAGICK_LDF_FLAGS_STRIPPED}
