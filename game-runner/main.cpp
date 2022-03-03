@@ -1,4 +1,5 @@
 #include "led-matrix.h"
+#include "graphics.h"
 
 #include <cmath>
 #include <csignal>
@@ -9,6 +10,7 @@
 #include "graphics/shapes.h"
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
+#include "graphics/images.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -16,6 +18,7 @@
 #include <iostream>
 #include <sys/time.h>
 
+using namespace rgb_matrix;
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
@@ -175,7 +178,33 @@ int main(int argc, char *argv[]) {
         clear(canvas);
         tick++;
     }
-    std::cout << "\nProgram terminated\n";
+
+    //drawImage("img/new_logo.ppm", 5, argv, canvas);
+
+    char line[1024] = "Slava";
+    char line2[1024] = "Ukraini";
+    rgb_matrix::Font font;
+    font.LoadFont("img/5x8.bdf");
+
+    Color fontColor(0,40,100);
+
+    int ypos = 5;
+    int count = 0;
+
+    while(true) {
+        if (ypos+10+font.baseline() > 64) {
+            ypos = 5;
+        }
+
+        rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
+        rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
+
+        sleep(1);
+        ypos++;
+        canvas->Clear();
+    }
+
+    std::cout << "Program terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;
