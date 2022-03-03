@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before game updates
 
-        updateMarple(&marple, &gyro, true);
+//        updateMarple(&marple, &gyro, true);
         update();
         render(canvas);
 
@@ -153,6 +153,7 @@ int main(int argc, char *argv[]) {
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
+            std::cout << "FRAME TIME: " << elapsed_time << "\n";
         }
         if (tick % 1 == 0) { // every tick, refresh
             clear(canvas);

@@ -54,6 +54,8 @@ public:
 
     float x_velocity;
     float y_velocity;
+    float x_acceleration;
+    float y_acceleration;
 };
 
 class Hole : public Object {
