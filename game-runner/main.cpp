@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
     int ypos = 5;
     int count = 0;
 
-    while (true) {
+    while (!interrupt_received) {
         if (ypos + 10 + font.baseline() > 64) {
             ypos = 5;
         }
