@@ -85,48 +85,29 @@ void clear(Canvas *canvas) { //TODO: find more efficient method of clearing arra
 }
 
 void wallTest() {
-//    Hole hole(30, 30, 5);
-//    hole.setColour({255, 0, 0});
-    Wall *walls[64];
-    Wall *snake1[64];
-    Wall *snake2[64];
-    Wall *snake3[64];
-    Wall *snake4[64];
-    walls[0] = new Wall(0, 0, 4);
-    for (int x = 1; x < 16; x++) {
+    Wall *walls[96];
+
+    for (int x = 0; x < 16; x++) {
         walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 16] = new Wall(static_cast<float>(x) * 4, 60, 4);
+        walls[x + 16]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 32] = new Wall(0, static_cast<float>(x) * 4, 4);
+        walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 48] = new Wall(60, static_cast<float>(x) * 4, 4);
+        walls[x + 48]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 16; x < 32; x++) {
-        walls[x] = new Wall(static_cast<float>(x - 16) * 4, 60, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 32; x < 48; x++) {
-        walls[x] = new Wall(0, static_cast<float>(x - 32) * 4, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 48; x < 64; x++) {
-        walls[x] = new Wall(60, static_cast<float>(x - 48) * 4, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
+
     for (int x = 0; x < 8; x++) {
-        snake1[x] = new Wall(12, 32+static_cast<float>(x * 4), 4);
-        snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x+64] = new Wall(12, 32+static_cast<float>(x * 4), 4);
+        walls[x+64]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x+72] = new Wall(24, static_cast<float>(x * 4), 4);
+        walls[x+72]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x+80] = new Wall(36, 32+static_cast<float>(x * 4), 4);
+        walls[x+80]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x+88] = new Wall(48, static_cast<float>(x * 4), 4);
+        walls[x+88]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    for (int x = 0; x < 8; x++) {
-        snake2[x] = new Wall(24, static_cast<float>(x * 4), 4);
-        snake2[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 0; x < 8; x++) {
-        snake3[x] = new Wall(36, 32+static_cast<float>(x * 4), 4);
-        snake3[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    for (int x = 0; x < 8; x++) {
-        snake4[x] = new Wall(48, static_cast<float>(x * 4), 4);
-        snake4[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-    }
-    Wall *oop = new Wall(50, 6, 4);
-    oop->setColour({250, 0, 0});
 }
 
 int main(int argc, char *argv[]) {
