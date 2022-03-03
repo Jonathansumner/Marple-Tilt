@@ -7,5 +7,5 @@
 #include "../graphics/gfx.h"
 #include "MPU6050.h"
 
-void updateMarple(Marple *marple, MPU6050* gyro);
+void updateMarple(Marple *marple, MPU6050* gyro, bool debug);
 
