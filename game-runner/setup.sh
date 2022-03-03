@@ -10,4 +10,3 @@ sudo apt-get install libgraphicsmagick++-dev libwebp-dev -y
 
 # Build RGB Matrix and MPU6050 projects
 make -C external/matrix-api
-make -C external/mpu6050-api
