@@ -112,13 +112,13 @@ void wallTest() {
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
-    defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
+//    defaults.show_refresh_rate = true;
+    defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
     defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-//    defaults.show_refresh_rate = true;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == nullptr)
@@ -157,6 +157,7 @@ int main(int argc, char *argv[]) {
         clear(canvas);
         tick++;
     }
+    interrupt_received = false;
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
 
