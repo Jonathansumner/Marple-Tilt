@@ -1,19 +1,19 @@
 #include "gfx.h"
 
 
-vector<int> Object::move(int x, int y) {
+vector<float> Object::move(float x, float y) {
     if (x_pos + x >= 0 && x_pos + x < 64) {
         x_pos += x;
     }
     if (x_pos + y >= 0 && x_pos + y < 64) {
         y_pos += y;
     }
-    vector<int> ret{x_pos, y_pos};
+    vector<float> ret{x_pos, y_pos};
     return ret;
 }
 
-vector<int> Object::getPos() {
-    std::vector<int> pos;
+vector<float> Object::getPos() {
+    std::vector<float> pos;
     pos.push_back(x_pos);
     pos.push_back(y_pos);
     return pos;

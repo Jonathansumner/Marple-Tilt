@@ -8,6 +8,7 @@
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
+#include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
 
@@ -31,6 +32,7 @@ volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
 long long elapsed_time;
+long long tick = 0;
 struct timeval t;
 long long frame_time = 16666; //time period for 60Hz in useconds
 
@@ -39,7 +41,8 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void
+update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
@@ -73,31 +76,60 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-void wallTest(Canvas *canvas) {
-    Marple marple(20, 20, 3);
-    Hole hole(30, 30, 5);
-    hole.setColour({255, 0, 0});
-    marple.setColour({0, 0, 255});
+void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
+    canvas->Clear();
+    for (auto & x : screen) {
+        for (auto & y : x) {
+            if (y) {
+                y = nullptr;
+            }
+        }
+    }
+}
+
+void wallTest() {
+//    Hole hole(30, 30, 5);
+//    hole.setColour({255, 0, 0});
     Wall *walls[64];
-    for (int x = 0; x < 16; x++) {
-        walls[x] = new Wall(x * 4, 0, 4);
+    Wall *snake1[64];
+    Wall *snake2[64];
+    Wall *snake3[64];
+    Wall *snake4[64];
+    walls[0] = new Wall(0, 0, 4);
+    for (int x = 1; x < 16; x++) {
+        walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 16; x < 32; x++) {
-        walls[x] = new Wall((x - 16) * 4, 60, 4);
+        walls[x] = new Wall(static_cast<float>(x - 16) * 4, 60, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 32; x < 48; x++) {
-        walls[x] = new Wall(0, (x - 32) * 4, 4);
+        walls[x] = new Wall(0, static_cast<float>(x - 32) * 4, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
     for (int x = 48; x < 64; x++) {
-        walls[x] = new Wall(60, (x - 48) * 4, 4);
+        walls[x] = new Wall(60, static_cast<float>(x - 48) * 4, 4);
         walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
-    update(); // update matrix array from object list
-    render(canvas); // draw from matrix array
-    usleep(60000000);
+    for (int x = 0; x < 8; x++) {
+        snake1[x] = new Wall(12, 32+static_cast<float>(x * 4), 4);
+        snake1[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 0; x < 8; x++) {
+        snake2[x] = new Wall(24, static_cast<float>(x * 4), 4);
+        snake2[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 0; x < 8; x++) {
+        snake3[x] = new Wall(36, 32+static_cast<float>(x * 4), 4);
+        snake3[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    for (int x = 0; x < 8; x++) {
+        snake4[x] = new Wall(48, static_cast<float>(x * 4), 4);
+        snake4[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
+    }
+    Wall *oop = new Wall(50, 6, 4);
+    oop->setColour({250, 0, 0});
 }
 
 int main(int argc, char *argv[]) {
@@ -108,7 +140,7 @@ int main(int argc, char *argv[]) {
     defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.show_refresh_rate = true;
+//    defaults.show_refresh_rate = true;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == nullptr)
@@ -116,28 +148,35 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-    float a, b, c;
-//    wallTest(canvas); // Display test function
+    // Test objects
+    float x_start = 10, y_start = 10;
+    int diameter = 3;
+    Marple marple(x_start, y_start, diameter);
 
+    wallTest(); // Display test function
+    std::cout << "before offset\n";
+    std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
     while (!interrupt_received) {
         gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before game updates
-        gyro.getAngle(0, &a);
-        gyro.getAngle(1, &b);
-        gyro.getAngle(2, &c);
-        std::cout << "Gyroscope angles: X: " << a << ", Y: " << b << ", Z: " << c << "\n";
+
+        updateMarple(&marple, &gyro, true);
         update();
         render(canvas);
+        if (tick % 60 == 0) {
+            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+        }
 
         //After game updates
         gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec*1000L + (t.tv_usec/1000L);
+        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
-        canvas->Clear();
+        clear(canvas);
+        tick++;
     }
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
