@@ -52,7 +52,7 @@ void update(bool clear = false) { // Update object references within the matrix 
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
                     Marple *ref;
                     if (!clear) ref = dynamic_cast<Marple *>(obj);
-                    else ref = nullptr;
+                    if (clear) ref = nullptr;
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
-    canvas->Clear();
+//    canvas->Clear();
     interrupt_received = false;
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
