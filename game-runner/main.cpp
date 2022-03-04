@@ -150,6 +150,7 @@ int main(int argc, char *argv[]) {
 
         //After visual updates ----
 
+        marple.move(0.01, 0);
         updateMarple(&marple, &gyro);
 
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
