@@ -25,7 +25,8 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
-Object *screen[64][64];
+Object * Object::frame_prev[64][64];
+Object * Object::frame[64][64];
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -41,28 +42,27 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update(bool clear = false) { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void update() { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+    memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
                 case MARPLE: {
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                    Marple * ref;
-                    if (!clear) ref = dynamic_cast<Marple *>(obj);
-                    else ref = nullptr;
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
+                    auto * ref = dynamic_cast<Marple *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case HOLE: {
                     int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                    Hole * ref = dynamic_cast<Hole *>(obj);
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
+                    auto * ref = dynamic_cast<Hole *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case WALL:
                     int d = dynamic_cast<Wall *>(obj)->diameter;
-                    Wall * ref = dynamic_cast<Wall *>(obj);
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, screen);
+                    auto * ref = dynamic_cast<Wall *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
             }
         }
@@ -70,18 +70,27 @@ void update(bool clear = false) { // Update object references within the matrix 
 }
 
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
-    for (int i = 0; i < 64; i++) {
-        for (int j = 0; j < 64; j++) {
-            if (screen[i][j]) {
-                canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
+    if (tick == 0) { // On the first tick, draw every pixel
+        for (int i = 0; i < 64; i++) {
+            for (int j = 0; j < 64; j++) {
+                if (Object::frame[i][j]) {
+                    canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+                }
             }
         }
     }
-}
-
-void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
-    canvas->Clear();
-    update(true);
+    else {
+        for (int i = 0; i < 64; i++) {
+            for (int j = 0; j < 64; j++) {
+                if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
+                    canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+                }
+                else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+                    canvas->SetPixel(i, j, 0, 0, 0);
+                }
+            }
+        }
+    }
 }
 
 void wallTest() {
@@ -137,26 +146,27 @@ int main(int argc, char *argv[]) {
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before game updates
+        //Before any updates ----
 
-//        updateMarple(&marple, &gyro, true);
-        update();
-        render(canvas);
+        update(); // copy frame to frame_prev and update frame with new positions
+
+        render(canvas); // go through prev_frame, if any pixels there not in frame? setpixel(0,0,0); if in frame and not prev_frame? draw
+
+        //After visual updates ----
+
+        updateMarple(&marple, &gyro, true);
 
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
         }
 
-        //After game updates
+        //After game updates ----
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
-            std::cout << "FRAME TIME: " << elapsed_time << "\n";
-        }
-        if (tick % 1 == 0) { // every tick, refresh
-            clear(canvas);
+//            std::cout << "FRAME TIME: " << elapsed_time << "\n";
         }
         tick++;
     }
