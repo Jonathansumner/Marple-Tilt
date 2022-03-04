@@ -5,6 +5,7 @@
 #include <csignal>
 #include <cstdio>
 #include <unistd.h>
+#include <cstring>
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
@@ -25,8 +26,8 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
-Object * Object::frame_prev[64][64];
-Object * Object::frame[64][64];
+Object *Object::frame_prev[64][64];
+Object *Object::frame[64][64];
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -49,19 +50,19 @@ void update() { // Update object references within the matrix array | TODO get a
             switch (obj->getType()) {
                 case MARPLE: {
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                    auto * ref = dynamic_cast<Marple *>(obj);
+                    auto *ref = dynamic_cast<Marple *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case HOLE: {
                     int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                    auto * ref = dynamic_cast<Hole *>(obj);
+                    auto *ref = dynamic_cast<Hole *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case WALL:
                     int d = dynamic_cast<Wall *>(obj)->diameter;
-                    auto * ref = dynamic_cast<Wall *>(obj);
+                    auto *ref = dynamic_cast<Wall *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
             }
@@ -70,28 +71,23 @@ void update() { // Update object references within the matrix array | TODO get a
 }
 
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
-    if (tick == 0) { // On the first tick, draw every pixel
-        for (int i = 0; i < 64; i++) {
-            for (int j = 0; j < 64; j++) {
-                if (Object::frame[i][j]) {
-                    canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-                }
-            }
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            canvas->SetPixel(i, j, 0, 0, 0);
         }
     }
-    else {
-        for (int i = 0; i < 64; i++) {
-            for (int j = 0; j < 64; j++) {
-                if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
-                    canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-                }
-                else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
-                    canvas->SetPixel(i, j, 0, 0, 0);
-                }
+    for (int i = 0; i < 64; i++) {
+        for (int j = 0; j < 64; j++) {
+            if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
+                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+            } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+                canvas->SetPixel(i, j, 0, 0, 0);
+                std::cout << "Set pixel: (" << i << "," << j << ") to {0,0,0}\n";
             }
         }
     }
 }
+
 
 void wallTest() {
     Wall *walls[96];
@@ -154,7 +150,7 @@ int main(int argc, char *argv[]) {
 
         //After visual updates ----
 
-        updateMarple(&marple, &gyro, true);
+        updateMarple(&marple, &gyro);
 
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
