@@ -43,14 +43,16 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update() { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+void update(bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
     memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
                 case MARPLE: {
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                    auto *ref = dynamic_cast<Marple *>(obj);
+                    Marple *ref;
+                    if (!clear) ref = dynamic_cast<Marple *>(obj);
+                    else ref = nullptr;
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
@@ -71,11 +73,6 @@ void update() { // Update object references within the matrix array | TODO get a
 }
 
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            canvas->SetPixel(i, j, 0, 0, 0);
-        }
-    }
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
             if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
@@ -147,10 +144,11 @@ int main(int argc, char *argv[]) {
         update(); // copy frame to frame_prev and update frame with new positions
 
         render(canvas); // go through prev_frame, if any pixels there not in frame? setpixel(0,0,0); if in frame and not prev_frame? draw
+        update(true);
 
         //After visual updates ----
 
-        marple.move(0.01, 0);
+        marple.move(0.02, 0);
         updateMarple(&marple, &gyro);
 
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
@@ -167,6 +165,7 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
+    canvas->Clear();
     interrupt_received = false;
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
