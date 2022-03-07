@@ -44,15 +44,18 @@ static void InterruptHandler(int signo) {
 }
 
 void update(bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
-    memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
+    if (clear) memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
                 case MARPLE: {
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
                     Marple *ref;
-                    if (!clear) ref = dynamic_cast<Marple *>(obj);
-                    if (clear) ref = nullptr;
+                    if (!clear) {
+                        ref = dynamic_cast<Marple *>(obj);
+                    } else {
+                        ref = nullptr;
+                    }
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
@@ -132,30 +135,25 @@ int main(int argc, char *argv[]) {
     float x_start = 10, y_start = 10;
     int diameter = 3;
     Marple marple(x_start, y_start, diameter);
-
+    gyro.setOffsets(); //Calibrate gyro
     wallTest(); // Display test function
-    std::cout << "before offset\n";
-    std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
+
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before any updates ----
+        //Before all updates
 
         update(); // copy frame to frame_prev and update frame with new positions
+        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+        update(true); // copy frame to frame_prev and clear frame for new positions
+        //After display updates
 
-        render(canvas); // go through prev_frame, if any pixels there not in frame? setpixel(0,0,0); if in frame and not prev_frame? draw
-        update(true);
-
-        //After visual updates ----
-
-        marple.move(0.02, 0);
-        updateMarple(&marple, &gyro);
-
+        updateMarple(&marple, &gyro, false);
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
         }
+        //After game updates
 
-        //After game updates ----
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
@@ -165,7 +163,7 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
-//    canvas->Clear();
+    canvas->Clear();
     interrupt_received = false;
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
