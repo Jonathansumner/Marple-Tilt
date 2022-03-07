@@ -7,17 +7,21 @@
 
 #include <QWidget>
 #include "map.h"
+#include <QTabWidget>
 
 class QPushButton;
-class Map;
-class Window : public QWidget
-{
+
+class Window : public QWidget {
 Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
 private:
     QPushButton *q_button;
-    Map *mapBox;
+    QWidget *tab1Content;
+    QWidget *tab2Content;
+    QWidget *tab3Content;
+    QTabWidget *tabBar;
+
 signals:
 public slots:
 };
