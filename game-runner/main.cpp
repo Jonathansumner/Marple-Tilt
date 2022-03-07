@@ -5,6 +5,7 @@
 #include <csignal>
 #include <cstdio>
 #include <unistd.h>
+#include <cstring>
 
 #include "graphics/gfx.h"
 #include "graphics/shapes.h"
@@ -25,7 +26,8 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 gyro(0x68);
 std::vector<Object *> Object::instances;
-Object *screen[64][64];
+Object *Object::frame_prev[64][64];
+Object *Object::frame[64][64];
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -41,25 +43,32 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void
-update() { // Update object references within the matrix array                     //TODO get advice about handling polymorphic pointer arrays
+void update(bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+    if (clear) memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
             switch (obj->getType()) {
                 case MARPLE: {
-//                Object &marp = dynamic_cast<Marple &>(*obj);
                     int d = dynamic_cast<Marple *>(obj)->getDiameter();
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Marple *>(obj), screen);
+                    Marple *ref;
+                    if (!clear) {
+                        ref = dynamic_cast<Marple *>(obj);
+                    } else {
+                        ref = nullptr;
+                    }
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case HOLE: {
                     int d = dynamic_cast<Hole *>(obj)->getDiameter();
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Hole *>(obj), screen);
+                    auto *ref = dynamic_cast<Hole *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case WALL:
                     int d = dynamic_cast<Wall *>(obj)->diameter;
-                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, dynamic_cast<Wall *>(obj), screen);
+                    auto *ref = dynamic_cast<Wall *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
             }
         }
@@ -69,23 +78,16 @@ update() { // Update object references within the matrix array                  
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
-            if (screen[i][j]) {
-                canvas->SetPixel(i, j, screen[i][j]->red, screen[i][j]->green, screen[i][j]->blue);
+            if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
+                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+            } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+                canvas->SetPixel(i, j, 0, 0, 0);
+                std::cout << "Set pixel: (" << i << "," << j << ") to {0,0,0}\n";
             }
         }
     }
 }
 
-void clear(Canvas *canvas) { //TODO: find more efficient method of clearing array
-    canvas->Clear();
-    for (auto &x: screen) {
-        for (auto &y: x) {
-            if (y) {
-                y = nullptr;
-            }
-        }
-    }
-}
 
 void wallTest() {
     Wall *walls[96];
@@ -115,13 +117,13 @@ void wallTest() {
 
 int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
-    defaults.hardware_mapping = "regular";  // or e.g. "adafruit-hat"
+//    defaults.show_refresh_rate = true;
+    defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
     defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-//    defaults.show_refresh_rate = true;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == nullptr)
@@ -133,33 +135,36 @@ int main(int argc, char *argv[]) {
     float x_start = 10, y_start = 10;
     int diameter = 3;
     Marple marple(x_start, y_start, diameter);
-
+    gyro.setOffsets(); //Calibrate gyro
     wallTest(); // Display test function
-    std::cout << "before offset\n";
-    std::cout << "Offsets set: " << gyro.setOffsets() << "\n";
+
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before game updates
+        //Before all updates
 
-        updateMarple(&marple, &gyro, true);
-        update();
-        render(canvas);
+        update(); // copy frame to frame_prev and update frame with new positions
+        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+        update(true); // copy frame to frame_prev and clear frame for new positions
+        //After display updates
 
+        updateMarple(&marple, &gyro, false);
         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
         }
-
         //After game updates
+
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
+//            std::cout << "FRAME TIME: " << elapsed_time << "\n";
         }
-        clear(canvas);
         tick++;
     }
+    canvas->Clear();
+    interrupt_received = false;
 
     //drawImage("img/new_logo.ppm", 5, argv, canvas);
 
@@ -173,7 +178,7 @@ int main(int argc, char *argv[]) {
     int ypos = 5;
     int count = 0;
 
-    while (true) {
+    while (!interrupt_received) {
         if (ypos + 10 + font.baseline() > 64) {
             ypos = 5;
         }

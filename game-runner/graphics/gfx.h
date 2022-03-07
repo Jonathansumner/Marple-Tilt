@@ -20,6 +20,9 @@ public:
     int red, green, blue;
     static std::vector<Object*> instances;
 
+    static Object *frame_prev[64][64];
+    static Object *frame[64][64];
+
     Object(float x, float y, draw_type d_type){
         x_pos = x;
         y_pos = y;
@@ -54,6 +57,8 @@ public:
 
     float x_velocity;
     float y_velocity;
+    float x_acceleration;
+    float y_acceleration;
 };
 
 class Hole : public Object {

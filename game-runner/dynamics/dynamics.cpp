@@ -9,13 +9,17 @@ void updateMarple(Marple* marple, MPU6050* gyro, bool debug=false) {
     float weighting_factor = 0.001;
     float x_pos = marple->getPos()[0], y_pos = marple->getPos()[1];
     gyro->getGyro(&x, &y, &z);
-    marple->x_velocity += (x * weighting_factor);
-    marple->y_velocity += (y * weighting_factor);
+    marple->x_acceleration = x * weighting_factor;
+    marple->y_acceleration = y * weighting_factor;
+    //apply calculated values
+    marple->x_velocity += (marple->x_acceleration);
+    marple->y_velocity += (marple->y_acceleration);
     marple->move(marple->x_velocity, marple->y_velocity);
     if (debug) {
         std::cout << "pos: " << x_pos << ", " << y_pos << "\n";
         std::cout << "gyro: " << x << ", " << y << "\n";
-        std::cout << "x_velocity: " << marple->x_velocity << ", y_velocity" << marple->y_velocity << "\n";
+        std::cout << "x_acceleration: " << marple->x_acceleration << ", y_acceleration: " << marple->y_acceleration << "\n";
+        std::cout << "x_velocity: " << marple->x_velocity << ", y_velocity: " << marple->y_velocity << "\n";
     }
 }
 
