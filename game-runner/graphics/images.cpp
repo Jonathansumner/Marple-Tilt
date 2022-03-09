@@ -61,9 +61,9 @@ static ImageVector LoadImageAndScaleImage(const char *filename,
 // Copy an image to a Canvas. Note, the RGBMatrix is implementing the Canvas
 // interface as well as the FrameCanvas we use in the double-buffering of the
 // animted image.
-void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas)
+void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas, int x, int y)
 {
-    const int offset_x = 0, offset_y = 0; // If you want to move the image.
+    const int offset_x = x, offset_y = y; // If you want to move the image.
     // Copy all the pixels to the canvas.
     for (size_t y = 0; y < image.rows(); ++y)
     {
@@ -97,25 +97,22 @@ void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas)
 //     }
 // }
 
-void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas) {
+void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas, int dimensions[]) {
     Magick::InitializeMagick(*argv);
 
     ImageVector images = LoadImageAndScaleImage(filename,
-                                                canvas->width(),
-                                                canvas->height());
+                                                dimensions[2],
+                                                dimensions[3]);
 
     switch (images.size())
     {
     case 0: // failed to load image.
         break;
     case 1: // Simple example: one image to show
-        CopyImageToCanvas(images[0], canvas);
-        sleep(duration); // Until Ctrl-C is pressed
+        CopyImageToCanvas(images[0], canvas, dimensions[0], dimensions[1]);
         break;
     default: // More than one image: this is an animation.
         //ShowAnimatedImage(images, canvas);
         break;
     }
-
-    canvas->Clear();
 }

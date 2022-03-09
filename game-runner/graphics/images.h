@@ -6,4 +6,4 @@
 #include "led-matrix.h"
 using rgb_matrix::Canvas;
 
-void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas);
+void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas, int dimensions[]);

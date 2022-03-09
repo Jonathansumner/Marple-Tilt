@@ -11,6 +11,7 @@
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
+#include "graphics/sequences.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -142,7 +143,7 @@ int main(int argc, char *argv[]) {
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before game updates
 
-        updateMarple(&marple, &gyro, true);
+        updateMarple(&marple, &gyro, false);
         update();
         render(canvas);
 
@@ -161,30 +162,19 @@ int main(int argc, char *argv[]) {
         tick++;
     }
 
-    //drawImage("img/new_logo.ppm", 5, argv, canvas);
+    int dims[4] = {0, 0, canvas->width(), canvas->height()};
+    drawImage("img/new_logo.ppm", 5, argv, canvas, dims);
 
-    char line[1024] = "Slava";
-    char line2[1024] = "Ukraini";
-    rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf");
+    sleep(5);
+    canvas->Clear();
 
-    Color fontColor(0, 40, 100);
+    drawMainMenu(canvas, argv);
 
-    int ypos = 5;
-    int count = 0;
+    sleep(10);
 
-    while (true) {
-        if (ypos + 10 + font.baseline() > 64) {
-            ypos = 5;
-        }
+    drawSettings(canvas, argv);
 
-        rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
-        rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
-
-        sleep(1);
-        ypos++;
-        canvas->Clear();
-    }
+    sleep(10);
 
     std::cout << "Program terminated\n";
     canvas->Clear();
