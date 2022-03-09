@@ -13,3 +13,27 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
         }
     }
 }
+
+void fillBorder(Canvas *c, Color borderColor, int width) {
+    Wall *walls[124];
+    int rVal = static_cast<int>(borderColor.r), 
+    gVal = static_cast<int>(borderColor.g), 
+    bVal = static_cast<int>(borderColor.b);
+
+    for (int i = 0; i < 31; i++)
+    {
+        float n = static_cast<float>(i);
+
+        walls[i] = new Wall(n * 2, 0, width);
+        walls[i]->setColour({rVal, gVal, bVal});
+
+        walls[i + 31] = new Wall(62, n * 2, width);
+        walls[i+31]->setColour({rVal, gVal, bVal});
+
+        walls[i + 62] = new Wall(62 - n * 2, 62, width);
+        walls[i+62]->setColour({rVal, gVal, bVal});
+
+        walls[i + 93] = new Wall(0, 62 - n * 2, width);
+        walls[i+93]->setColour({rVal, gVal, bVal});
+    }
+}

@@ -137,34 +137,34 @@ int main(int argc, char *argv[]) {
     int diameter = 3;
     Marple marple(x_start, y_start, diameter);
     gyro.setOffsets(); //Calibrate gyro
-    wallTest(); // Display test function
+//     wallTest(); // Display test function
 
-    while (!interrupt_received) { // 60 ticks/updates per second
-        gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before all updates
+//     while (!interrupt_received) { // 60 ticks/updates per second
+//         gettimeofday(&t, nullptr);
+//         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         //Before all updates
 
-        update(); // copy frame to frame_prev and update frame with new positions
-        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(true); // copy frame to frame_prev and clear frame for new positions
-        //After display updates
+//         update(); // copy frame to frame_prev and update frame with new positions
+//         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+//         update(true); // copy frame to frame_prev and clear frame for new positions
+//         //After display updates
 
-        updateMarple(&marple, &gyro, false);
-        if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
-            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-        }
-        //After game updates
+//         updateMarple(&marple, &gyro, false);
+//         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
+//             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+//         }
+//         //After game updates
 
-        gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        elapsed_time = timestamp2 - timestamp1;
-        if (elapsed_time < frame_time) {
-            usleep(frame_time - elapsed_time);
-//            std::cout << "FRAME TIME: " << elapsed_time << "\n";
-        }
-        tick++;
-    }
-    canvas->Clear();
+//         gettimeofday(&t, nullptr);
+//         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         elapsed_time = timestamp2 - timestamp1;
+//         if (elapsed_time < frame_time) {
+//             usleep(frame_time - elapsed_time);
+// //            std::cout << "FRAME TIME: " << elapsed_time << "\n";
+//         }
+//         tick++;
+//     }
+//     canvas->Clear();
     interrupt_received = false;
 
     int dims[4] = {0, 0, canvas->width(), canvas->height()};
@@ -175,7 +175,11 @@ int main(int argc, char *argv[]) {
 
     drawMainMenu(canvas, argv);
 
+    update();
+    render(canvas);
+
     sleep(10);
+    canvas->Clear();
 
     drawSettings(canvas, argv);
 
