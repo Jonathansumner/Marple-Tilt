@@ -12,6 +12,7 @@
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
+#include "graphics/sequences.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -136,60 +137,53 @@ int main(int argc, char *argv[]) {
     int diameter = 3;
     Marple marple(x_start, y_start, diameter);
     gyro.setOffsets(); //Calibrate gyro
-    wallTest(); // Display test function
+//     wallTest(); // Display test function
 
-    while (!interrupt_received) { // 60 ticks/updates per second
-        gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before all updates
+//     while (!interrupt_received) { // 60 ticks/updates per second
+//         gettimeofday(&t, nullptr);
+//         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         //Before all updates
 
-        update(); // copy frame to frame_prev and update frame with new positions
-        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(true); // copy frame to frame_prev and clear frame for new positions
-        //After display updates
+//         update(); // copy frame to frame_prev and update frame with new positions
+//         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+//         update(true); // copy frame to frame_prev and clear frame for new positions
+//         //After display updates
 
-        updateMarple(&marple, &gyro, false);
-        if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
-            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-        }
-        //After game updates
+//         updateMarple(&marple, &gyro, false);
+//         if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
+//             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+//         }
+//         //After game updates
 
-        gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        elapsed_time = timestamp2 - timestamp1;
-        if (elapsed_time < frame_time) {
-            usleep(frame_time - elapsed_time);
-//            std::cout << "FRAME TIME: " << elapsed_time << "\n";
-        }
-        tick++;
-    }
-    canvas->Clear();
+//         gettimeofday(&t, nullptr);
+//         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         elapsed_time = timestamp2 - timestamp1;
+//         if (elapsed_time < frame_time) {
+//             usleep(frame_time - elapsed_time);
+// //            std::cout << "FRAME TIME: " << elapsed_time << "\n";
+//         }
+//         tick++;
+//     }
+//     canvas->Clear();
     interrupt_received = false;
 
-    //drawImage("img/new_logo.ppm", 5, argv, canvas);
+    int dims[4] = {0, 0, canvas->width(), canvas->height()};
+    drawImage("img/new_logo.ppm", 5, argv, canvas, dims);
 
-    char line[1024] = "Slava";
-    char line2[1024] = "Ukraini";
-    rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf");
+    sleep(5);
+    canvas->Clear();
 
-    Color fontColor(0, 40, 100);
+    drawMainMenu(canvas, argv);
 
-    int ypos = 5;
-    int count = 0;
+    update();
+    render(canvas);
 
-    while (!interrupt_received) {
-        if (ypos + 10 + font.baseline() > 64) {
-            ypos = 5;
-        }
+    sleep(10);
+    canvas->Clear();
 
-        rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
-        rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
+    drawSettings(canvas, argv);
 
-        sleep(1);
-        ypos++;
-        canvas->Clear();
-    }
+    sleep(10);
 
     std::cout << "Program terminated\n";
     canvas->Clear();
