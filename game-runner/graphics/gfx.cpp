@@ -27,8 +27,17 @@ void Object::setColour(std::vector<int> colour) {
     red = colour[0], green = colour[1], blue = colour[2];
 }
 
+void Object::setPos(std::vector<float> pos) {
+    x_pos = pos[0];
+    y_pos = pos[1];
+}
+
 int Marple::getDiameter() {
     return diameter;
+}
+
+Marple::~Marple() {
+    instances.erase(std::remove(instances.begin(), instances.end(), this), instances.end());
 }
 
 int Hole::getDiameter() {
