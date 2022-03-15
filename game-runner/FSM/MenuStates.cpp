@@ -1,9 +1,11 @@
 #include "MenuStates.h"
+#include "../graphics/sequences.h"
 
 // Main Menu Implementations
 
 void MainMenu::OnEntry() {
-
+    char *argv[4];
+    drawMainMenu(canvas, argv);
 }
 
 void MainMenu::OnExit() {
@@ -13,6 +15,7 @@ void MainMenu::OnExit() {
 void MainMenu::Update() {
 
 }
+
 
 // Settings Menu Implementations
 
@@ -25,6 +28,50 @@ void SettingsMenu::OnExit()
 }
 
 void SettingsMenu::Update()
+{
+}
+
+
+// Sound Menu Implementations
+
+void SoundMenu::OnEntry()
+{
+}
+
+void SoundMenu::OnExit()
+{
+}
+
+void SoundMenu::Update()
+{
+}
+
+
+// Gameplay Menu Implementations
+
+void GameplayMenu::OnEntry()
+{
+}
+
+void GameplayMenu::OnExit()
+{
+}
+
+void GameplayMenu::Update()
+{
+}
+
+// Brightness Menu Implemenations
+
+void BrightnessMenu::OnEntry()
+{
+}
+
+void BrightnessMenu::OnExit()
+{
+}
+
+void BrightnessMenu::Update()
 {
 }
 

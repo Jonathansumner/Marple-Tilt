@@ -1,36 +1,57 @@
 # pragma once
-# include "MenuState.h"
+# include "GameState.h"
 
 // Menu States
-class MainMenu : MenuState
+class MainMenu : GameState
 {
     virtual void OnEntry() override;
     virtual void OnExit() override;
     virtual void Update() override;
 };
 
-class SettingsMenu : MenuState
+class SettingsMenu : GameState
 {
     virtual void OnEntry() override;
     virtual void OnExit() override;
     virtual void Update() override;
 };
 
-class TutorialMenu : MenuState
+class SoundMenu : GameState
 {
     virtual void OnEntry() override;
     virtual void OnExit() override;
     virtual void Update() override;
 };
 
-class CalibrateMenu : MenuState
+class BrightnessMenu : GameState
 {
     virtual void OnEntry() override;
     virtual void OnExit() override;
     virtual void Update() override;
 };
 
-class MapMenu : MenuState
+class GameplayMenu : GameState
+{
+    virtual void OnEntry() override;
+    virtual void OnExit() override;
+    virtual void Update() override;
+};
+
+class TutorialMenu : GameState
+{
+    virtual void OnEntry() override;
+    virtual void OnExit() override;
+    virtual void Update() override;
+};
+
+class CalibrateMenu : GameState
+{
+    virtual void OnEntry() override;
+    virtual void OnExit() override;
+    virtual void Update() override;
+};
+
+class MapMenu : GameState
 {
     virtual void OnEntry() override;
     virtual void OnExit() override;
