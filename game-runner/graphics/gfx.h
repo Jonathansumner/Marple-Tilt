@@ -15,9 +15,9 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     WALL
 };
 
-class Object {
-public:
-    int red, green, blue;
+class Object
+{
+    override public : int red, green, blue;
     static std::vector<Object*> instances;
 
     static Object *frame_prev[64][64];

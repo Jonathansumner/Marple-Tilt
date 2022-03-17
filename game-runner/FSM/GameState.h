@@ -1,14 +1,13 @@
 # pragma once
-# include "BaseState.h"
 
-class GameState : MarpleTilt::BaseState {
+class GameState {
     public:
         GameState(Canvas *c) {canvas = c;};
         ~GameState();
 
-        virtual void OnEntry() = 0;
+        virtual void OnEntry();
         virtual void OnExit() {canvas->Clear();};
-        virtual void Update() = 0;
+        virtual void Update();
 
         Canvas *canvas = nullptr;
 };

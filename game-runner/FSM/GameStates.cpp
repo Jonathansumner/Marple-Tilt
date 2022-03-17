@@ -1,16 +1,15 @@
-# include "GameStates.h"
+#include "GameStates.h"
+#include "images.h"
 
 // StartUp Implementations
 void StartUp::OnEntry()
 {
-}
-
-void StartUp::OnExit()
-{
+    drawImage("img/new_logo.ppm", canvas, {0, 0, 64, 64});
 }
 
 void StartUp::Update()
 {
+    return;
 }
 
 // Game Terminated Implementations
@@ -18,12 +17,9 @@ void GameTerminated::OnEntry()
 {
 }
 
-void GameTerminated::OnExit()
-{
-}
-
 void GameTerminated::Update()
 {
+    return;
 }
 
 // Game Waiting Function Implementations
@@ -31,12 +27,8 @@ void GamePaused::OnEntry() {
 
 }
 
-void GamePaused::OnExit() {
-
-}
-
 void GamePaused::Update() {
-
+    return;
 }
 
 
@@ -45,12 +37,9 @@ void GameRunning::OnEntry()
 {
 }
 
-void GameRunning::OnExit()
-{
-}
-
 void GameRunning::Update()
 {
+    return;
 }
 
 // Game Over Function Implementations
@@ -58,12 +47,9 @@ void GameOver::OnEntry()
 {
 }
 
-void GameOver::OnExit()
-{
-}
-
 void GameOver::Update()
 {
+    return;
 }
 
 // Tutorial Paused Implementations
@@ -72,12 +58,9 @@ void TutorialPaused::OnEntry()
 {
 }
 
-void TutorialPaused::OnExit()
-{
-}
-
 void TutorialPaused::Update()
 {
+    return;
 }
 
 // Tutorial Running Implementations
@@ -86,12 +69,9 @@ void TutorialRunning::OnEntry()
 {
 }
 
-void TutorialRunning::OnExit()
-{
-}
-
 void TutorialRunning::Update()
 {
+    return;
 }
 
 // Tutorial Over Implementations
@@ -100,10 +80,8 @@ void TutorialOver::OnEntry()
 {
 }
 
-void TutorialOver::OnExit()
-{
-}
 
 void TutorialOver::Update()
 {
+    return;
 }

@@ -189,13 +189,21 @@ int main(int argc, char *argv[]) {
     update();
     render(canvas);
     sleep(5);
+    canvas->Clear();
 
     drawBrightnessMenu(canvas);
     update();
     render(canvas);
     sleep(5);
+    canvas->Clear();
 
     drawSoundMenu(canvas);
+    update();
+    render(canvas);
+    sleep(5);
+    canvas->Clear();
+
+    drawGameplayMenu(canvas);
     update();
     render(canvas);
     sleep(5);

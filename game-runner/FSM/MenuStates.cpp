@@ -3,34 +3,27 @@
 
 // Main Menu Implementations
 
-void MainMenu::OnEntry() {
-    char *argv[4];
+void MainMenu::OnEntry() 
+{
     drawMainMenu(canvas);
 }
 
-void MainMenu::OnExit() {
-    canvas->Clear();
-}
-
-void MainMenu::Update() {
-
+void MainMenu::Update() 
+{
+    return;
 }
 
 
 // Settings Menu Implementations
 
-void SettingsMenu::OnEntry() {
-    char *argv[4];
-    drawSettingsMenu(canvas);
-}
-
-void SettingsMenu::OnExit()
+void SettingsMenu::OnEntry()
 {
-    canvas->Clear();
+    drawSettingsMenu(canvas);
 }
 
 void SettingsMenu::Update()
 {
+    return;
 }
 
 
@@ -38,14 +31,12 @@ void SettingsMenu::Update()
 
 void SoundMenu::OnEntry()
 {
-}
-
-void SoundMenu::OnExit()
-{
+    drawSoundMenu(canvas);
 }
 
 void SoundMenu::Update()
 {
+    return;
 }
 
 
@@ -53,68 +44,58 @@ void SoundMenu::Update()
 
 void GameplayMenu::OnEntry()
 {
-}
-
-void GameplayMenu::OnExit()
-{
+    drawGameplayMenu(canvas);
 }
 
 void GameplayMenu::Update()
 {
+    return;
 }
 
 // Brightness Menu Implemenations
 
 void BrightnessMenu::OnEntry()
 {
-}
-
-void BrightnessMenu::OnExit()
-{
+    drawBrightnessMenu(canvas);
 }
 
 void BrightnessMenu::Update()
 {
+    return;
 }
 
 // Tutorial Menu Implementations
 
 void TutorialMenu::OnEntry()
 {
-}
-
-void TutorialMenu::OnExit()
-{
+    drawTutorialMenu(canvas);
 }
 
 void TutorialMenu::Update()
 {
+    return;
 }
 
 // Calibrate Menu Implementations
 
 void CalibrateMenu::OnEntry()
 {
-}
-
-void CalibrateMenu::OnExit()
-{
+    drawCalibrateMenu(canvas);
 }
 
 void CalibrateMenu::Update()
 {
+    return;
 }
 
 // Map Menu Implemenations
 
 void MapMenu::OnEntry()
 {
-}
-
-void MapMenu::OnExit()
-{
+    drawMapMenu(canvas);
 }
 
 void MapMenu::Update()
 {
+    return;
 }

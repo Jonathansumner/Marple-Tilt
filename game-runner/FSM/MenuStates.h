@@ -4,56 +4,48 @@
 // Menu States
 class MainMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class SettingsMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class SoundMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class BrightnessMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class GameplayMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class TutorialMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class CalibrateMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };
 
 class MapMenu : GameState
 {
-    virtual void OnEntry() override;
-    virtual void OnExit() override;
-    virtual void Update() override;
+    void OnEntry();
+    void Update();
 };

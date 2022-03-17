@@ -5,7 +5,11 @@
 #include "images.h"
 #include "shapes.h"
 
+#include <string.h>
+
 using namespace rgb_matrix;
+
+int getOffset(char word[], int spaces);
 
 void drawMainMenu(Canvas *c);
 

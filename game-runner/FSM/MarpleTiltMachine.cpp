@@ -2,8 +2,9 @@
 #include "../graphics/MenuPages.h"
 
 void MarpleTiltMachine::Init() {
-
-    drawImage("img/new_logo.ppm", canvas, {0, 0, 64, 64});
+    StartUp::GameState newState(canvas);
+    currState = &newState;
+    currState->OnEntry();
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
