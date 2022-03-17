@@ -5,11 +5,13 @@ void MarpleTiltMachine::Init() {
 
     char *argv[4];
     int dims[4] = {0, 0, 64, 64};
-    drawImage("img/new_logo.ppm", 5, argv, canvas, dims);
+    drawImage("img/new_logo.ppm", argv, canvas, dims);
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
     currState->OnExit();
+    delete currState;
+
     currState = newState;
     currState->OnEntry();
 }

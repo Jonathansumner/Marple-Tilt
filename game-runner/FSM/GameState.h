@@ -7,7 +7,7 @@ class GameState : MarpleTilt::BaseState {
         ~GameState();
 
         virtual void OnEntry() = 0;
-        virtual void OnExit() = 0;
+        virtual void OnExit() {canvas->Clear();};
         virtual void Update() = 0;
 
         Canvas *canvas = nullptr;

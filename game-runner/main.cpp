@@ -12,7 +12,7 @@
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
-#include "graphics/sequences.h"
+#include "graphics/MenuPages.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -117,6 +117,8 @@ void wallTest() {
 }
 
 int main(int argc, char *argv[]) {
+
+    Magick::InitializeMagick(*argv);
     RGBMatrix::Options defaults;
 //    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
@@ -167,13 +169,12 @@ int main(int argc, char *argv[]) {
 //     canvas->Clear();
     interrupt_received = false;
 
-    int dims[4] = {0, 0, canvas->width(), canvas->height()};
-    drawImage("img/new_logo.ppm", 5, argv, canvas, dims);
+    drawImage("img/new_logo.ppm", canvas, {0, 0, canvas->width(), canvas->height()});
 
     sleep(5);
     canvas->Clear();
 
-    drawMainMenu(canvas, argv);
+    drawMainMenu(canvas);
 
     update();
     render(canvas);
@@ -181,7 +182,7 @@ int main(int argc, char *argv[]) {
     sleep(10);
     canvas->Clear();
 
-    drawSettings(canvas, argv);
+    drawSettings(canvas);
 
     sleep(10);
 

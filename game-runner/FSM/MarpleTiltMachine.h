@@ -7,8 +7,8 @@ using namespace::rgb_matrix;
 
 class MarpleTiltMachine {
 private:
-    GameState* currState;
-    Canvas *canvas;
+    GameState* currState = nullptr;
+    Canvas *canvas = nullptr;
 
 public:
     MarpleTiltMachine(Canvas *canvas);

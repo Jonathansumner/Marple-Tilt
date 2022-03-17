@@ -1,15 +1,15 @@
 #include "MenuStates.h"
-#include "../graphics/sequences.h"
+#include "../graphics/MenuPages.h"
 
 // Main Menu Implementations
 
 void MainMenu::OnEntry() {
     char *argv[4];
-    drawMainMenu(canvas, argv);
+    drawMainMenu(canvas);
 }
 
 void MainMenu::OnExit() {
-
+    canvas->Clear();
 }
 
 void MainMenu::Update() {
@@ -19,12 +19,14 @@ void MainMenu::Update() {
 
 // Settings Menu Implementations
 
-void SettingsMenu::OnEntry()
-{
+void SettingsMenu::OnEntry() {
+    char *argv[4];
+    drawSettingsMenu(canvas);
 }
 
 void SettingsMenu::OnExit()
 {
+    canvas->Clear();
 }
 
 void SettingsMenu::Update()
