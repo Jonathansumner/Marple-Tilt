@@ -119,6 +119,9 @@ void wallTest() {
 int main(int argc, char *argv[]) {
 
     Magick::InitializeMagick(*argv);
+    rgb_matrix::Font font;
+    font.LoadFont("img/5x8.bdf");
+
     RGBMatrix::Options defaults;
 //    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
@@ -182,9 +185,20 @@ int main(int argc, char *argv[]) {
     sleep(10);
     canvas->Clear();
 
-    drawSettings(canvas);
+    drawSettingsMenu(canvas);
+    update();
+    render(canvas);
+    sleep(5);
 
-    sleep(10);
+    drawBrightnessMenu(canvas);
+    update();
+    render(canvas);
+    sleep(5);
+
+    drawSoundMenu(canvas);
+    update();
+    render(canvas);
+    sleep(5);
 
     std::cout << "Program terminated\n";
     canvas->Clear();

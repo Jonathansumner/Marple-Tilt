@@ -1,11 +1,9 @@
 #include "MarpleTiltMachine.h"
-#include "../graphics/sequences.h"
+#include "../graphics/MenuPages.h"
 
 void MarpleTiltMachine::Init() {
 
-    char *argv[4];
-    int dims[4] = {0, 0, 64, 64};
-    drawImage("img/new_logo.ppm", argv, canvas, dims);
+    drawImage("img/new_logo.ppm", canvas, {0, 0, 64, 64});
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
