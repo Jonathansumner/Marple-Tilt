@@ -13,6 +13,9 @@
 #include "MPU6050.h"
 #include "graphics/images.h"
 #include "graphics/MenuPages.h"
+#include "FSM/MarpleTiltMachine.h"
+#include "FSM/GameStates.h"
+#include "FSM/MenuStates.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -172,40 +175,19 @@ int main(int argc, char *argv[]) {
 //     canvas->Clear();
     interrupt_received = false;
 
-    drawImage("img/new_logo.ppm", canvas, {0, 0, canvas->width(), canvas->height()});
+    MarpleTiltMachine gameRunner(canvas);
+    gameRunner.Init();
 
     sleep(5);
-    canvas->Clear();
 
-    drawMainMenu(canvas);
+    MainMenu newState(canvas);
+    gameRunner.ChangeCurrentState(&newState);
 
-    update();
-    render(canvas);
-
-    sleep(10);
-    canvas->Clear();
-
-    drawSettingsMenu(canvas);
-    update();
-    render(canvas);
     sleep(5);
-    canvas->Clear();
 
-    drawBrightnessMenu(canvas);
-    update();
-    render(canvas);
-    sleep(5);
-    canvas->Clear();
+    SettingsMenu newState2(canvas);
+    gameRunner.ChangeCurrentState(&newState2);
 
-    drawSoundMenu(canvas);
-    update();
-    render(canvas);
-    sleep(5);
-    canvas->Clear();
-
-    drawGameplayMenu(canvas);
-    update();
-    render(canvas);
     sleep(5);
 
     std::cout << "Program terminated\n";

@@ -1,12 +1,12 @@
-# pragma once
+#pragma once
 
 class GameState {
     public:
         GameState(Canvas *c) {canvas = c;};
-        ~GameState();
+        virtual ~GameState();
 
         virtual void OnEntry();
-        virtual void OnExit() {canvas->Clear();};
+        void OnExit() {canvas->Clear();};
         virtual void Update();
 
         Canvas *canvas = nullptr;

@@ -1,5 +1,5 @@
 #include "GameStates.h"
-#include "images.h"
+#include "../graphics/images.h"
 
 // StartUp Implementations
 void StartUp::OnEntry()

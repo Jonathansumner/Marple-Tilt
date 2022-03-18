@@ -1,51 +1,51 @@
-# pragma once
-# include "GameState.h"
+#pragma once
+#include "GameState.h"
 
 // Menu States
-class MainMenu : GameState
+class MainMenu : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
-class SettingsMenu : GameState
+class SettingsMenu : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
-class SoundMenu : GameState
+class SoundMenu : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
-class BrightnessMenu : GameState
+class BrightnessMenu : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
 class GameplayMenu : GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
 class TutorialMenu : GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
 class CalibrateMenu : GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
 class MapMenu : GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };

@@ -3,49 +3,52 @@
 
 // StartUp State
 
-class StartUp: public GameState {
-    void OnEntry();
-    void Update();
+class StartUp : public GameState
+{
+    void OnEntry() override;
+    void Update() override;
 };
 
-class GameTerminated: GameState {
-    void OnEntry();
-    void Update();
+class GameTerminated : public GameState
+{
+    void OnEntry() override;
+    void Update() override;
 };
-
 
 // Gameplay States
-class GamePaused: GameState {
-    void OnEntry();
-    void Update();
+class GamePaused : public GameState
+{
+    void OnEntry() override;
+    void Update() override;
 };
 
-class GameRunning: GameState {
-    void OnEntry();
-    void Update();
+class GameRunning : public GameState
+{
+    void OnEntry() override;
+    void Update() override;
 };
 
-class GameOver: GameState {
-    void OnEntry();
-    void Update();
+class GameOver : public GameState
+{
+    void OnEntry() override;
+    void Update() override;
 };
-
 
 // Tutorial States
-class TutorialPaused : GameState
+class TutorialPaused : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
-class TutorialRunning : GameState
+class TutorialRunning : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
 
-class TutorialOver : GameState
+class TutorialOver : public GameState
 {
-    void OnEntry();
-    void Update();
+    void OnEntry() override;
+    void Update() override;
 };
