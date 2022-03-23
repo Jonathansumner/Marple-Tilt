@@ -4,20 +4,26 @@
 // Menu States
 class MainMenu : public GameState
 {
-    void OnEntry() override;
-    void Update() override;
+    public:
+        MainMenu(Canvas *c) : GameState {} {canvas = c;};
+        void OnEntry() override;
+        void Update() override;
 };
 
 class SettingsMenu : public GameState
 {
-    void OnEntry() override;
-    void Update() override;
+    public:
+        SettingsMenu(Canvas *c) : GameState {} {canvas = c;};
+        void OnEntry() override;
+        void Update() override;
 };
 
 class SoundMenu : public GameState
 {
-    void OnEntry() override;
-    void Update() override;
+    public:
+        SoundMenu(Canvas *c) : GameState {} {canvas = c;};
+        void OnEntry() override;
+        void Update() override;
 };
 
 class BrightnessMenu : public GameState

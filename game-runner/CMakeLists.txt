@@ -19,7 +19,9 @@ add_executable(${PROJECT_NAME} main.cpp
     dynamics/dynamics.h dynamics/dynamics.cpp 
     graphics/MenuPages.h graphics/MenuPages.cpp
     FSM/GameStates.cpp FSM/MenuStates.cpp 
-    FSM/MarpleTiltMachine.cpp FSM/GameState.cpp)
+    FSM/MarpleTiltMachine.cpp FSM/GameState.cpp
+    FSM/GameState.h FSM/GameStates.h 
+    FSM/MenuStates.h FSM/MarpleTiltMachine.h)
 
 add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
 
@@ -35,7 +37,6 @@ set_target_properties(matrixAPI PROPERTIES
 include_directories(
     ${CMAKE_SOURCE_DIR}/external/matrix-api/include
     ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/src
-    ${CMAKE_SOURCE_DIR}/FSM
     )
 
 target_link_directories(${PROJECT_NAME}

@@ -28,7 +28,7 @@ void drawMainMenu(Canvas *c)
 
     drawImage("img/compass.png", c, {14, 44, 16, 16});
 
-    // drawImage("img/gears.png", c, {36, 44, 16, 16});
+    drawImage("img/gears.png", c, {36, 44, 16, 16});
 }
 
 void drawSettingsMenu(Canvas *c)

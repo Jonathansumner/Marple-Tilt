@@ -13,9 +13,11 @@
 #include "MPU6050.h"
 #include "graphics/images.h"
 #include "graphics/MenuPages.h"
-#include "FSM/MarpleTiltMachine.h"
+
+#include "FSM/GameState.h"
 #include "FSM/GameStates.h"
 #include "FSM/MenuStates.h"
+#include "FSM/MarpleTiltMachine.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -179,14 +181,32 @@ int main(int argc, char *argv[]) {
     gameRunner.Init();
 
     sleep(5);
+    canvas->Clear();
 
     MainMenu newState(canvas);
     gameRunner.ChangeCurrentState(&newState);
 
     sleep(5);
+    canvas->Clear();
 
     SettingsMenu newState2(canvas);
     gameRunner.ChangeCurrentState(&newState2);
+
+    sleep(5);
+    canvas->Clear();
+
+    gameRunner.ChangeCurrentState(&newState);
+
+    sleep(5);
+    canvas->Clear();
+
+    SoundMenu newState3(canvas);
+    gameRunner.ChangeCurrentState(&newState3);
+
+    sleep(5);
+    canvas->Clear();
+
+    gameRunner.ChangeCurrentState(&newState);
 
     sleep(5);
 

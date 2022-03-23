@@ -17,13 +17,15 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 
 class Object
 {
-    override public : int red, green, blue;
-    static std::vector<Object*> instances;
+public:
+    int red, green, blue;
+    static std::vector<Object *> instances;
 
     static Object *frame_prev[64][64];
     static Object *frame[64][64];
 
-    Object(float x, float y, draw_type d_type){
+    Object(float x, float y, draw_type d_type)
+    {
         x_pos = x;
         y_pos = y;
         type = d_type;

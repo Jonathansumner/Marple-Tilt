@@ -5,49 +5,51 @@
 
 class StartUp : public GameState
 {
-    void OnEntry() override;
-    void Update() override;
+    public:
+        StartUp(Canvas *c) : GameState {} {canvas = c;};
+        void OnEntry() override;
+        void Update() override;
 };
 
-class GameTerminated : public GameState
+class GameTerminated : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
 // Gameplay States
-class GamePaused : public GameState
+class GamePaused : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
-class GameRunning : public GameState
+class GameRunning : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
-class GameOver : public GameState
+class GameOver : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
 // Tutorial States
-class TutorialPaused : public GameState
+class TutorialPaused : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
-class TutorialRunning : public GameState
+class TutorialRunning : GameState
 {
     void OnEntry() override;
     void Update() override;
 };
 
-class TutorialOver : public GameState
+class TutorialOver : GameState
 {
     void OnEntry() override;
     void Update() override;

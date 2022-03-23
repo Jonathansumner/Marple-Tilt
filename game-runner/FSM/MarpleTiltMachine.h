@@ -10,8 +10,8 @@ private:
     Canvas *canvas = nullptr;
 
 public:
-    MarpleTiltMachine(Canvas *canvas);
-    ~MarpleTiltMachine();
+    MarpleTiltMachine(Canvas *c) {canvas = c;};
+    ~MarpleTiltMachine() {};
 
     void Init();
     void ChangeCurrentState(GameState *newState);
