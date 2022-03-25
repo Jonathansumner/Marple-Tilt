@@ -7,6 +7,7 @@ using namespace::rgb_matrix;
 class MarpleTiltMachine {
 private:
     GameState* currState = nullptr;
+    GameState* prevState = nullptr;
     Canvas *canvas = nullptr;
 
 public:
@@ -15,6 +16,7 @@ public:
 
     void Init();
     void ChangeCurrentState(GameState *newState);
+    void RewindState();
     void Update();
 
     void Destroy();

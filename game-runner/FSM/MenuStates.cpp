@@ -13,6 +13,7 @@ void MainMenu::Update()
     return;
 }
 
+std::string MainMenu::Name() {return stateName;};
 
 // Settings Menu Implementations
 
@@ -25,6 +26,8 @@ void SettingsMenu::Update()
 {
     return;
 }
+
+std::string SettingsMenu::Name() { return "Settings Menu"; }
 
 
 // Sound Menu Implementations
@@ -39,6 +42,7 @@ void SoundMenu::Update()
     return;
 }
 
+std::string SoundMenu::Name() { return "Sound Menu"; }
 
 // Gameplay Menu Implementations
 
@@ -52,6 +56,8 @@ void GameplayMenu::Update()
     return;
 }
 
+std::string GameplayMenu::Name() { return "Gameplay Menu"; }
+
 // Brightness Menu Implemenations
 
 void BrightnessMenu::OnEntry()
@@ -63,6 +69,8 @@ void BrightnessMenu::Update()
 {
     return;
 }
+
+std::string BrightnessMenu::Name() { return "Brightness Menu"; }
 
 // Tutorial Menu Implementations
 
@@ -76,6 +84,8 @@ void TutorialMenu::Update()
     return;
 }
 
+std::string TutorialMenu::Name() { return "Tutorial Menu"; }
+
 // Calibrate Menu Implementations
 
 void CalibrateMenu::OnEntry()
@@ -88,6 +98,8 @@ void CalibrateMenu::Update()
     return;
 }
 
+std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
+
 // Map Menu Implemenations
 
 void MapMenu::OnEntry()
@@ -99,3 +111,5 @@ void MapMenu::Update()
 {
     return;
 }
+
+std::string MapMenu::Name() { return "Map Menu"; }
