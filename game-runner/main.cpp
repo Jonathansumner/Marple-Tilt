@@ -106,10 +106,10 @@ void wallTest() {
     for (int x = 0; x < 8; x++) {
         walls[x + 64] = new Wall(12, 32 + static_cast<float>(x * 4), 4);
         walls[x + 64]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
-        walls[x + 72]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
-        walls[x + 80]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
+//        walls[x + 72]->setColour({rand() % 255, rand() % 255, rand() % 255});
+//        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
+//        walls[x + 80]->setColour({rand() % 255, rand() % 255, rand() % 255});
         walls[x + 88] = new Wall(48, static_cast<float>(x * 4), 4);
         walls[x + 88]->setColour({rand() % 255, rand() % 255, rand() % 255});
     }
@@ -137,8 +137,8 @@ int main(int argc, char *argv[]) {
     Marple marple(x_start, y_start, diameter);
     Gyro.setOffsets(); //Calibrate gyro
     wallTest(); // Display test function
-    marple.x_velocity = 1; // FORCE MARPLE TO MOVE AT CONSTANT SPEED TO TEST BOUNCING
-    marple.y_velocity = 1;
+//    marple.x_velocity = 1; // FORCE MARPLE TO MOVE AT CONSTANT SPEED TO TEST BOUNCING
+//    marple.y_velocity = -1;
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -150,9 +150,12 @@ int main(int argc, char *argv[]) {
         update(true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
 
-        updateMarple(&marple, &Gyro, {false, false});
-        if (tick % 60 == 0) { //Once per 60 ticks, change marple colour randomly
+        updateMarple(&marple, &Gyro, {true, false});
+        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
             marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+        }
+        if (tick % 1 == 0) { //Update physics engine every tick
+            updateMarple(&marple, &Gyro, {true, false});
         }
         //After game updates
 
@@ -165,35 +168,7 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
-    canvas->Clear();
-    interrupt_received = false;
-
-    //drawImage("img/new_logo.ppm", 5, argv, canvas);
-
-    char line[1024] = "Slava";
-    char line2[1024] = "Ukraini";
-    rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf");
-
-    Color fontColor(0, 40, 100);
-
-    int ypos = 5;
-    int count = 0;
-
-    while (!interrupt_received) {
-        if (ypos + 10 + font.baseline() > 64) {
-            ypos = 5;
-        }
-
-        rgb_matrix::DrawText(canvas, font, 10, ypos + font.baseline(), fontColor, NULL, line, 0);
-        rgb_matrix::DrawText(canvas, font, 10, ypos + 10 + font.baseline(), fontColor, NULL, line2, 0);
-
-        sleep(1);
-        ypos++;
-        canvas->Clear();
-    }
-
-    std::cout << "Program terminated\n";
+    std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;
