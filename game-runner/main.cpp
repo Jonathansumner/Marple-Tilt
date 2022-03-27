@@ -88,30 +88,78 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-
-void wallTest() {
-    Wall *walls[96];
-
-    for (int x = 0; x < 16; x++) {
-        walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
-        walls[x]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x + 16] = new Wall(static_cast<float>(x) * 4, 60, 4);
-        walls[x + 16]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x + 32] = new Wall(0, static_cast<float>(x) * 4, 4);
-        walls[x + 32]->setColour({rand() % 255, rand() % 255, rand() % 255});
-        walls[x + 48] = new Wall(60, static_cast<float>(x) * 4, 4);
-        walls[x + 48]->setColour({rand() % 255, rand() % 255, rand() % 255});
+void gyroTest(Canvas *canvas, Marple *marple) {
+    while (!interrupt_received) {
+        float x, y, z;
+        float weighting_factor = 3;
+        Gyro.getGyroRaw(&x, &y, &z);
+        if (x >= 10 or x <= -10) x = 0; // clip outliers
+        if (y >= 10 or y <= -10) y = 0;
+        if (z >= 10 or z <= -10) z = 0;
+        marple->x_acceleration = x * weighting_factor;
+        marple->y_acceleration = y * weighting_factor;
+        if (marple->x_acceleration > 0) {
+            for (int b = 0; b < std::round(marple->x_acceleration); b++) {
+                canvas->SetPixel(32 + b, 31, 0, 255, 0);
+                canvas->SetPixel(32 + b, 32, 0, 255, 0);
+                canvas->SetPixel(32 + b, 33, 0, 255, 0);
+            }
+        }
+        if (marple->x_acceleration < 0) {
+            for (int b = 0; b > std::round(marple->x_acceleration); b--) {
+                canvas->SetPixel(32 + b, 31, 0, 255, 0);
+                canvas->SetPixel(32 + b, 32, 0, 255, 0);
+                canvas->SetPixel(32 + b, 33, 0, 255, 0);
+            }
+        }
+        if (marple->y_acceleration < 0) {
+            for (int b = 0; b > std::round(marple->y_acceleration); b--) {
+                canvas->SetPixel(31, 32 + b, 0, 0, 255);
+                canvas->SetPixel(32, 32 + b, 0, 0, 255);
+                canvas->SetPixel(33, 32 + b, 0, 0, 255);
+            }
+        }
+        if (marple->y_acceleration > 0) {
+            for (int b = 0; b < std::round(marple->y_acceleration); b++) {
+                canvas->SetPixel(31, 32 + b, 0, 0, 255);
+                canvas->SetPixel(32, 32 + b, 0, 0, 255);
+                canvas->SetPixel(33, 32 + b, 0, 0, 255);
+            }
+        }
+        std::cout << x << ", " << y << "\n";
+        usleep(50000);
+        canvas->Clear();
     }
+}
 
-    for (int x = 0; x < 8; x++) {
+void wallTest(bool border = true, bool wall = true) {
+    Wall *walls[96];
+//    vector<int> colours = {rand() % 255, rand() % 255, rand() % 255};
+    vector<int> colours = {100, 100, 100};
+    std::cout << colours[0] << ", " << colours[1] << ", " << colours[2] << "\n";
+    if (border) {
+        for (int x = 0; x < 16; x++) {
+            walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
+            walls[x]->setColour(colours);
+            walls[x + 16] = new Wall(static_cast<float>(x) * 4, 60, 4);
+            walls[x + 16]->setColour(colours);
+            walls[x + 32] = new Wall(0, static_cast<float>(x) * 4, 4);
+            walls[x + 32]->setColour(colours);
+            walls[x + 48] = new Wall(60, static_cast<float>(x) * 4, 4);
+            walls[x + 48]->setColour(colours);
+        }
+    }
+    if (wall) {
+        for (int x = 0; x < 8; x++) {
         walls[x + 64] = new Wall(12, 32 + static_cast<float>(x * 4), 4);
-        walls[x + 64]->setColour({rand() % 255, rand() % 255, rand() % 255});
-//        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
-//        walls[x + 72]->setColour({rand() % 255, rand() % 255, rand() % 255});
-//        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
-//        walls[x + 80]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 64]->setColour(colours);
+        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
+        walls[x + 72]->setColour(colours);
+        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
+        walls[x + 80]->setColour(colours);
         walls[x + 88] = new Wall(48, static_cast<float>(x * 4), 4);
-        walls[x + 88]->setColour({rand() % 255, rand() % 255, rand() % 255});
+        walls[x + 88]->setColour(colours);
+        }
     }
 }
 
@@ -135,10 +183,9 @@ int main(int argc, char *argv[]) {
     float x_start = 32, y_start = 32;
     int diameter = 3;
     Marple marple(x_start, y_start, diameter);
+    marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
     wallTest(); // Display test function
-//    marple.x_velocity = 1; // FORCE MARPLE TO MOVE AT CONSTANT SPEED TO TEST BOUNCING
-//    marple.y_velocity = -1;
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -150,12 +197,12 @@ int main(int argc, char *argv[]) {
         update(true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
 
-        updateMarple(&marple, &Gyro, {true, false});
-        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
-            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-        }
+//        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
+//            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+//        }
+
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro, {true, false});
+            updateMarple(&marple, &Gyro);
         }
         //After game updates
 
@@ -164,7 +211,6 @@ int main(int argc, char *argv[]) {
         elapsed_time = timestamp2 - timestamp1;
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
-//            std::cout << "FRAME TIME: " << elapsed_time << "\n";
         }
         tick++;
     }
