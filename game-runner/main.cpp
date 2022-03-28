@@ -12,6 +12,7 @@
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
+#include "graphics/sequences.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -214,6 +215,7 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
+  
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
