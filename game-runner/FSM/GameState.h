@@ -6,13 +6,13 @@ using namespace rgb_matrix;
 
 class GameState {
     public:
-        GameState(Canvas *c) {canvas = c;};
+        GameState(rgb_matrix::Canvas *c) {canvas = c;};
         virtual ~GameState() {};
 
         virtual void OnEntry() {};
         void OnExit() {std::cout << "Clear Canvas\n";};
         virtual void Update() {};
-        virtual std::string Name() {};
+        virtual std::string Name() {return "";};
 
-        Canvas *canvas = nullptr;
+        rgb_matrix::Canvas *canvas = nullptr;
 };
