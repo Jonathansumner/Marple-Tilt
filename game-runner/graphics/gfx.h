@@ -36,6 +36,7 @@ public:
     virtual vector<float> getPos();
     virtual draw_type getType();
     virtual vector<float> move(float x, float y);
+    virtual void setPos(std::vector<float> pos);
 
 private:
     draw_type type;
@@ -54,7 +55,12 @@ public:
         diameter = d;
         x_velocity = 0;
         y_velocity = 0;
+        x_acceleration = 0;
+        y_acceleration = 0;
     }
+
+    ~Marple();
+
     int getDiameter();
 
     float x_velocity;

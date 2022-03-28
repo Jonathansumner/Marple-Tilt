@@ -7,5 +7,6 @@
 #include "../graphics/gfx.h"
 #include "MPU6050.h"
 
-void updateMarple(Marple *marple, MPU6050* gyro, bool debug);
+void updateMarple(Marple *marple, MPU6050 *gyro, bool debug = false, float bounce_loss = 0.9);
 
+void handleCollision(Marple *marple, bool debug=false);
