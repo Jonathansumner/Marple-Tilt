@@ -11,10 +11,11 @@ void MarpleTiltMachine::Init() {
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
     currState->OnExit();
 
-    prevState = currState;
+    GameState* temp = currState;
     currState = newState;
 
     currState->OnEntry();
+    prevState = temp;
 }
 
 void MarpleTiltMachine::RewindState() {

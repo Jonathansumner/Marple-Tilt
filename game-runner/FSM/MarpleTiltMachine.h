@@ -2,8 +2,6 @@
 #include "MenuStates.h"
 #include "led-matrix.h"
 
-using namespace::rgb_matrix;
-
 class MarpleTiltMachine {
 private:
     GameState* currState = nullptr;
