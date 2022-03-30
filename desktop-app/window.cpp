@@ -5,6 +5,7 @@
 #include <QMenuBar>
 #include <QBoxLayout>
 #include "Tab1Content.h"
+#include "Tab2Content.h"
 #include "Tab3Content.h"
 
 Window::Window(QWidget *parent) :
@@ -20,13 +21,13 @@ Window::Window(QWidget *parent) :
 
     QTabWidget *tabBar = new QTabWidget(this);
     Tab1Content *tab1 = new Tab1Content(this);
-    QWidget *tab2Content = new QWidget;
+    QWidget *tab2 = new Tab2Content(this);
     QWidget *tab3 = new Tab3Content(this);
 
     tabBar->setVisible(true);
     tabBar->setGeometry(0, 20, 1200, 800);
     tabBar->insertTab(0, tab1, "1");
-    tabBar->insertTab(1, tab2Content, "2");
+    tabBar->insertTab(1, tab2, "2");
     tabBar->insertTab(2, tab3, "3");
 
 

@@ -8,6 +8,15 @@
 class QPushButton;
 
 class Tab2Content: public QWidget {
+Q_OBJECT
+public:
+    explicit Tab2Content(QWidget *parent);
+
+private:
+    QPushButton *buttonArray[16][16];
+signals:
+public slots:
+private slots:
 
 };
 
