@@ -15,7 +15,7 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(untitled1 main.cpp window.h window.cpp map.h map.cpp)
+add_executable(untitled1 main.cpp window.h window.cpp map.h map.cpp Tab1Content.cpp Tab1Content.h Tab3Content.cpp Tab3Content.h Tab2Content.cpp Tab2Content.h)
 target_link_libraries(untitled1
         Qt5::Core
         Qt5::Gui

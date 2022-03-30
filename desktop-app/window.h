@@ -10,12 +10,13 @@
 #include <QTabWidget>
 
 class QPushButton;
-
+class QMenuBar;
 class Window : public QWidget {
 Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
 private:
+    QMenuBar *menuBar;
     QPushButton *q_button;
     QWidget *tab1Content;
     QWidget *tab2Content;
