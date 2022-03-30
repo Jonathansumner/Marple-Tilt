@@ -14,11 +14,21 @@ public:
 
 private:
     QPushButton *buttonArray[16][16];
+    QPushButton *hole;
+    QPushButton *wall;
+    QPushButton *start;
+    QPushButton *end;
+    QPushButton *eraser;
     int element;
 signals:
 public slots:
 private slots:
-    void paint(QPushButton *button);
+    void paint(int i, int j);
+    void holeSet();
+    void wallSet();
+    void startSet();
+    void endSet();
+    void erase();
 };
 
 
