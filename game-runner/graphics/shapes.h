@@ -5,8 +5,9 @@
 
 #endif //MARPLETILT_SHAPES_H
 
-#include "led-matrix.h" 
+#include "led-matrix.h"
 #include "graphics.h"
+#include "gfx.h"
 using namespace rgb_matrix;
 
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);

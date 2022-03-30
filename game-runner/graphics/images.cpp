@@ -97,8 +97,7 @@ void CopyImageToCanvas(const Magick::Image &image, Canvas *canvas, int x, int y)
 //     }
 // }
 
-void drawImage(const char *filename, int duration, char *argv[], Canvas *canvas, int dimensions[]) {
-    Magick::InitializeMagick(*argv);
+void drawImage(const char *filename, Canvas *canvas, std::vector<int> dimensions) {
 
     ImageVector images = LoadImageAndScaleImage(filename,
                                                 dimensions[2],

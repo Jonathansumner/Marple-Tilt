@@ -12,7 +12,12 @@
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
-#include "graphics/sequences.h"
+#include "graphics/MenuPages.h"
+
+#include "FSM/GameState.h"
+#include "FSM/GameStates.h"
+#include "FSM/MenuStates.h"
+#include "FSM/MarpleTiltMachine.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -164,7 +169,42 @@ void wallTest(bool border = true, bool wall = true) {
     }
 }
 
+void stateTest(MarpleTiltMachine runner, Canvas *c) {
+
+    MainMenu MMState(c);
+    SettingsMenu SeMState(c);
+    SoundMenu SoMState(c);
+    GameplayMenu GMState(c);
+
+    runner.ChangeCurrentState(&MMState);
+
+    sleep(5);
+    c->Clear();
+
+    runner.ChangeCurrentState(&SeMState);
+
+    sleep(5);
+    c->Clear();
+
+    runner.ChangeCurrentState(&MMState);
+
+    sleep(5);
+    c->Clear();
+
+    runner.ChangeCurrentState(&SoMState);
+
+    sleep(5);
+    c->Clear();
+
+    runner.ChangeCurrentState(&MMState);
+}
+
 int main(int argc, char *argv[]) {
+
+    Magick::InitializeMagick(*argv);
+    rgb_matrix::Font font;
+    font.LoadFont("img/5x8.bdf");
+
     RGBMatrix::Options defaults;
 //    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
@@ -215,6 +255,12 @@ int main(int argc, char *argv[]) {
         }
         tick++;
     }
+
+
+    canvas->Clear();
+
+    MarpleTiltMachine fsm(canvas);
+    stateTest(fsm, canvas);
   
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
