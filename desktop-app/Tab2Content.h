@@ -14,10 +14,11 @@ public:
 
 private:
     QPushButton *buttonArray[16][16];
+    int element;
 signals:
 public slots:
 private slots:
-
+    void paint(QPushButton *button);
 };
 
 
