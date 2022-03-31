@@ -94,11 +94,10 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-void gyroTest(Canvas *canvas, Marple *marple) {
+void gyroTest(Canvas *canvas, Marple *marple, float weighting_factor = 3) {
     while (!interrupt_received) {
         float x, y, z;
-        float weighting_factor = 3;
-        Gyro.getGyroRaw(&x, &y, &z);
+        Gyro.getGyro(&x, &y, &z);
         if (x >= 10 or x <= -10) x = 0; // clip outliers
         if (y >= 10 or y <= -10) y = 0;
         if (z >= 10 or z <= -10) z = 0;
@@ -200,12 +199,10 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
 }
 
 int main(int argc, char *argv[]) {
-
-    Magick::InitializeMagick(*argv);
-    rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf");
-
+    //  Matrix initialisation
     RGBMatrix::Options defaults;
+    signal(SIGTERM, InterruptHandler);
+    signal(SIGINT, InterruptHandler);
 //    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
@@ -215,18 +212,20 @@ int main(int argc, char *argv[]) {
     defaults.parallel = 1;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    Magick::InitializeMagick(*argv);
+    rgb_matrix::Font font;
+    font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
 
-    signal(SIGTERM, InterruptHandler);
-    signal(SIGINT, InterruptHandler);
     // Test objects
     float x_start = 32, y_start = 32;
-    int diameter = 3;
+    int diameter = 2;
     Marple marple(x_start, y_start, diameter);
+    MarpleTiltMachine fsm(canvas);
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    wallTest(); // Display test function
+    wallTest(true, true); // Display test function
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -237,10 +236,6 @@ int main(int argc, char *argv[]) {
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
         update(true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
-
-//        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
-//            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-//        }
 
         if (tick % 1 == 0) { //Update physics engine every tick
             updateMarple(&marple, &Gyro);
@@ -256,12 +251,6 @@ int main(int argc, char *argv[]) {
         tick++;
     }
 
-
-    canvas->Clear();
-
-    MarpleTiltMachine fsm(canvas);
-    stateTest(fsm, canvas);
-  
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
