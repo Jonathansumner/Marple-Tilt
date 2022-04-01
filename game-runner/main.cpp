@@ -14,10 +14,8 @@
 #include "graphics/images.h"
 #include "graphics/MenuPages.h"
 
-#include "FSM/GameState.h"
-#include "FSM/GameStates.h"
-#include "FSM/MenuStates.h"
 #include "FSM/MarpleTiltMachine.h"
+#include "maps/MapLoader.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -26,6 +24,7 @@
 #include <sys/time.h>
 
 using namespace rgb_matrix;
+using namespace std;
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
@@ -259,9 +258,11 @@ int main(int argc, char *argv[]) {
 
     canvas->Clear();
 
-    MarpleTiltMachine fsm(canvas);
-    stateTest(fsm, canvas);
-  
+    MapLoader reader;
+
+    reader.loadFileList();
+    vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
+
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
