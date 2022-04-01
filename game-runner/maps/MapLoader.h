@@ -8,6 +8,8 @@
 #include <sstream>
 #include <dirent.h>
 
+#include "../graphics/gfx.h"
+
 class MapLoader
 {
     std::vector<std::string> fileList;
@@ -19,6 +21,6 @@ class MapLoader
         void loadFileList();
         std::vector<std::string> getFileList();
 
-        std::vector<std::vector<std::string>> loadMap(std::string filename);
+        std::vector<std::vector<std::string>> loadMapFile(std::string filename);
 
 };
