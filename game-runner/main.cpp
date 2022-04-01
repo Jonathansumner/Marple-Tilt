@@ -97,10 +97,10 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
 void gyroTest(Canvas *canvas, Marple *marple, float weighting_factor = 3) {
     while (!interrupt_received) {
         float x, y, z;
-        Gyro.getGyro(&x, &y, &z);
-        if (x >= 10 or x <= -10) x = 0; // clip outliers
-        if (y >= 10 or y <= -10) y = 0;
-        if (z >= 10 or z <= -10) z = 0;
+        Gyro.getAccel(&x, &y, &z);
+        if (x >= 2 or x <= -2) x = 0; // clip outliers
+        if (y >= 2 or y <= -2) y = 0;
+        if (z >= 2 or z <= -2) z = 0;
         marple->x_acceleration = x * weighting_factor;
         marple->y_acceleration = y * weighting_factor;
         if (marple->x_acceleration > 0) {
@@ -141,7 +141,6 @@ void wallTest(bool border = true, bool wall = true) {
     Wall *walls[96];
 //    vector<int> colours = {rand() % 255, rand() % 255, rand() % 255};
     vector<int> colours = {100, 100, 100};
-    std::cout << colours[0] << ", " << colours[1] << ", " << colours[2] << "\n";
     if (border) {
         for (int x = 0; x < 16; x++) {
             walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
@@ -238,7 +237,7 @@ int main(int argc, char *argv[]) {
         //After display updates
 
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro);
+            updateMarple(&marple, &Gyro, false, 0.7);
         }
         //After game updates
 
