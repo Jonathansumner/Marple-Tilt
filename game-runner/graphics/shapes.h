@@ -13,3 +13,13 @@ using namespace rgb_matrix;
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
 void fillBorder(Canvas *c, Color borderColour, int width);
+
+class CollisionBox {
+private:
+    int x, y;
+    int width;
+    int height;
+    float progress;
+public:
+    CollisionBox(int x, int y, int w, int h, void (*callback)());
+};

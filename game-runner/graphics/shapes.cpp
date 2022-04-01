@@ -37,3 +37,9 @@ void fillBorder(Canvas *c, Color borderColor, int width) {
         walls[i+93]->setColour({rVal, gVal, bVal});
     }
 }
+
+CollisionBox::CollisionBox(int x, int y, int w, int h, void (*callback)()) {
+    width = w;
+    height = h;
+    progress = 0;
+}

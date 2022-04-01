@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
     MarpleTiltMachine fsm(canvas);
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    wallTest(true, true); // Display test function
+    wallTest(true); // Display test function
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
         //After display updates
 
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro, false, 0.7);
+            updateMarple(&marple, &Gyro);
         }
         //After game updates
 
