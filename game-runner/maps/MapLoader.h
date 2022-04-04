@@ -7,6 +7,8 @@
 #include <vector>
 #include <sstream>
 #include <dirent.h>
+#include <ios>
+#include <bitset>
 
 #include "../graphics/gfx.h"
 
@@ -24,3 +26,5 @@ class MapLoader
         std::vector<std::vector<std::string>> loadMapFile(std::string filename);
 
 };
+
+std::vector<int> getColour(std::string hexString);

@@ -30,7 +30,7 @@ vector<string> MapLoader::getFileList()
 
 vector<vector<string>> MapLoader::loadMapFile(string filename)
 {
-    ifstream file(filename);
+    ifstream file("maps/testmap.csv");
 
     vector<vector<string>> mapData;
     vector<string> row;
@@ -53,90 +53,124 @@ vector<vector<string>> MapLoader::loadMapFile(string filename)
     file.close();
 
     //
-    vector<bool> currRow(64);
-    vector<bool> nRow(64);
-    vector<bool> n_Row(64);
-    vector<bool> n__Row(64);
+
+    vector<Wall*> walls;
+    int w = 0;
 
     // For every row
-    for (int i=0; i<64; i++)
+    for (int y=0; y<64; y++)
     {   
         // For every cell
-        for (int j=0; j<64; j++)
+        for (int x=0; x<64; x++)
         {
             // Is a Wall here?
-            if (mapData[i][j] == "W" && currRow[j] != true) {
+            if (mapData[y][x][0] == 'W')
+            {   
 
                 // Check for 2x2 square
-                if (j < 63 && i < 63 && 
-                    mapData[i+1][j] == "W" && mapData[i][j+1] == "W" && mapData[i+1][j+1] == "W") {
-                    nRow[j] = true;
-                    nRow[j + 1] = true;
+                if (y < 63 && x < 63 && 
+                    mapData[y+1][x][0] == 'W' && 
+                    mapData[y][x+1][0] == 'W' &&
+                    mapData[y+1][x+1][0] == 'W') {
+
+                    // Clear redundant data for wall piece
+                    mapData[y+1][x] = "";
+                    mapData[y+1][x+1] = "";
 
                     // Check for 3x3 square
-                    if (j < 62 && i < 62 &&
-                        mapData[i][j+2] == "W" && mapData[i+1][j+2] == "W" && 
-                        mapData[i+2][j+2] == "W" && mapData[i+2][j] == "W" && 
-                        mapData[i+2][j+1] == "W") {
-                            
-                            nRow[j+2] = true;
-                            n_Row[j] = true;
-                            n_Row[j+1] = true;
-                            n_Row[j+2] = true;
+                    if (x < 62 && y < 62 &&
+                        mapData[y][x+2][0] == 'W' &&
+                        mapData[y+1][x+2][0] == 'W' &&
+                        mapData[y+2][x+2][0] == 'W' &&
+                        mapData[y+2][x][0] == 'W' &&
+                        mapData[y+2][x+1][0] == 'W')
+                    {
 
-                            // Add new wall of size 3x3
-                            Wall newWall(j, i, 3);
-                            newWall.setColour({25, 150, 50});
+                        // Clear redundant data for wall piece
+                        mapData[y+1][x+2] = "";
+                        mapData[y+2][x] = "";
+                        mapData[y+2][x+1] = "";
+                        mapData[y+2][x+2] = "";
 
-                            j+=2;
+                        // Add new wall of size 3x3
+                        walls.push_back(new Wall(x, y, 3));
+                        walls[w]->setColour(getColour(mapData[y][x].substr(2, 6)));
+                        w++;
+
+                        //cout << "Wall found at " << x << "," << y << endl; 
+
+                        x += 2;
                     }
                     else
                     {
-                        nRow[j] = true;
-                        nRow[j+1] = true;
-
                         // Add new wall of size 2x2
-                        Wall newWall(j, i, 2);
-                        newWall.setColour({50, 100, 20});
+                        walls.push_back(new Wall(x, y, 2));
+                        walls[w]->setColour(getColour(mapData[y][x].substr(2, 6)));
+                        w++;
 
-                        j++;
+                        //cout << "Wall found at " << x << "," << y << endl;
+
+                        x++;
                     }
-                } else {
-                    
+                }
+                else
+                {
+
                     // Add new wall of size 1x1
-                    Wall newWall(j, i, 1);
-                    newWall.setColour({100, 50, 200}); 
+                    walls.push_back(new Wall(x, y, 1));
+                    walls[w]->setColour(getColour(mapData[y][x].substr(2, 6)));
+                    w++;
+
+                    //cout << "Wall found at " << x << "," << y << endl;
                 }
             }
+            else if (mapData[y][x][0] == 'M')
+            {
+                Marple marple(x, y, 2);
+                marple.setColour(getColour(mapData[y][x].substr(2,6)));
+            }
+            else if (mapData[y][x][0] == 'H')
+            {
+                // Marple marple(x, y, 2);
+            }
         }
-
-        // Shift rows up
-        currRow = nRow;
-        nRow = n_Row;
-        vector<bool> n_Row(64);
     }
 
     return mapData;
 }
 
-int main()
+vector<int> getColour(string hexString)
 {
-    MapLoader reader;
+    int x;
+    stringstream ss;
+    vector<int> colours;
 
-    reader.loadFileList();
-    vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
+    for (int i=0; i<6; i+=2)
+    {   
+        ss.clear();
+        x=0;
 
-    for (vector<string> vec : dataList)
-    {
-        for (string data : vec)
-        {
-            cout << data << ", ";
-        }
-        cout << endl;
+        ss << hex << hexString.substr(i, 2);
+        ss >> x;
+        colours.push_back(x);
     }
 
-    for (string s : reader.getFileList())
-    {
-        cout << s << endl;
-    }
+    return colours;
 }
+
+// int main()
+// {
+//     MapLoader reader;
+
+//     reader.loadFileList();
+//     vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
+
+//     for (vector<string> vec : dataList)
+//     {
+//         for (string data : vec)
+//         {
+//             cout << data << ", ";
+//         }
+//         cout << endl;
+//     }
+// }

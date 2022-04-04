@@ -219,49 +219,58 @@ int main(int argc, char *argv[]) {
 
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-    // Test objects
-    float x_start = 32, y_start = 32;
-    int diameter = 3;
-    Marple marple(x_start, y_start, diameter);
-    marple.setColour({255, 0, 0});
-    Gyro.setOffsets(); //Calibrate gyro
-    wallTest(); // Display test function
 
-    while (!interrupt_received) { // 60 ticks/updates per second
-        gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before all updates
+//     // Test objects
+//     float x_start = 32, y_start = 32;
+//     int diameter = 3;
+//     Marple marple(x_start, y_start, diameter);
+//     marple.setColour({255, 0, 0});
+//     Gyro.setOffsets(); //Calibrate gyro
+//     wallTest(); // Display test function
 
-        update(); // copy frame to frame_prev and update frame with new positions
-        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(true); // copy frame to frame_prev and clear frame for new positions
-        //After display updates
+//     while (!interrupt_received) { // 60 ticks/updates per second
+//         gettimeofday(&t, nullptr);
+//         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         //Before all updates
 
-//        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
-//            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-//        }
+//         update(); // copy frame to frame_prev and update frame with new positions
+//         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+//         update(true); // copy frame to frame_prev and clear frame for new positions
+//         //After display updates
 
-        if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro);
-        }
-        //After game updates
+// //        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
+// //            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
+// //        }
 
-        gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        elapsed_time = timestamp2 - timestamp1;
-        if (elapsed_time < frame_time) {
-            usleep(frame_time - elapsed_time);
-        }
-        tick++;
-    }
+//         if (tick % 1 == 0) { //Update physics engine every tick
+//             updateMarple(&marple, &Gyro);
+//         }
+//         //After game updates
+
+//         gettimeofday(&t, nullptr);
+//         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+//         elapsed_time = timestamp2 - timestamp1;
+//         if (elapsed_time < frame_time) {
+//             usleep(frame_time - elapsed_time);
+//         }
+//         tick++;
+//     }
 
 
-    canvas->Clear();
+    //canvas->Clear();
+    sleep(5);
 
     MapLoader reader;
 
     reader.loadFileList();
     vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
+
+    cout << "Map Loaded!\n";
+
+    update();
+    render(canvas);
+
+    sleep(60);
 
     std::cout << "\nProgram terminated\n";
     canvas->Clear();
