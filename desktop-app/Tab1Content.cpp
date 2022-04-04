@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
+#include "Paint.cpp"
 
 Tab1Content::Tab1Content(QWidget *parent) :
         QWidget(parent) {
@@ -19,6 +20,9 @@ Tab1Content::Tab1Content(QWidget *parent) :
     leftFrame->setContentsMargins(0, 80, 0, 80);
     frame->addWidget(left, 0, 0);
     frame->addWidget(right, 0,1);
+
+    Paint *painter = new Paint(right);
+
 
 
 
@@ -44,14 +48,5 @@ Tab1Content::Tab1Content(QWidget *parent) :
     leftFrame->addWidget(q_buttonB1, 1, 0, Qt::AlignCenter);
     leftFrame->addWidget(q_buttonB2, 1, 1, Qt::AlignCenter);
 
-    fresh = new QPushButton(right);
-    connect(fresh, &QPushButton::released, this, &Tab1Content::refresh);
-
-
 
 }
-void Tab1Content::refresh()
-{
-
-}
-

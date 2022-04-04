@@ -12,7 +12,7 @@ class Tab1Content: public QWidget {
 public:
     explicit Tab1Content(QWidget *parent);
 private:
-    QPushButton *fresh;
+
     QPushButton *q_buttonA1;
     QPushButton *q_buttonA2;
     QPushButton *q_buttonB1;
@@ -21,7 +21,7 @@ private:
 signals:
 public slots:
 private slots:
-    void refresh();
+
 };
 
 
