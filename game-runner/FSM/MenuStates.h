@@ -77,6 +77,12 @@ public:
     void Update() override;
     std::string Name() override;
 
+    void BackPage();
+    void NextPage();
+
 private:
     MapLoader* loader;
+
+    int currPage = 0;
+    int maxPage;
 };

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void MapLoader::loadFileList()
+int MapLoader::loadFileList()
 {
     struct dirent *d;
     DIR *dr;
@@ -21,6 +21,13 @@ void MapLoader::loadFileList()
         closedir(dr);
     }
 
+    if (fileList.size() / 4 == 0)
+    {
+        return ceil(fileList.size() / 4);
+    } else {
+        return ceil(fileList.size() / 4) + 1;
+    }
+
 }
 
 vector<string> MapLoader::getFileList()
@@ -28,9 +35,9 @@ vector<string> MapLoader::getFileList()
     return fileList;
 }
 
-void MapLoader::loadMapFile(string filename)
+void MapLoader::loadMapFile(int fileIndex)
 {
-    ifstream file("maps/testmap.csv");
+    ifstream file(fileList[fileIndex]);
 
     vector<vector<string>> mapData;
     vector<string> row;

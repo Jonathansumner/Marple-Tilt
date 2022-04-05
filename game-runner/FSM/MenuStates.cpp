@@ -105,7 +105,7 @@ std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
 void MapMenu::OnEntry()
 {
     loader = new MapLoader();
-    loader->loadFileList();
+    maxPage = loader->loadFileList();
 
     drawMapMenu(canvas, loader->getFileList(), 0);
 }
@@ -113,6 +113,22 @@ void MapMenu::OnEntry()
 void MapMenu::Update()
 {
     return;
+}
+
+void MapMenu::BackPage()
+{
+    if (currPage > 0)
+    {
+        drawMapMenu(canvas, loader->getFileList(), currPage-1);
+    }
+}
+
+void MapMenu::NextPage()
+{
+    if (currPage < maxPage)
+    {
+        drawMapMenu(canvas, loader->getFileList(), currPage+1);
+    }
 }
 
 std::string MapMenu::Name() { return "Map Menu"; }

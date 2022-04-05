@@ -9,6 +9,7 @@
 #include <dirent.h>
 #include <ios>
 #include <bitset>
+#include <math.h>
 
 #include "../graphics/gfx.h"
 
@@ -20,10 +21,10 @@ class MapLoader
         MapLoader() {};
         ~MapLoader() {};
 
-        void loadFileList();
+        int loadFileList();
         std::vector<std::string> getFileList();
 
-        void loadMapFile(std::string filename);
+        void loadMapFile(int fileIndex);
 
 };
 

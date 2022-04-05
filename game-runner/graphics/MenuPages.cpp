@@ -120,13 +120,22 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
-    char word[] = "Map Menu";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+    Color titleColor(255, 0, 0);
 
-    for (int i=1; i<5; i++) {
-        string option = to_string(i) + " " + files[i-1];
+    char word[] = "Map Menu";
+    DrawText(c, font, getOffset(word, 0), 2 + font.height(), titleColor, NULL, word, 0);
+
+    int filesLeft = files.size() - (pageNum * 4);
+
+    for (int i=1; i<=filesLeft && i<5; i++) {
+        string option = to_string(i + (pageNum * 4)) + " " + files[(i-1) + (pageNum * 4)];
         const char *array = option.c_str();
 
-        DrawText(c, font, 6, 12 + (i*10), fontColor, NULL, array, 0);
+        DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
     }
+
+    string page = "page " + to_string(pageNum + 1);
+    const char *tmp = page.c_str();
+
+    DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
 }
