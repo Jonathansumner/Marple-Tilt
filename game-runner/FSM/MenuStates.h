@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "../maps/MapLoader.h"
 
 // Menu States
 class MainMenu : public GameState
@@ -41,7 +42,7 @@ public:
     std::string Name() override;
 };
 
-class GameplayMenu : GameState
+class GameplayMenu : public GameState
 {
 public:
     GameplayMenu(Canvas *c) : GameState{c} {};
@@ -50,7 +51,7 @@ public:
     std::string Name() override;
 };
 
-class TutorialMenu : GameState
+class TutorialMenu : public GameState
 {
 public:
     TutorialMenu(Canvas *c) : GameState{c} {};
@@ -59,7 +60,7 @@ public:
     std::string Name() override;
 };
 
-class CalibrateMenu : GameState
+class CalibrateMenu : public GameState
 {
 public:
     CalibrateMenu(Canvas *c) : GameState{c} {};
@@ -68,11 +69,14 @@ public:
     std::string Name() override;
 };
 
-class MapMenu : GameState
+class MapMenu : public GameState
 {
 public:
     MapMenu(Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
+
+private:
+    MapLoader* loader;
 };

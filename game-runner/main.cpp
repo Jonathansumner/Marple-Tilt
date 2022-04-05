@@ -260,12 +260,11 @@ int main(int argc, char *argv[]) {
     //canvas->Clear();
     sleep(5);
 
-    MapLoader reader;
+    MarpleTiltMachine runner(canvas);
 
-    reader.loadFileList();
-    vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
+    MapMenu mmState(canvas);
 
-    cout << "Map Loaded!\n";
+    runner.ChangeCurrentState(&mmState);
 
     update();
     render(canvas);

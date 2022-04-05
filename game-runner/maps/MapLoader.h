@@ -15,15 +15,15 @@
 class MapLoader
 {
     std::vector<std::string> fileList;
-    std::string separator;
 
     public:
         MapLoader() {};
+        ~MapLoader() {};
 
         void loadFileList();
         std::vector<std::string> getFileList();
 
-        std::vector<std::vector<std::string>> loadMapFile(std::string filename);
+        void loadMapFile(std::string filename);
 
 };
 

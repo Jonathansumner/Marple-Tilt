@@ -6,23 +6,22 @@
 #include "shapes.h"
 
 #include <string.h>
-
-using namespace rgb_matrix;
+#include <vector>
 
 int getOffset(char word[], int spaces);
 
-void drawMainMenu(Canvas *c);
+void drawMainMenu(rgb_matrix::Canvas *c);
 
-void drawSettingsMenu(Canvas *c);
+void drawSettingsMenu(rgb_matrix::Canvas *c);
 
-void drawSoundMenu(Canvas *c);
+void drawSoundMenu(rgb_matrix::Canvas *c);
 
-void drawBrightnessMenu(Canvas *c);
+void drawBrightnessMenu(rgb_matrix::Canvas *c);
 
-void drawGameplayMenu(Canvas *c);
+void drawGameplayMenu(rgb_matrix::Canvas *c);
 
-void drawMapMenu(Canvas *c);
+void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> fileList, int pageNum);
 
-void drawCalibrateMenu(Canvas *c);
+void drawCalibrateMenu(rgb_matrix::Canvas *c);
 
-void drawTutorialMenu(Canvas *c);
+void drawTutorialMenu(rgb_matrix::Canvas *c);

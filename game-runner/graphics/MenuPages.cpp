@@ -1,18 +1,20 @@
 #include "MenuPages.h"
 #include <iostream>
 
+using namespace rgb_matrix;
+using namespace std;
+
 int getOffset(char word[], int spaces) {
     int len = strlen(word);
 
     int offset = 64 - ((len * 4) + (len - 1) + spaces);
 
-    std::cout << offset;
     return offset/2;
 }
 
 void drawMainMenu(Canvas *c)
 {
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
     Color borderColor(100, 28, 156);
@@ -36,7 +38,7 @@ void drawSettingsMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -49,7 +51,7 @@ void drawSoundMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -62,7 +64,7 @@ void drawBrightnessMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -75,7 +77,7 @@ void drawGameplayMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -88,7 +90,7 @@ void drawTutorialMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -101,7 +103,7 @@ void drawCalibrateMenu(Canvas *c)
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
@@ -109,15 +111,22 @@ void drawCalibrateMenu(Canvas *c)
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
 }
 
-void drawMapMenu(Canvas *c)
+void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
 {
     Color borderColor(100, 28, 156);
     fillBorder(c, borderColor, 2);
 
-    rgb_matrix::Font font;
+    Font font;
     font.LoadFont("img/5x8.bdf");
     Color fontColor(60, 170, 50);
 
     char word[] = "Map Menu";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+
+    for (int i=1; i<5; i++) {
+        string option = to_string(i) + " " + files[i-1];
+        const char *array = option.c_str();
+
+        DrawText(c, font, 6, 12 + (i*10), fontColor, NULL, array, 0);
+    }
 }

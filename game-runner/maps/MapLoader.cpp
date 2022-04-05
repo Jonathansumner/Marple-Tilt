@@ -6,7 +6,7 @@ void MapLoader::loadFileList()
 {
     struct dirent *d;
     DIR *dr;
-    dr = opendir(".");
+    dr = opendir("maps");
 
     if (dr != NULL)
     {
@@ -14,8 +14,8 @@ void MapLoader::loadFileList()
         {
             string str(d->d_name);
             if (str.find(".csv") != string::npos)
-            {
-                fileList.push_back(str);
+            {   
+                fileList.push_back(str.substr(0, (str.length() - 4)));
             }
         }
         closedir(dr);
@@ -28,7 +28,7 @@ vector<string> MapLoader::getFileList()
     return fileList;
 }
 
-vector<vector<string>> MapLoader::loadMapFile(string filename)
+void MapLoader::loadMapFile(string filename)
 {
     ifstream file("maps/testmap.csv");
 
@@ -135,8 +135,6 @@ vector<vector<string>> MapLoader::loadMapFile(string filename)
             }
         }
     }
-
-    return mapData;
 }
 
 vector<int> getColour(string hexString)
@@ -157,20 +155,3 @@ vector<int> getColour(string hexString)
 
     return colours;
 }
-
-// int main()
-// {
-//     MapLoader reader;
-
-//     reader.loadFileList();
-//     vector<vector<string>> dataList = reader.loadMapFile("testmap.csv");
-
-//     for (vector<string> vec : dataList)
-//     {
-//         for (string data : vec)
-//         {
-//             cout << data << ", ";
-//         }
-//         cout << endl;
-//     }
-// }

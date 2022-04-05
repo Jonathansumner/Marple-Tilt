@@ -104,7 +104,10 @@ std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
 
 void MapMenu::OnEntry()
 {
-    drawMapMenu(canvas);
+    loader = new MapLoader();
+    loader->loadFileList();
+
+    drawMapMenu(canvas, loader->getFileList(), 0);
 }
 
 void MapMenu::Update()
