@@ -32,6 +32,7 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
+std::vector<CollisionBox *> CollisionBox::colliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -197,6 +198,21 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
     runner.ChangeCurrentState(&MMState);
 }
 
+void testFunc() {
+    std::cout << "BING\n";
+}
+
+void draw_rect(int x, int y, float w, int h, int col, Canvas * canvas, CollisionBox * test) {
+    float prog = test->progress * (w / (float) (test->progress_secs * 60));
+    if (prog > 0) {
+        for (int curx = 0; curx <= std::round(prog); curx++) {
+            for (int cury = 0; cury <= h; cury++) {
+                canvas->SetPixel(x + curx, y + cury, col, col, col);
+            }
+        }
+    }
+}
+
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
@@ -218,15 +234,20 @@ int main(int argc, char *argv[]) {
         return 1;
 
     // Test objects
-    float x_start = 32, y_start = 32;
-    int diameter = 2;
+    float x_start = 36, y_start = 23;
+    int diameter = 3;
     Marple marple(x_start, y_start, diameter);
+    CollisionBox box(32, 20, 10, 5, 2, testFunc);
     MarpleTiltMachine fsm(canvas);
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    wallTest(true); // Display test function
+    wallTest(true, true); // Display test function
 
-    while (!interrupt_received) { // 60 ticks/updates per second
+    while (!interrupt_received) { // 60 ticks/updates per second TODO: try as events based on timer instead of timing+wait
+        canvas->SetPixel(32, 20, 255, 255, 255);
+        canvas->SetPixel(32, 25, 255, 255, 255);
+        canvas->SetPixel(42, 25, 255, 255, 255);
+        canvas->SetPixel(42, 20, 255, 255, 255);
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before all updates
@@ -237,7 +258,9 @@ int main(int argc, char *argv[]) {
         //After display updates
 
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro);
+            updateMarple(&marple, &Gyro, false, 0.85);
+            CollisionBox::colliderPoll(&marple); // check for non-bounce collisions after every physics update
+            draw_rect(box.x, box.y, box.width, box.height, 255, canvas, &box);
         }
         //After game updates
 
@@ -247,6 +270,7 @@ int main(int argc, char *argv[]) {
         if (elapsed_time < frame_time) {
             usleep(frame_time - elapsed_time);
         }
+        draw_rect(box.x, box.y, box.width, box.height, 0, canvas, &box);
         tick++;
     }
 
