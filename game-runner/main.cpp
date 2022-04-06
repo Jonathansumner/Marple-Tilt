@@ -32,6 +32,7 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
+std::vector<CollisionBox *> CollisionBox::colliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -71,11 +72,24 @@ void update(bool clear = false) { // Update object references within the matrix 
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
-                case WALL:
+                case WALL: {
                     int d = dynamic_cast<Wall *>(obj)->diameter;
                     auto *ref = dynamic_cast<Wall *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
+                }
+                case BAR: {
+                    int d = std::round(dynamic_cast<LoadingBar *>(obj)->getDiameter());
+                    int h = dynamic_cast<LoadingBar *>(obj)->getHeight();
+                    LoadingBar *ref;
+                    if (!clear) {
+                        ref = dynamic_cast<LoadingBar *>(obj);
+                    } else {
+                        ref = nullptr;
+                    }
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
+                    break;
+                }
             }
         }
     }
@@ -88,7 +102,6 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
                 canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
             } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, 0, 0, 0);
-//                std::cout << "Set pixel: (" << i << "," << j << ") to {0,0,0}\n";
             }
         }
     }
@@ -202,7 +215,6 @@ int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-//    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
@@ -218,13 +230,11 @@ int main(int argc, char *argv[]) {
         return 1;
 
     // Test objects
-    float x_start = 32, y_start = 32;
-    int diameter = 2;
-    Marple marple(x_start, y_start, diameter);
+    Marple marple(32, 32, 3);
     MarpleTiltMachine fsm(canvas);
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    wallTest(true, true); // Display test function
+    wallTest(true, false); // Display test function
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -235,12 +245,11 @@ int main(int argc, char *argv[]) {
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
         update(true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
-
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro, false, 0.7);
+            updateMarple(&marple, &Gyro, false, 0.85);
+            CollisionBox::colliderPoll(&marple); // check for non-bounce collisions after every physics update
         }
         //After game updates
-
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         elapsed_time = timestamp2 - timestamp1;
