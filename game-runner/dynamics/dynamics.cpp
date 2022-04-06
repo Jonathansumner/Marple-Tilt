@@ -6,14 +6,15 @@
 
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
     float x, y, z;
-    float weighting_factor = 0.005;
-    gyro->getGyro(&x, &y, &z);
-    if (x >= 10 or x <= -10) x = 0; // clip outliers
-    if (y >= 10 or y <= -10) y = 0;
-    if (z >= 10 or z <= -10) z = 0;
+    float weighting_factor = 0.1;
+    gyro->getAccel(&x, &y, &z);
+    // clip outliers
+    if (x >= 2 or x <= -2) x = 0;
+    if (y >= 2 or y <= -2) y = 0;
+    if (z >= 2 or z <= -2) z = 0;
     marple->x_acceleration = x * weighting_factor;
     marple->y_acceleration = y * weighting_factor;
-    //apply calculated values
+    // apply calculated values
     int x_pos = std::round(marple->getPos()[0]), y_pos = std::round(marple->getPos()[1]);
     int diameter = marple->getDiameter();
 

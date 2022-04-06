@@ -93,14 +93,13 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
     }
 }
 
-void gyroTest(Canvas *canvas, Marple *marple) {
+void gyroTest(Canvas *canvas, Marple *marple, float weighting_factor = 3) {
     while (!interrupt_received) {
         float x, y, z;
-        float weighting_factor = 3;
-        Gyro.getGyroRaw(&x, &y, &z);
-        if (x >= 10 or x <= -10) x = 0; // clip outliers
-        if (y >= 10 or y <= -10) y = 0;
-        if (z >= 10 or z <= -10) z = 0;
+        Gyro.getAccel(&x, &y, &z);
+        if (x >= 2 or x <= -2) x = 0; // clip outliers
+        if (y >= 2 or y <= -2) y = 0;
+        if (z >= 2 or z <= -2) z = 0;
         marple->x_acceleration = x * weighting_factor;
         marple->y_acceleration = y * weighting_factor;
         if (marple->x_acceleration > 0) {
@@ -141,7 +140,6 @@ void wallTest(bool border = true, bool wall = true) {
     Wall *walls[96];
 //    vector<int> colours = {rand() % 255, rand() % 255, rand() % 255};
     vector<int> colours = {100, 100, 100};
-    std::cout << colours[0] << ", " << colours[1] << ", " << colours[2] << "\n";
     if (border) {
         for (int x = 0; x < 16; x++) {
             walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
@@ -199,12 +197,10 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
 }
 
 int main(int argc, char *argv[]) {
-
-    Magick::InitializeMagick(*argv);
-    rgb_matrix::Font font;
-    font.LoadFont("img/5x8.bdf");
-
+    //  Matrix initialisation
     RGBMatrix::Options defaults;
+    signal(SIGTERM, InterruptHandler);
+    signal(SIGINT, InterruptHandler);
 //    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
@@ -214,6 +210,9 @@ int main(int argc, char *argv[]) {
     defaults.parallel = 1;
     defaults.brightness = 50;
     Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    Magick::InitializeMagick(*argv);
+    rgb_matrix::Font font;
+    font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
 
@@ -261,7 +260,6 @@ int main(int argc, char *argv[]) {
     sleep(5);
 
     MarpleTiltMachine runner(canvas);
-
     MapMenu mmState(canvas);
 
     runner.ChangeCurrentState(&mmState);
