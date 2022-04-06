@@ -16,16 +16,17 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
 void fillBorder(Canvas *c, Color borderColour, int width);
 
 class CollisionBox {
-public:
+private:
     int x, y;
     int width;
     int height;
     int progress;
     int progress_secs;
     void (*callback)();
-public:
-    static std::vector<CollisionBox *> colliders; //TODO: make an Object instead? or keep separate track
-    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)());
-    static void colliderPoll(Marple * marple);
+    LoadingBar * bar;
     static bool checkCollision(Marple * marple, CollisionBox * collider);
+    static std::vector<CollisionBox *> colliders; //TODO: make an Object instead? or keep separate track
+public:
+    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(), bool loading_bar);
+    static void colliderPoll(Marple * marple);
 };

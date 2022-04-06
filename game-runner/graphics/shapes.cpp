@@ -39,7 +39,7 @@ void fillBorder(Canvas *c, Color borderColor, int width) {
     }
 }
 
-CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)()) { //
+CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)(), bool loading_bar) { //
     colliders.push_back(this);
     x = x_pos;
     y = y_pos;
@@ -48,6 +48,9 @@ CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time,
     progress = 0;
     callback = func;
     progress_secs = trigger_time;
+    if (loading_bar) {
+        bar = new LoadingBar(x, y, height);
+    }
 }
 
 bool CollisionBox::checkCollision(Marple *marple, CollisionBox *collider) {
@@ -69,9 +72,11 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
                 collider->progress++;
             } else {
                 collider->callback(); // if progress bar limit reached, run specific callback
+                collider->progress = 0;
             }
         } else {
             collider->progress = 0;
         }
+        collider->bar->setDiameter(collider->progress * ((float)collider->width/(float)(collider->progress_secs * 60)));
     }
 }

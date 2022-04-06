@@ -12,7 +12,8 @@ using std::vector;
 enum draw_type { //TODO try make some way of automatic handling of assets?
     MARPLE,
     HOLE,
-    WALL
+    WALL,
+    BAR
 };
 
 class Object
@@ -90,5 +91,23 @@ public:
     {
         instances.push_back(this);
         diameter = d;
+    }
+};
+
+class LoadingBar : public Object {
+public:
+    float diameter;
+    int height;
+    void setDiameter(float d);
+
+public:
+    float getDiameter();
+    int getHeight();
+    LoadingBar(float x_pos, float y_pos, int h)
+        : Object{x_pos, y_pos, BAR}
+    {
+        instances.push_back(this);
+        diameter = 0;
+        height = h;
     }
 };
