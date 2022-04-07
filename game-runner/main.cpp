@@ -50,7 +50,7 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update(bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+void update(Canvas*c, bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
     if (clear) memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
@@ -78,15 +78,17 @@ void update(bool clear = false) { // Update object references within the matrix 
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
-                case BAR: {
-                    int d = std::round(dynamic_cast<LoadingBar *>(obj)->getDiameter());
-                    int h = dynamic_cast<LoadingBar *>(obj)->getHeight();
-                    LoadingBar *ref;
+                case BUTTON: {
+                    Button * button = dynamic_cast<Button *>(obj);
+                    int d = std::round(button->getBarWidth());
+                    int h = button->getHeight();
+                    Button *ref;
                     if (!clear) {
-                        ref = dynamic_cast<LoadingBar *>(obj);
+                        ref = button;
                     } else {
                         ref = nullptr;
                     }
+                    drawImage(button->getPath(), c, {(int)button->getPos()[0], (int)button->getPos()[1], button->getWidth(), button->getHeight()});
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
                 }
@@ -210,6 +212,10 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
     runner.ChangeCurrentState(&MMState);
 }
 
+void aidan(){
+    std::cout << "FUCK YES";
+}
+
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
@@ -228,22 +234,22 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
-
+    char fuck[100] = "img/compass.png";
     // Test objects
     Marple marple(32, 32, 3);
     MarpleTiltMachine fsm(canvas);
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
     wallTest(true, false); // Display test function
-
+    Button button(32, 32, 16, 16, fuck, aidan);
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before all updates
 
-        update(); // copy frame to frame_prev and update frame with new positions
+        update(canvas); // copy frame to frame_prev and update frame with new positions
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(true); // copy frame to frame_prev and clear frame for new positions
+        update(canvas, true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
             updateMarple(&marple, &Gyro, false, 0.85);

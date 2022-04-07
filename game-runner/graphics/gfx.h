@@ -1,10 +1,8 @@
-#ifndef MARPLETILT_GFX_H
-#define MARPLETILT_GFX_H
-
-#endif
-
 #include <vector>
 #include <algorithm>
+#include <graphics.h>
+#include "led-matrix.h"
+using namespace rgb_matrix;
 #pragma once
 using std::vector;
 
@@ -13,7 +11,8 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     MARPLE,
     HOLE,
     WALL,
-    BAR
+    BAR,
+    BUTTON
 };
 
 class Object
@@ -111,3 +110,51 @@ public:
         height = h;
     }
 };
+
+class CollisionBox {
+private:
+    int x, y;
+    int width;
+    int height;
+    int progress;
+    int progress_secs;
+    void (*callback)();
+    LoadingBar * bar;
+    static bool checkCollision(Marple * marple, CollisionBox * collider);
+    static std::vector<CollisionBox *> colliders; //TODO: make an Object instead? or keep separate track
+public:
+    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(), bool loading_bar=true);
+    static void colliderPoll(Marple * marple);
+    LoadingBar* getBar();
+};
+
+
+class Button : public Object {
+private:
+    char * path;
+    CollisionBox * box;
+public:
+    int width;
+    int height;
+    Button(int x_pos, int y_pos, int w, int h, char * p, void (*func)(), int time=2)
+            : Object{(float)x_pos, (float)y_pos, BUTTON}
+    {
+        width = w;
+        height = h;
+        instances.push_back(this);
+        path = p;
+        box = new CollisionBox(x_pos, y_pos, w, h, time, func, true);
+    }
+    int getWidth();
+    int getHeight();
+    float getBarWidth();
+    char * getPath();
+};
+
+//OLD SHAPES
+
+void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
+
+void fillBorder(Canvas *c, Color borderColour, int width);
+
+
