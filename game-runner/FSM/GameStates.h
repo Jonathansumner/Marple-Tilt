@@ -6,7 +6,7 @@
 class StartUp : public GameState
 {
 public:
-    StartUp(Canvas *c) : GameState {c} {};
+    StartUp(rgb_matrix::Canvas *c) : GameState {c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -15,7 +15,7 @@ public:
 class GameTerminated : GameState
 {
 public:
-    GameTerminated(Canvas *c) : GameState{c} {};
+    GameTerminated(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -25,7 +25,7 @@ public:
 class GamePaused : GameState
 {
 public:
-    GamePaused(Canvas *c) : GameState{c} {};
+    GamePaused(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -34,7 +34,7 @@ public:
 class GameRunning : GameState
 {
 public:
-    GameRunning(Canvas *c) : GameState{c} {};
+    GameRunning(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -43,7 +43,7 @@ public:
 class GameOver : GameState
 {
 public:
-    GameOver(Canvas *c) : GameState{c} {};
+    GameOver(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -53,7 +53,7 @@ public:
 class TutorialPaused : GameState
 {
 public:
-    TutorialPaused(Canvas *c) : GameState{c} {};
+    TutorialPaused(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -62,7 +62,7 @@ public:
 class TutorialRunning : GameState
 {
 public:
-    TutorialRunning(Canvas *c) : GameState{c} {};
+    TutorialRunning(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -71,7 +71,7 @@ public:
 class TutorialOver : GameState
 {
 public:
-    TutorialOver(Canvas *c) : GameState{c} {};
+    TutorialOver(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;

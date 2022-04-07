@@ -2,8 +2,6 @@
 #include "led-matrix.h"
 #include <iostream>
 
-using namespace rgb_matrix;
-
 class GameState {
     public:
         GameState(rgb_matrix::Canvas *c) {canvas = c;};

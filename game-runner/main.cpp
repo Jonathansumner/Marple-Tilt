@@ -31,6 +31,7 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
+std::vector<CollisionBox *> CollisionBox::colliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -42,7 +43,6 @@ long long elapsed_time;
 long long tick = 0;
 struct timeval t;
 long long frame_time = 16666; //time period for 60Hz in useconds
-
 
 static void InterruptHandler(int signo) {
     interrupt_received = true;
@@ -70,11 +70,24 @@ void update(bool clear = false) { // Update object references within the matrix 
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
-                case WALL:
+                case WALL: {
                     int d = dynamic_cast<Wall *>(obj)->diameter;
                     auto *ref = dynamic_cast<Wall *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
+                }
+                case BAR: {
+                    int d = std::round(dynamic_cast<LoadingBar *>(obj)->getDiameter());
+                    int h = dynamic_cast<LoadingBar *>(obj)->getHeight();
+                    LoadingBar *ref;
+                    if (!clear) {
+                        ref = dynamic_cast<LoadingBar *>(obj);
+                    } else {
+                        ref = nullptr;
+                    }
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
+                    break;
+                }
             }
         }
     }
@@ -87,7 +100,6 @@ void render(Canvas *canvas) { // render each pixel with respect to the object re
                 canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
             } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, 0, 0, 0);
-//                std::cout << "Set pixel: (" << i << "," << j << ") to {0,0,0}\n";
             }
         }
     }
@@ -168,62 +180,54 @@ void wallTest(bool border = true, bool wall = true) {
 
 void stateTest(MarpleTiltMachine runner, Canvas *c) {
 
-    MainMenu MMState(c);
-    SettingsMenu SeMState(c);
-    SoundMenu SoMState(c);
-    GameplayMenu GMState(c);
-    TutorialMenu TMState(c);
-    BrightnessMenu BMState(c);
-    MapMenu MpMState(c);
-    CalibrateMenu CMState(c);
-
-    runner.ChangeCurrentState(&MMState);
+    runner.ChangeCurrentState(new MainMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&SeMState);
+    runner.ChangeCurrentState(new SettingsMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&SoMState);
+    runner.ChangeCurrentState(new SoundMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&GMState);
+    runner.ChangeCurrentState(new GameplayMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&TMState);
+    runner.ChangeCurrentState(new TutorialMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&BMState);
+    runner.ChangeCurrentState(new BrightnessMenu(c));
     update();
     render(c);
     sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&MpMState);
+    MapMenu* mm = new MapMenu(c);
+    runner.ChangeCurrentState(mm);
     update();
     render(c);
     sleep(10);
-    MpMState.ChooseMap(3);
+    mm->ChooseMap(3);
     update();
     render(c);
     sleep(60);
     c->Clear();
 
-    runner.ChangeCurrentState(&CMState);
+    runner.ChangeCurrentState(new CalibrateMenu(c));
     update();
     render(c);
     sleep(10);
@@ -235,7 +239,6 @@ int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
-//    defaults.show_refresh_rate = true;
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
@@ -250,49 +253,40 @@ int main(int argc, char *argv[]) {
     if (canvas == nullptr)
         return 1;
 
-    signal(SIGTERM, InterruptHandler);
-    signal(SIGINT, InterruptHandler);
+    // Test objects
+    Marple marple(32, 32, 3);
+    MarpleTiltMachine fsm(canvas);
 
-//     // Test objects
-//     float x_start = 32, y_start = 32;
-//     int diameter = 3;
-//     Marple marple(x_start, y_start, diameter);
-//     marple.setColour({255, 0, 0});
-//     Gyro.setOffsets(); //Calibrate gyro
-//     wallTest(); // Display test function
+    StateCollisionBox box(20, 20, 10, 20, 3, &MarpleTiltMachine::StaticStateChange, true, &fsm, new MapMenu(canvas));
 
-//     while (!interrupt_received) { // 60 ticks/updates per second
-//         gettimeofday(&t, nullptr);
-//         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-//         //Before all updates
+    marple.setColour({255, 0, 0});
+    Gyro.setOffsets(); //Calibrate gyro
+    // wallTest(true, false); // Display test function
 
-//         update(); // copy frame to frame_prev and update frame with new positions
-//         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-//         update(true); // copy frame to frame_prev and clear frame for new positions
-//         //After display updates
+    // while (!interrupt_received) { // 60 ticks/updates per second
+    //     gettimeofday(&t, nullptr);
+    //     timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+    //     //Before all updates
 
-// //        if (tick % 360 == 0) { //Once per 60 ticks, change marple colour randomly
-// //            marple.setColour({rand() % 255, rand() % 255, rand() % 255});
-// //        }
+    //     update(); // copy frame to frame_prev and update frame with new positions
+    //     render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+    //     update(true); // copy frame to frame_prev and clear frame for new positions
+    //     //After display updates
+    //     if (tick % 1 == 0) { //Update physics engine every tick
+    //         updateMarple(&marple, &Gyro, false, 0.85);
+    //         CollisionBox::colliderPoll(&marple); // check for non-bounce collisions after every physics update
+    //     }
+    //     //After game updates
+    //     gettimeofday(&t, nullptr);
+    //     timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+    //     elapsed_time = timestamp2 - timestamp1;
+    //     if (elapsed_time < frame_time) {
+    //         usleep(frame_time - elapsed_time);
+    //     }
+    //     tick++;
+    // }
 
-//         if (tick % 1 == 0) { //Update physics engine every tick
-//             updateMarple(&marple, &Gyro);
-//         }
-//         //After game updates
-
-//         gettimeofday(&t, nullptr);
-//         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-//         elapsed_time = timestamp2 - timestamp1;
-//         if (elapsed_time < frame_time) {
-//             usleep(frame_time - elapsed_time);
-//         }
-//         tick++;
-//     }
-
-
-    //canvas->Clear();
-    MarpleTiltMachine runner(canvas);
-    stateTest(runner, canvas);
+    stateTest(fsm, canvas);
 
     sleep(5);
 

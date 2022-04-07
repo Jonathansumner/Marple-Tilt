@@ -43,3 +43,15 @@ Marple::~Marple() {
 int Hole::getDiameter() {
     return diameter;
 }
+
+void LoadingBar::setDiameter(float d) {
+    diameter = d;
+}
+
+float LoadingBar::getDiameter() {
+    return diameter;
+}
+
+int LoadingBar::getHeight() {
+    return height;
+}

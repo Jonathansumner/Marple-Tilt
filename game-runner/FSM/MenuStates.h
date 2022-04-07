@@ -6,7 +6,7 @@
 class MainMenu : public GameState
 {
 public:
-    MainMenu(Canvas *c) : GameState {c} {};
+    MainMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -18,7 +18,7 @@ private:
 class SettingsMenu : public GameState
 {
 public:
-    SettingsMenu(Canvas *c) : GameState {c} {};
+    SettingsMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -27,7 +27,7 @@ public:
 class SoundMenu : public GameState
 {
 public:
-    SoundMenu(Canvas *c) : GameState {c} {};
+    SoundMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -36,7 +36,7 @@ public:
 class BrightnessMenu : public GameState
 {
 public:
-    BrightnessMenu(Canvas *c) : GameState{c} {};
+    BrightnessMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -45,7 +45,7 @@ public:
 class GameplayMenu : public GameState
 {
 public:
-    GameplayMenu(Canvas *c) : GameState{c} {};
+    GameplayMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -54,7 +54,7 @@ public:
 class TutorialMenu : public GameState
 {
 public:
-    TutorialMenu(Canvas *c) : GameState{c} {};
+    TutorialMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -63,7 +63,7 @@ public:
 class CalibrateMenu : public GameState
 {
 public:
-    CalibrateMenu(Canvas *c) : GameState{c} {};
+    CalibrateMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -72,14 +72,16 @@ public:
 class MapMenu : public GameState
 {
 public:
-    MapMenu(Canvas *c) : GameState{c} {};
+    MapMenu(rgb_matrix::Canvas *c) : GameState{c} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
 
-    void BackPage();
-    void NextPage();
+    void ChangePage(int change);
+    static void ChangePageWrapper(MapMenu *mm, int n);
+
     void ChooseMap(int mapID);
+    static void ChooseMapWrapper(MapMenu *mm, int mapID);
 
 private:
     MapLoader* loader;
