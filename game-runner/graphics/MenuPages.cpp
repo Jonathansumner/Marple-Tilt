@@ -31,6 +31,8 @@ void drawMainMenu(Canvas *c)
     drawImage("img/compass.png", c, {14, 44, 16, 16});
 
     drawImage("img/gears.png", c, {36, 44, 16, 16});
+
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawSettingsMenu(Canvas *c)
@@ -44,6 +46,10 @@ void drawSettingsMenu(Canvas *c)
 
     char word[] = "Settings";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+
+    drawImage("img/sun.png", c, {25, 30, 16, 16});
+    drawImage("img/audio.png", c, {45, 30, 16, 16});
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawSoundMenu(Canvas *c)
@@ -57,6 +63,10 @@ void drawSoundMenu(Canvas *c)
 
     char word[] = "Sound Menu";
     DrawText(c, font, getOffset(word, 1), 2 + font.height(), fontColor, NULL, word, 0);
+
+    drawImage("img/audioup.png", c, {25, 30, 16, 16});
+    drawImage("img/audiodown.png", c, {45, 30, 16, 16});
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawBrightnessMenu(Canvas *c)
@@ -70,6 +80,10 @@ void drawBrightnessMenu(Canvas *c)
 
     char word[] = "Brightness";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+
+
+    drawImage("img/sun.png", c, {30, 30, 16, 16});
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawGameplayMenu(Canvas *c)
@@ -83,6 +97,7 @@ void drawGameplayMenu(Canvas *c)
 
     char word[] = "Gameplay";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawTutorialMenu(Canvas *c)
@@ -96,6 +111,7 @@ void drawTutorialMenu(Canvas *c)
 
     char word[] = "Tutorial";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawCalibrateMenu(Canvas *c)
@@ -109,6 +125,8 @@ void drawCalibrateMenu(Canvas *c)
 
     char word[] = "Calibrate";
     DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
+
+    drawImage("img/left.png", c, {4, 56, 10, 10});
 }
 
 void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
@@ -137,5 +155,7 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();
 
+    drawImage("img/left.png", c, {4, 56, 10, 10});
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
+    drawImage("img/right.png", c, {52, 56, 10, 10});
 }

@@ -79,6 +79,7 @@ public:
 
     void BackPage();
     void NextPage();
+    void ChooseMap(int mapID);
 
 private:
     MapLoader* loader;

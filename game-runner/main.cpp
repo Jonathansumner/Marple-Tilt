@@ -172,28 +172,62 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
     SettingsMenu SeMState(c);
     SoundMenu SoMState(c);
     GameplayMenu GMState(c);
+    TutorialMenu TMState(c);
+    BrightnessMenu BMState(c);
+    MapMenu MpMState(c);
+    CalibrateMenu CMState(c);
 
     runner.ChangeCurrentState(&MMState);
-
-    sleep(5);
+    update();
+    render(c);
+    sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(&SeMState);
-
-    sleep(5);
-    c->Clear();
-
-    runner.ChangeCurrentState(&MMState);
-
-    sleep(5);
+    update();
+    render(c);
+    sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(&SoMState);
-
-    sleep(5);
+    update();
+    render(c);
+    sleep(10);
     c->Clear();
 
-    runner.ChangeCurrentState(&MMState);
+    runner.ChangeCurrentState(&GMState);
+    update();
+    render(c);
+    sleep(10);
+    c->Clear();
+
+    runner.ChangeCurrentState(&TMState);
+    update();
+    render(c);
+    sleep(10);
+    c->Clear();
+
+    runner.ChangeCurrentState(&BMState);
+    update();
+    render(c);
+    sleep(10);
+    c->Clear();
+
+    runner.ChangeCurrentState(&MpMState);
+    update();
+    render(c);
+    sleep(10);
+    MpMState.ChooseMap(3);
+    update();
+    render(c);
+    sleep(60);
+    c->Clear();
+
+    runner.ChangeCurrentState(&CMState);
+    update();
+    render(c);
+    sleep(10);
+    c->Clear();
 }
 
 int main(int argc, char *argv[]) {
@@ -257,17 +291,10 @@ int main(int argc, char *argv[]) {
 
 
     //canvas->Clear();
-    sleep(5);
-
     MarpleTiltMachine runner(canvas);
-    MapMenu mmState(canvas);
+    stateTest(runner, canvas);
 
-    runner.ChangeCurrentState(&mmState);
-
-    update();
-    render(canvas);
-
-    sleep(60);
+    sleep(5);
 
     std::cout << "\nProgram terminated\n";
     canvas->Clear();

@@ -131,4 +131,10 @@ void MapMenu::NextPage()
     }
 }
 
+void MapMenu::ChooseMap(int mapID)
+{
+    canvas->Clear();
+    loader->loadMapFile(mapID);
+}
+
 std::string MapMenu::Name() { return "Map Menu"; }

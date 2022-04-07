@@ -2,6 +2,8 @@
 #include "gfx.h"
 #include "shapes.h"
 
+using namespace rgb_matrix;
+
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]) {
     int starting_x = (int) std::round(start_x);
     int starting_y = (int) std::round(start_y);
@@ -35,5 +37,16 @@ void fillBorder(Canvas *c, Color borderColor, int width) {
 
         walls[i + 93] = new Wall(0, 62 - n * 2, width);
         walls[i+93]->setColour({rVal, gVal, bVal});
+    }
+}
+
+void backButton(bool direction, void func())
+{
+    // True => Left/Forward Button
+    if (direction)
+    {
+
+    } else {
+
     }
 }
