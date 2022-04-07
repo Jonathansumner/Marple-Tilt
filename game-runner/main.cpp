@@ -8,7 +8,6 @@
 #include <cstring>
 
 #include "graphics/gfx.h"
-#include "graphics/shapes.h"
 #include "dynamics/dynamics.h"
 #include "MPU6050.h"
 #include "graphics/images.h"
@@ -32,6 +31,7 @@ using rgb_matrix::RGBMatrix;
 MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::colliders;
+std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -48,7 +48,7 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update(bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+void update(Canvas*c, bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
     if (clear) memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
@@ -76,15 +76,17 @@ void update(bool clear = false) { // Update object references within the matrix 
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
-                case BAR: {
-                    int d = std::round(dynamic_cast<LoadingBar *>(obj)->getDiameter());
-                    int h = dynamic_cast<LoadingBar *>(obj)->getHeight();
-                    LoadingBar *ref;
+                case BUTTON: {
+                    Button * button = dynamic_cast<Button *>(obj);
+                    int d = std::round(button->getBarWidth());
+                    int h = button->getHeight();
+                    Button *ref;
                     if (!clear) {
-                        ref = dynamic_cast<LoadingBar *>(obj);
+                        ref = button;
                     } else {
                         ref = nullptr;
                     }
+                    if (ref) {drawImage(button->getPath(), c, {(int)button->getPos()[0], (int)button->getPos()[1], button->getWidth(), button->getHeight()});}
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
                 }
@@ -181,57 +183,61 @@ void wallTest(bool border = true, bool wall = true) {
 void stateTest(MarpleTiltMachine runner, Canvas *c) {
 
     runner.ChangeCurrentState(new MainMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(new SettingsMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(new SoundMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(new GameplayMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(new TutorialMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     runner.ChangeCurrentState(new BrightnessMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
 
     MapMenu* mm = new MapMenu(c);
     runner.ChangeCurrentState(mm);
-    update();
+    update(c);
     render(c);
     sleep(10);
     mm->ChooseMap(3);
-    update();
+    update(c);
     render(c);
     sleep(60);
     c->Clear();
 
     runner.ChangeCurrentState(new CalibrateMenu(c));
-    update();
+    update(c);
     render(c);
     sleep(10);
     c->Clear();
+}
+
+void aidan(){
+    std::cout << "FUCK YES";
 }
 
 int main(int argc, char *argv[]) {
@@ -252,43 +258,39 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
-
+    char fuck[100] = "img/compass.png";
     // Test objects
     Marple marple(32, 32, 3);
     MarpleTiltMachine fsm(canvas);
 
-    StateCollisionBox box(20, 20, 10, 20, 3, &MarpleTiltMachine::StaticStateChange, true, &fsm, new MapMenu(canvas));
-
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    // wallTest(true, false); // Display test function
+    wallTest(true, false); // Display test function
 
-    // while (!interrupt_received) { // 60 ticks/updates per second
-    //     gettimeofday(&t, nullptr);
-    //     timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-    //     //Before all updates
+    StateButton button(32, 32, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &fsm, new CalibrateMenu(canvas), 1);
 
-    //     update(); // copy frame to frame_prev and update frame with new positions
-    //     render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-    //     update(true); // copy frame to frame_prev and clear frame for new positions
-    //     //After display updates
-    //     if (tick % 1 == 0) { //Update physics engine every tick
-    //         updateMarple(&marple, &Gyro, false, 0.85);
-    //         CollisionBox::colliderPoll(&marple); // check for non-bounce collisions after every physics update
-    //     }
-    //     //After game updates
-    //     gettimeofday(&t, nullptr);
-    //     timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-    //     elapsed_time = timestamp2 - timestamp1;
-    //     if (elapsed_time < frame_time) {
-    //         usleep(frame_time - elapsed_time);
-    //     }
-    //     tick++;
-    // }
+    while (!interrupt_received) { // 60 ticks/updates per second
+        gettimeofday(&t, nullptr);
+        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+        //Before all updates
 
-    stateTest(fsm, canvas);
-
-    sleep(5);
+        update(canvas); // copy frame to frame_prev and update frame with new positions
+        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
+        update(canvas, true); // copy frame to frame_prev and clear frame for new positions
+        //After display updates
+        if (tick % 1 == 0) { //Update physics engine every tick
+            //updateMarple(&marple, &Gyro, false, 0.85);
+            StateCollisionBox::colliderStatePoll(&marple); // check for non-bounce collisions after every physics update
+        }
+        //After game updates
+        gettimeofday(&t, nullptr);
+        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+        elapsed_time = timestamp2 - timestamp1;
+        if (elapsed_time < frame_time) {
+            usleep(frame_time - elapsed_time);
+        }
+        tick++;
+    }
 
     std::cout << "\nProgram terminated\n";
     canvas->Clear();

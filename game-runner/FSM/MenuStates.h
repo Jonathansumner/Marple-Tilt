@@ -2,6 +2,8 @@
 #include "GameState.h"
 #include "../maps/MapLoader.h"
 
+class MapLoader;
+
 // Menu States
 class MainMenu : public GameState
 {

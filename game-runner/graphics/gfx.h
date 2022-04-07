@@ -1,20 +1,29 @@
 #ifndef MARPLETILT_GFX_H
 #define MARPLETILT_GFX_H
-
 #endif
+
+#pragma once
 
 #include <vector>
 #include <algorithm>
-#pragma once
-using std::vector;
+#include <graphics.h>
+#include <cmath>
+#include "led-matrix.h"
+#include "../FSM/MarpleTiltMachine.h"
 
+using namespace rgb_matrix;
+using std::vector;
 
 enum draw_type { //TODO try make some way of automatic handling of assets?
     MARPLE,
     HOLE,
     WALL,
-    BAR
+    BAR,
+    BUTTON
 };
+
+class MapMenu;
+class MarpleTiltMachine;
 
 class Object
 {
@@ -111,3 +120,79 @@ public:
         height = h;
     }
 };
+
+class CollisionBox {
+protected:
+    int x, y;
+    int width;
+    int height;
+    int progress;
+    int progress_secs;
+    void (*callback)();
+    LoadingBar * bar;
+    static bool checkCollision(Marple * marple, CollisionBox * collider);
+    static std::vector<CollisionBox *> colliders; //TODO: make an Object instead? or keep separate track
+public:
+    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(), bool loading_bar=true);
+    static void colliderPoll(Marple * marple);
+    LoadingBar* getBar();
+};
+
+class StateCollisionBox : public CollisionBox
+{
+public:
+    void (*callback)(MarpleTiltMachine *, GameState *);
+    MarpleTiltMachine *StateMachine;
+    GameState *NewState;
+    static std::vector<StateCollisionBox *> stateColliders;
+
+    StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS);
+    static void colliderStatePoll(Marple * marple);
+    static bool checkCollision(Marple *marple, StateCollisionBox *collider);
+};
+
+class MapCollisionBox : public CollisionBox
+{
+private:
+    void (*callback)(MapMenu *, int);
+    MapMenu *mmState;
+    int mapID;
+
+public:
+    MapCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID);
+};
+
+class Button : public Object {
+protected:
+    char * path;
+    CollisionBox * box;
+public:
+    int width;
+    int height;
+    Button(int x_pos, int y_pos, int w, int h, char * p, int time=2)
+            : Object{(float)x_pos, (float)y_pos, BUTTON}
+    {
+        width = w;
+        height = h;
+        instances.push_back(this);
+        path = p;
+    }
+    int getWidth();
+    int getHeight();
+    float getBarWidth();
+    char * getPath();
+};
+
+class StateButton : public Button {
+    private:
+        
+    public:
+        StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=2);
+
+};
+
+//OLD SHAPES
+
+void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
+
+void fillBorder(Canvas *c, Color borderColour, int width);

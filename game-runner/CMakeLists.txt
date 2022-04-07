@@ -14,7 +14,7 @@ string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
 add_executable(${PROJECT_NAME} main.cpp 
     graphics/gfx.cpp graphics/images.cpp 
-    graphics/shapes.cpp graphics/MenuPages.cpp
+    graphics/MenuPages.cpp
     dynamics/dynamics.cpp 
     FSM/GameStates.cpp FSM/MenuStates.cpp 
     FSM/MarpleTiltMachine.cpp

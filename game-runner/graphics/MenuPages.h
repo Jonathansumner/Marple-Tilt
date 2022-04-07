@@ -3,7 +3,7 @@
 #include "led-matrix.h"
 #include "graphics.h"
 #include "images.h"
-#include "shapes.h"
+#include "gfx.h"
 
 #include <string.h>
 #include <vector>
