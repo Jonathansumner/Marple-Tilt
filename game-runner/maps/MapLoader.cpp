@@ -37,7 +37,7 @@ vector<string> MapLoader::getFileList()
 
 void MapLoader::loadMapFile(int fileIndex)
 {
-    ifstream file(fileList[fileIndex]);
+    ifstream file("maps/" + fileList[fileIndex] + ".csv");
 
     vector<vector<string>> mapData;
     vector<string> row;

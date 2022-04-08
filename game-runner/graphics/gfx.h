@@ -186,9 +186,12 @@ private:
     void (*callback)(MapMenu *, int);
     MapMenu *mmState;
     int mapID;
+    static std::vector<MapCollisionBox*> mapColliders;
 
 public:
     MapCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID);
+    static void colliderMapPoll(Marple* marple);
+    static bool checkCollision(Marple* marple, MapCollisionBox *collider);
 };
 
 class Button : public Object {
@@ -220,12 +223,21 @@ class StateButton : public Button {
 
 };
 
+class MapButton : public Button
+{
+private:
+public:
+    MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int time = 2);
+};
+
+//OLD SHAPES
 
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
 void fillBorder(Canvas *c, Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
+    MapCollisionBox::colliderMapPoll(marple);
     StateCollisionBox::colliderStatePoll(marple);
     CollisionBox::colliderPoll(marple);
 }

@@ -148,19 +148,6 @@ bool CollisionBox::checkCollisionProx(Marple *marple, CollisionBox *collider, do
     return false;
 }
 
-bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collider)
-{
-    int marp_x = (int)std::round(marple->getPos()[0]), marp_y = (int)std::round(marple->getPos()[1]), marp_d = marple->getDiameter();
-    if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
-         ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width))) &&
-        (((collider->y <= marp_y) && (marp_y <= collider->y + collider->height)) ||
-         ((collider->y <= marp_y + marp_d) && (marp_y + marp_d <= collider->y + collider->height))))
-    {
-        return true;
-    }
-    return false; // TODO: look into destructor and removing from vectors
-}
-
 void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
     for (CollisionBox *collider: Colliders) {
         if ((checkCollisionTouch(marple, collider) && collider->trigger_type) or //check based on which trigger type
@@ -180,7 +167,9 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
     }
 }
 
-StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, nullptr, loading_bar}
+// -- //
+
+StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
 {
     stateColliders.push_back(this);
     callback = f;
@@ -212,13 +201,67 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
     }
 }
 
+bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collider)
+{
+    int marp_x = marple->getPos()[0], marp_y = marple->getPos()[1], marp_d = marple->getDiameter();
+    if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
+         ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width))) &&
+        (((collider->y <= marp_y) && (marp_y <= collider->y + collider->height)) ||
+         ((collider->y <= marp_y + marp_d) && (marp_y + marp_d <= collider->y + collider->height))))
+    {
+        return true;
+    }
+    return false; // TODO: look into destructor and removing from vectors
+}
+
+// -- //
+
 MapCollisionBox::MapCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
 {
+    mapColliders.push_back(this);
     callback = f;
     mmState = mm;
     mapID = ID;
 }
 
+void MapCollisionBox::colliderMapPoll(Marple *marple)
+{ // TODO: make real-time?
+    for (MapCollisionBox *collider : mapColliders)
+    {
+        if (checkCollision(marple, collider))
+        {
+            if (collider->progress <= (collider->progress_secs * 60) - 1)
+            {
+                collider->progress++;
+            }
+            else
+            {
+                collider->callback(collider->mmState, collider->mapID); // if progress bar limit reached, run specific callback
+                collider->progress = 0;
+            }
+        }
+        else
+        {
+            collider->progress = 0;
+        }
+        collider->bar->setDiameter(collider->progress * ((float)collider->width / (float)(collider->progress_secs * 60)));
+    }
+}
+
+bool MapCollisionBox::checkCollision(Marple *marple, MapCollisionBox *collider)
+{
+    int marp_x = marple->getPos()[0], marp_y = marple->getPos()[1], marp_d = marple->getDiameter();
+    if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
+         ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width))) &&
+        (((collider->y <= marp_y) && (marp_y <= collider->y + collider->height)) ||
+         ((collider->y <= marp_y + marp_d) && (marp_y + marp_d <= collider->y + collider->height))))
+    {
+        return true;
+    }
+    return false; // TODO: look into destructor and removing from vectors
+}
+
+// -- //
 
 int Button::getWidth() {
     return width;
@@ -272,3 +315,8 @@ float Home::getY() {
     return getPos()[1];
 }
 
+MapButton::MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int t) : Button{xp, yp, w, h, p}
+{
+
+    box = new MapCollisionBox(xp, yp, w, h, t, f, true, mm, mID);
+}

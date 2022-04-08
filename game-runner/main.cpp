@@ -32,6 +32,7 @@ MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
+std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -255,14 +256,16 @@ int main(int argc, char *argv[]) {
         return 1;
     // Test objects
     Home home(32, 32, 3);
-    Marple marple(32, 32, 3, &home);
+    Marple marple(30, 30, 3, &home);
     MarpleTiltMachine fsm(canvas);
 
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
-    wallTest(true, false); // Display test function
-    Hole hole(20, 20, 5, &marple);
-    hole.setColour({0, 255, 0});
+    //wallTest(true, false); // Display test function
+    //Hole hole(20, 20, 5, &marple);
+    //hole.setColour({0, 255, 0});
+
+    MapButton mB(30, 30, 16, 16, "img/compass.png", &MapMenu::ChooseMapWrapper, new MapMenu(canvas), 3);
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -274,7 +277,7 @@ int main(int argc, char *argv[]) {
         update(canvas, true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(&marple, &Gyro);
+            //updateMarple(&marple, &Gyro);
             ColliderCheck(&marple);
         }
         //After game updates

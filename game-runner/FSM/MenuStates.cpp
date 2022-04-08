@@ -131,7 +131,10 @@ void MapMenu::ChangePageWrapper(MapMenu *mm, int n) {
 
 void MapMenu::ChooseMap(int mapID)
 {
-    canvas->Clear();
+    loader = new MapLoader();
+    maxPage = loader->loadFileList();
+
+    //canvas->Clear();
     loader->loadMapFile(mapID);
 }
 
