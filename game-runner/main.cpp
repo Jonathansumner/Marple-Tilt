@@ -30,7 +30,7 @@ using rgb_matrix::RGBMatrix;
 
 MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
-std::vector<CollisionBox *> CollisionBox::colliders;
+std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
@@ -236,10 +236,6 @@ void stateTest(MarpleTiltMachine runner, Canvas *c) {
     c->Clear();
 }
 
-void aidan(){
-    std::cout << "FUCK YES";
-}
-
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
@@ -248,7 +244,6 @@ int main(int argc, char *argv[]) {
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
-    defaults.disable_hardware_pulsing = true;
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.brightness = 50;
@@ -258,16 +253,16 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
-    char fuck[100] = "img/compass.png";
     // Test objects
-    Marple marple(32, 32, 3);
+    Home home(32, 32, 3);
+    Marple marple(32, 32, 3, &home);
     MarpleTiltMachine fsm(canvas);
 
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro
     wallTest(true, false); // Display test function
-
-    StateButton button(32, 32, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &fsm, new CalibrateMenu(canvas), 1);
+    Hole hole(20, 20, 5, &marple);
+    hole.setColour({0, 255, 0});
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -279,8 +274,8 @@ int main(int argc, char *argv[]) {
         update(canvas, true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            //updateMarple(&marple, &Gyro, false, 0.85);
-            StateCollisionBox::colliderStatePoll(&marple); // check for non-bounce collisions after every physics update
+            updateMarple(&marple, &Gyro);
+            ColliderCheck(&marple);
         }
         //After game updates
         gettimeofday(&t, nullptr);

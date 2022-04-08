@@ -133,8 +133,8 @@ void MapLoader::loadMapFile(int fileIndex)
             }
             else if (mapData[y][x][0] == 'M')
             {
-                Marple marple(x, y, 2);
-                marple.setColour(getColour(mapData[y][x].substr(2,6)));
+//                Marple marple(x, y, 2);
+//                marple.setColour(getColour(mapData[y][x].substr(2,6)));
             }
             else if (mapData[y][x][0] == 'H')
             {

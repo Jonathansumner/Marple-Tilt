@@ -39,6 +39,15 @@ Marple::~Marple() {
     instances.erase(std::remove(instances.begin(), instances.end(), this), instances.end());
 }
 
+void Marple::returnHome() {
+    std::cout << "setting position\n";
+    setPos({home->getX(), home->getY()});
+}
+
+void Marple::returnWrapper(Marple * m) {
+    m->returnHome();
+}
+
 int Hole::getDiameter() {
     return diameter;
 }
@@ -95,8 +104,8 @@ void fillBorder(Canvas *c, Color borderColor, int width) {
     }
 }
 
-CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)(), bool loading_bar) { //
-    colliders.push_back(this);
+CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)(Marple * marple), bool loading_bar, bool touch_trig) { //
+    Colliders.push_back(this);
     x = x_pos;
     y = y_pos;
     width = w;
@@ -104,13 +113,17 @@ CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time,
     progress = 0;
     callback = func;
     progress_secs = trigger_time;
+    trigger_type = touch_trig;
     if (loading_bar) {
         bar = new LoadingBar(x, y, height);
     }
+    else {
+        bar = nullptr;
+    }
 }
 
-bool CollisionBox::checkCollision(Marple *marple, CollisionBox *collider) {
-    int marp_x = marple->getPos()[0], marp_y = marple->getPos()[1], marp_d = marple->getDiameter();
+bool CollisionBox::checkCollisionTouch(Marple *marple, CollisionBox *collider) {
+    int marp_x = (int)std::round(marple->getPos()[0]), marp_y = (int)std::round(marple->getPos()[1]), marp_d = marple->getDiameter();
     if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
          ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width)))
         &&
@@ -121,9 +134,23 @@ bool CollisionBox::checkCollision(Marple *marple, CollisionBox *collider) {
     return false; //TODO: look into destructor and removing from vectors
 }
 
+bool CollisionBox::checkCollisionProx(Marple *marple, CollisionBox *collider, double threshold) {
+    int marp_d = marple->getDiameter();
+    auto marp_x = marple->getPos()[0], marp_y = marple->getPos()[1];
+    auto col_x = collider->getX(), col_y = collider->getY(),
+    col_w = collider->getWidth(), col_h = collider->getHeight();
+    double centre_x = col_x + col_w/2, centre_y = col_y + col_h/2;
+    double m_centre_x = marp_x + marp_d/2, m_centre_y = marp_y + marp_d/2;
+    double dist = sqrt(pow((centre_x - m_centre_x),2) + pow((centre_y-m_centre_y),2)); // think abs is not necessary
+    if (dist <= threshold) {
+        return true;
+    }
+    return false;
+}
+
 bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collider)
 {
-    int marp_x = marple->getPos()[0], marp_y = marple->getPos()[1], marp_d = marple->getDiameter();
+    int marp_x = (int)std::round(marple->getPos()[0]), marp_y = (int)std::round(marple->getPos()[1]), marp_d = marple->getDiameter();
     if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
          ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width))) &&
         (((collider->y <= marp_y) && (marp_y <= collider->y + collider->height)) ||
@@ -135,22 +162,25 @@ bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collid
 }
 
 void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
-    for (CollisionBox *collider: colliders) {
-        if (checkCollision(marple, collider)) {
+    for (CollisionBox *collider: Colliders) {
+        if ((checkCollisionTouch(marple, collider) && collider->trigger_type) or //check based on which trigger type
+            (checkCollisionProx(marple, collider) && !collider->trigger_type )) {
             if (collider->progress <= (collider->progress_secs * 60) - 1) {
                 collider->progress++;
             } else {
-                collider->callback(); // if progress bar limit reached, run specific callback
+                collider->callback(marple); // if progress bar limit reached, run specific callback
                 collider->progress = 0;
             }
         } else {
             collider->progress = 0;
         }
-        collider->bar->setDiameter(collider->progress * ((float)collider->width/(float)(collider->progress_secs * 60)));
+        if (collider->bar){
+            collider->bar->setDiameter(collider->progress * ((float)collider->width/(float)(collider->progress_secs * 60)));
+        }
     }
 }
 
-StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
+StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, nullptr, loading_bar}
 {
     stateColliders.push_back(this);
     callback = f;
@@ -162,7 +192,7 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
 { // TODO: make real-time?
     for (StateCollisionBox *collider : stateColliders)
     {
-        if (checkCollision(marple, collider))
+        if (checkCollisionTouch(marple, collider))
         {
             if (collider->progress <= (collider->progress_secs * 60) - 1)
             {
@@ -195,7 +225,26 @@ int Button::getWidth() {
 }
 
 LoadingBar *CollisionBox::getBar() {
-    return bar;
+    if (bar){
+        return bar;
+    }
+    return nullptr;
+}
+
+int CollisionBox::getWidth() {
+    return width;
+}
+
+int CollisionBox::getHeight() {
+    return height;
+}
+
+int CollisionBox::getX() {
+    return x;
+}
+
+int CollisionBox::getY() {
+    return y;
 }
 
 int Button::getHeight() {
@@ -211,6 +260,15 @@ float Button::getBarWidth() {
 }
 
 StateButton::StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int t) : Button{xp, yp, w, h, p} {
-    
+
     box = new StateCollisionBox(xp, yp, w, h, t, f, true, fsm, ns);
-}   
+}
+
+float Home::getX() {
+    return getPos()[0];
+}
+
+float Home::getY() {
+    return getPos()[1];
+}
+

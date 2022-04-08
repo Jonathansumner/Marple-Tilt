@@ -19,7 +19,8 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     HOLE,
     WALL,
     BAR,
-    BUTTON
+    BUTTON,
+    HOME,
 };
 
 class MapMenu;
@@ -54,11 +55,25 @@ private:
     float y_pos;
 };
 
-class Marple : public Object {
+class Home : public Object {
 private:
     int diameter;
 public:
-    Marple(float x, float y, int d)
+    Home(float x, float y, int d)
+            : Object{x, y, HOME}
+    {
+        diameter = d;
+    }
+    float getX();
+    float getY();
+};
+
+class Marple : public Object {
+private:
+    int diameter;
+    Home * home;
+public:
+    Marple(float x, float y, int d, Home * h)
     : Object{x, y, MARPLE}
     {
         instances.push_back(this);
@@ -67,30 +82,21 @@ public:
         y_velocity = 0;
         x_acceleration = 0;
         y_acceleration = 0;
+        home = h;
     }
 
     ~Marple();
 
     int getDiameter();
-
+    void returnHome();
+    static void returnWrapper(Marple * m);
     float x_velocity;
     float y_velocity;
     float x_acceleration;
     float y_acceleration;
 };
 
-class Hole : public Object {
-private:
-    int diameter;
-public:
-    Hole(float x, float y, int d)
-            : Object{x, y, HOLE}
-    {
-        instances.push_back(this);
-        diameter = d;
-    }
-    int getDiameter();
-};
+
 
 class Wall : public Object {
 public:
@@ -128,14 +134,37 @@ protected:
     int height;
     int progress;
     int progress_secs;
-    void (*callback)();
-    LoadingBar * bar;
-    static bool checkCollision(Marple * marple, CollisionBox * collider);
-    static std::vector<CollisionBox *> colliders; //TODO: make an Object instead? or keep separate track
+    void (*callback)(Marple * marple);
+    bool trigger_type; // trigger_type = true : touch trigger | trigger_type = false : proximity trigger
+
+    static bool checkCollisionTouch(Marple * marple, CollisionBox * collider);
+    static bool checkCollisionProx(Marple *marple, CollisionBox *collider, double threshold = 1);
+    static std::vector<CollisionBox *> Colliders; //TODO: make an Object instead? or keep separate track
 public:
-    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(), bool loading_bar=true);
+    CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(Marple * marple), bool loading_bar=true, bool touch_trig = true);
     static void colliderPoll(Marple * marple);
     LoadingBar* getBar();
+    LoadingBar * bar;
+    int getWidth();
+    int getHeight();
+    int getX();
+    int getY();
+};
+
+
+class Hole : public Object {
+private:
+    int diameter;
+    CollisionBox *box;
+public:
+    Hole(float x, float y, int d, Marple * marple)
+            : Object{x, y, HOLE}
+    {
+        instances.push_back(this);
+        diameter = d;
+        box = new CollisionBox(x, y, d, d, 0, &Marple::returnWrapper, false, false);
+    }
+    int getDiameter();
 };
 
 class StateCollisionBox : public CollisionBox
@@ -191,8 +220,12 @@ class StateButton : public Button {
 
 };
 
-//OLD SHAPES
 
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
 void fillBorder(Canvas *c, Color borderColour, int width);
+
+static void ColliderCheck(Marple * marple) {
+    StateCollisionBox::colliderStatePoll(marple);
+    CollisionBox::colliderPoll(marple);
+}
