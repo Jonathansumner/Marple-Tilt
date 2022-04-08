@@ -3,22 +3,26 @@
 #include <iostream>
 
 void MarpleTiltMachine::Init() {
-    StartUp newState(canvas);
-    currState = &newState;
+    currState = new StartUp(canvas);
     currState->OnEntry();
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
     currState->OnExit();
+    delete prevState;
 
-    GameState* temp = currState;
+    prevState = currState;
     currState = newState;
 
     currState->OnEntry();
-    prevState = temp;
 }
 
-void MarpleTiltMachine::RewindState() {
+void MarpleTiltMachine::StaticStateChange(MarpleTiltMachine* fsm, GameState * nS) {
+   fsm->ChangeCurrentState(nS);
+}
+
+void MarpleTiltMachine::RewindState()
+{
     ChangeCurrentState(prevState);
 }
 

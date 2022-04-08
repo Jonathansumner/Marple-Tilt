@@ -1,8 +1,4 @@
-
 #include "dynamics.h"
-#include "../graphics/gfx.h"
-#include <iostream>
-#include "MPU6050.h"
 
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
     float x, y, z;

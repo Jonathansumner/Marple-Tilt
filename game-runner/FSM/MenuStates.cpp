@@ -104,12 +104,43 @@ std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
 
 void MapMenu::OnEntry()
 {
-    drawMapMenu(canvas);
+    loader = new MapLoader();
+    maxPage = loader->loadFileList();
+
+    drawMapMenu(canvas, loader->getFileList(), 0);
 }
 
 void MapMenu::Update()
 {
     return;
+}
+
+void MapMenu::ChangePage(int change)
+{
+    if (change == 1)
+    {
+        drawMapMenu(canvas, loader->getFileList(), currPage + 1);
+    } else {
+        drawMapMenu(canvas, loader->getFileList(), currPage - 1);
+    }
+}
+
+void MapMenu::ChangePageWrapper(MapMenu *mm, int n) {
+    mm->ChangePage(n);
+}
+
+void MapMenu::ChooseMap(int mapID)
+{
+    loader = new MapLoader();
+    maxPage = loader->loadFileList();
+
+    //canvas->Clear();
+    loader->loadMapFile(mapID);
+}
+
+void MapMenu::ChooseMapWrapper(MapMenu *mm, int mapID)
+{
+    mm->ChooseMap(mapID);
 }
 
 std::string MapMenu::Name() { return "Map Menu"; }
