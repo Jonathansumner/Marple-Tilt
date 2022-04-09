@@ -32,12 +32,12 @@ void Object::setPos(std::vector<float> pos) {
     y_pos = pos[1];
 }
 
-int Marple::getDiameter() {
-    return diameter;
+Object::~Object() {
+    std::cout << "Object deleted\n";
 }
 
-Marple::~Marple() {
-    instances.erase(std::remove(instances.begin(), instances.end(), this), instances.end());
+int Marple::getDiameter() {
+    return diameter;
 }
 
 void Marple::returnHome() {

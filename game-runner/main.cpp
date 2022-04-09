@@ -35,7 +35,8 @@ std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
 std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
 
 static Canvas *canvas;
-static MarpleTiltMachine runner;
+//static MarpleTiltMachine runner;
+MarpleTiltMachine GameState::runner;
 
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
@@ -157,8 +158,7 @@ void gyroTest(Canvas *canvas, Marple *marple, float weighting_factor = 3) {
 
 void wallTest(bool border = true, bool wall = true) {
     Wall *walls[96];
-//    vector<int> colours = {rand() % 255, rand() % 255, rand() % 255};
-    vector<int> colours = {100, 100, 100};
+    vector<int> colours = {0, 100, 255};
     if (border) {
         for (int x = 0; x < 16; x++) {
             walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
@@ -258,31 +258,22 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
-    // Test objects
-    Home home(32, 32, 3);
-    Marple marple(30, 30, 3, &home);
-    runner.SetCanvas(canvas);
-
-    marple.setColour({255, 0, 0});
-    Gyro.setOffsets(); //Calibrate gyro
-    //wallTest(true, false); // Display test function
-    //Hole hole(20, 20, 5, &marple);
-    //hole.setColour({0, 255, 0});
-
-    MapButton mB(30, 30, 16, 16, "img/compass.png", &MapMenu::ChooseMapWrapper, new MapMenu(canvas), 3);
+//  Test Objects
+    GameState::runner.SetCanvas(canvas);
+    Home * home = new Home(32, 32, 5);
+    Marple * marple = new Marple(32, 32, 5, home);
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before all updates
-
         update(canvas); // copy frame to frame_prev and update frame with new positions
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
         update(canvas, true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            //updateMarple(&marple, &Gyro);
-            ColliderCheck(&marple);
+            updateMarple(marple, &Gyro);
+            ColliderCheck(marple);
         }
         //After game updates
         gettimeofday(&t, nullptr);

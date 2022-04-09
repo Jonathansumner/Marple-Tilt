@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <graphics.h>
 #include <cmath>
+#include <iostream>
 #include "led-matrix.h"
 
 using namespace rgb_matrix;
@@ -43,13 +44,35 @@ public:
         red = 255, green = 255, blue = 255;
     }
 
+    ~Object();
+
     virtual void setColour(std::vector<int> colour);
     virtual vector<float> getPos();
     virtual draw_type getType();
     virtual vector<float> move(float x, float y);
     virtual void setPos(std::vector<float> pos);
 
+    static void clearStage(Canvas * c) {
+        c->Clear();
+        for(Object * obj : instances) {
+            if (obj != nullptr) {
+            obj->clearFromFrame(); // remove object instances from display buffer
+            delete obj; // delete object pointer (+ run destructor on object)
+            }
+        }
+        instances.clear(); // empty list of all objects
+    }
+
 private:
+    void clearFromFrame() {
+        for (auto & x : Object::frame) {
+            for (auto & y : x) {
+                if (y&&y == this) {
+                    y = nullptr;
+                }
+            }
+        }
+    }
     draw_type type;
     float x_pos;
     float y_pos;
@@ -85,7 +108,7 @@ public:
         home = h;
     }
 
-    ~Marple();
+//    ~Marple();
 
     int getDiameter();
     void returnHome();
@@ -237,6 +260,9 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
 void fillBorder(Canvas *c, Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
+    if (!marple) {
+        return;
+    }
     MapCollisionBox::colliderMapPoll(marple);
     StateCollisionBox::colliderStatePoll(marple);
     CollisionBox::colliderPoll(marple);
