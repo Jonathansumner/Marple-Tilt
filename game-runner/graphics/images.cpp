@@ -1,5 +1,3 @@
-#include "led-matrix.h"
-
 #include <math.h>
 #include <signal.h>
 #include <stdio.h>
@@ -8,6 +6,8 @@
 #include <exception>
 #include <Magick++.h>
 #include <magick/image.h>
+
+#include "images.h"
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;

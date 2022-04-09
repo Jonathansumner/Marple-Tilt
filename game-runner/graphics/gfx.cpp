@@ -1,4 +1,5 @@
 #include "gfx.h"
+#include <iostream>
 
 vector<float> Object::move(float x, float y) {
     if (x_pos + x >= 0 && x_pos + x < 64) {

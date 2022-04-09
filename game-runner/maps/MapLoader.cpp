@@ -1,6 +1,10 @@
 #include "MapLoader.h"
+#include "../graphics/gfx.h"
 
 using namespace std;
+class Wall;
+class Marple;
+class Hole;
 
 int MapLoader::loadFileList()
 {

@@ -2,11 +2,14 @@
 
 #include "led-matrix.h"
 #include "graphics.h"
-#include "images.h"
-#include "gfx.h"
 
 #include <string.h>
 #include <vector>
+
+class MapButton;
+class StateButton;
+class MarpleTiltMachine;
+class GameState;
 
 int getOffset(char word[], int spaces);
 
@@ -25,3 +28,4 @@ void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> fileList, int p
 void drawCalibrateMenu(rgb_matrix::Canvas *c);
 
 void drawTutorialMenu(rgb_matrix::Canvas *c);
+

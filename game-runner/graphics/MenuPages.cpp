@@ -1,8 +1,17 @@
 #include "MenuPages.h"
 #include <iostream>
 
+#include "gfx.h"
+#include "images.h"
+#include "../FSM/MarpleTiltMachine.h"
+
 using namespace rgb_matrix;
 using namespace std;
+
+Font font;
+Color fontColor(60, 170, 50);
+Color borderColor(100, 28, 156);
+Color titleColor(255, 0, 0);
 
 int getOffset(char word[], int spaces) {
     int len = strlen(word);
@@ -14,42 +23,28 @@ int getOffset(char word[], int spaces) {
 
 void drawMainMenu(Canvas *c)
 {
-    Font font;
     font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
-    Color borderColor(100, 28, 156);
-
-    char word[] = "Main Menu";
-    DrawText(c, font, getOffset(word, 1), 2 + font.height(), fontColor, NULL, word, 0);
-
+    DrawText(c, font, getOffset("Main Menu", 1), 2+font.height(), fontColor, NULL, "Main Menu", 0);
     fillBorder(c, borderColor, 2);
 
-    drawImage("img/play.png", c, {14, 18, 16, 16});
+    StateButton chooseMap(14, 18, 16, 16, "img/play.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MapMenu(c));
 
-    drawImage("img/question.png", c, {36, 18, 16, 16});
+    StateButton chooseTutorial(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new TutorialMenu(c));
 
-    drawImage("img/compass.png", c, {14, 44, 16, 16});
+    StateButton chooseCalibrate(14, 44, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new CalibrateMenu(c));
 
-    drawImage("img/gears.png", c, {36, 44, 16, 16});
-
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    StateButton chooseSettings(36, 44, 16, 16, "img/gears.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SettingsMenu(c));
 }
 
 void drawSettingsMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
+    font.LoadFont("img/5x8.bdf");
+    DrawText(c, font, getOffset("Settings", 0), 2 + font.height(), fontColor, NULL, "Settings", 0);
     fillBorder(c, borderColor, 2);
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
+    StateButton chooseBrightness(25, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new BrightnessMenu(c));
 
-    char word[] = "Settings";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
-
-    drawImage("img/sun.png", c, {25, 30, 16, 16});
-    drawImage("img/audio.png", c, {45, 30, 16, 16});
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    StateButton chooseSound(45, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SoundMenu(c));
 }
 
 void drawSoundMenu(Canvas *c)

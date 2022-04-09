@@ -33,6 +33,10 @@ std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
 std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
+
+static Canvas *canvas;
+static MarpleTiltMachine runner;
+
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
@@ -248,7 +252,7 @@ int main(int argc, char *argv[]) {
     defaults.chain_length = 1;
     defaults.parallel = 1;
     defaults.brightness = 50;
-    Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;
     font.LoadFont("img/5x8.bdf");
@@ -257,7 +261,7 @@ int main(int argc, char *argv[]) {
     // Test objects
     Home home(32, 32, 3);
     Marple marple(30, 30, 3, &home);
-    MarpleTiltMachine fsm(canvas);
+    runner.SetCanvas(canvas);
 
     marple.setColour({255, 0, 0});
     Gyro.setOffsets(); //Calibrate gyro

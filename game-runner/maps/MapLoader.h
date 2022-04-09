@@ -11,8 +11,6 @@
 #include <bitset>
 #include <math.h>
 
-#include "../graphics/gfx.h"
-
 class MapLoader
 {
     std::vector<std::string> fileList;

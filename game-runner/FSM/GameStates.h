@@ -1,5 +1,6 @@
 #pragma once
-#include "GameState.h" 
+#include "GameState.h"
+#include "../graphics/images.h"
 
 // StartUp State
 

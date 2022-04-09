@@ -9,7 +9,6 @@
 #include <graphics.h>
 #include <cmath>
 #include "led-matrix.h"
-#include "../FSM/MarpleTiltMachine.h"
 
 using namespace rgb_matrix;
 using std::vector;
@@ -25,6 +24,7 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
 
 class MapMenu;
 class MarpleTiltMachine;
+class GameState;
 
 class Object
 {
