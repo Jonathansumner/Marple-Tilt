@@ -82,7 +82,7 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
     }
 }
 
-void fillBorder(Canvas *c, Color borderColor, int width) {
+void fillBorder(Color borderColor, int width) {
     Wall *walls[124];
     int rVal = static_cast<int>(borderColor.r),
             gVal = static_cast<int>(borderColor.g),

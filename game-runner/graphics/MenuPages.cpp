@@ -21,122 +21,123 @@ int getOffset(char word[], int spaces) {
     return offset/2;
 }
 
+void drawMenu(Canvas *c, char title[]) {
+    font.LoadFont("img/5x8.bdf");
+    fillBorder(borderColor, 2);
+    DrawText(c, font, getOffset(title, 1), 2 + font.height(), fontColor, NULL, title, 0);
+}
+
 void drawMainMenu(Canvas *c)
 {
-    font.LoadFont("img/5x8.bdf");
-    DrawText(c, font, getOffset("Main Menu", 1), 2+font.height(), fontColor, NULL, "Main Menu", 0);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Main Menu");
 
-    StateButton chooseMap(14, 18, 16, 16, "img/play.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MapMenu(c));
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
-    StateButton chooseTutorial(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new TutorialMenu(c));
+    char word[] = "img/play.png";
+    StateButton *chooseMap = new StateButton(14, 18, 16, 16, "img/play.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MapMenu(c, m));
 
-    StateButton chooseCalibrate(14, 44, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new CalibrateMenu(c));
+    char word2[] = "img/question.png";
+    StateButton *chooseTutorial = new StateButton(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new TutorialMenu(c, m));
 
-    StateButton chooseSettings(36, 44, 16, 16, "img/gears.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SettingsMenu(c));
+    // char word3[] = "img/compass.png";
+    // StateButton *chooseCalibrate = new StateButton(14, 44, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new CalibrateMenu(c, m));
+
+    // char word4[] = "img/gears.png";
+    // StateButton *chooseSettings = new StateButton(36, 44, 16, 16, "img/gears.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SettingsMenu(c, m));
 }
 
 void drawSettingsMenu(Canvas *c)
 {
-    font.LoadFont("img/5x8.bdf");
-    DrawText(c, font, getOffset("Settings", 0), 2 + font.height(), fontColor, NULL, "Settings", 0);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Settings");
 
-    StateButton chooseBrightness(25, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new BrightnessMenu(c));
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
-    StateButton chooseSound(45, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SoundMenu(c));
+    char word[] = "img/sun.png";
+    StateButton *chooseBrightness = new StateButton(25, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new BrightnessMenu(c, m));
+
+    char word2[] = "img/audio.png";
+    StateButton *chooseSound = new StateButton(45, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SoundMenu(c, m));
+
+    char word3[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawSoundMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Sound Menu");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
-
-    char word[] = "Sound Menu";
-    DrawText(c, font, getOffset(word, 1), 2 + font.height(), fontColor, NULL, word, 0);
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
     drawImage("img/audioup.png", c, {25, 30, 16, 16});
     drawImage("img/audiodown.png", c, {45, 30, 16, 16});
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawBrightnessMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Brightness");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
-
-    char word[] = "Brightness";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
-
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
     drawImage("img/sun.png", c, {30, 30, 16, 16});
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawGameplayMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Gameplay");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
-    char word[] = "Gameplay";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawTutorialMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Tutorial");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
-    char word[] = "Tutorial";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawCalibrateMenu(Canvas *c)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Calibrate");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
-    char word[] = "Calibrate";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), fontColor, NULL, word, 0);
-
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
 }
 
 void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
 {
-    Color borderColor(100, 28, 156);
-    fillBorder(c, borderColor, 2);
+    drawMenu(c, "Map Menu");
 
-    Font font;
-    font.LoadFont("img/5x8.bdf");
-    Color fontColor(60, 170, 50);
-
-    Color titleColor(255, 0, 0);
-
-    char word[] = "Map Menu";
-    DrawText(c, font, getOffset(word, 0), 2 + font.height(), titleColor, NULL, word, 0);
+    Home *home = new Home(32, 32, 5);
+    Marple *m = new Marple(32, 32, 3, home);
+    GameState::runner.GetCurrentState()->setMarple(m);
 
     int filesLeft = files.size() - (pageNum * 4);
 
@@ -150,7 +151,9 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();
 
-    drawImage("img/left.png", c, {4, 56, 10, 10});
+    char word[] = "img/left.png";
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
     drawImage("img/right.png", c, {52, 56, 10, 10});
 }

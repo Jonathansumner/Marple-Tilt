@@ -1,9 +1,13 @@
 #include "MarpleTiltMachine.h"
 #include <iostream>
+#include <unistd.h>
 
 void MarpleTiltMachine::Init() {
-    currState = new StartUp(canvas);
+
+    currState = new StartUp(canvas, NULL);
     currState->OnEntry();
+    sleep(5);
+    ChangeCurrentState(new MainMenu(canvas, NULL));
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
@@ -12,6 +16,7 @@ void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
 
     prevState = currState;
     currState = newState;
+
 
     currState->OnEntry();
 }
@@ -30,6 +35,5 @@ void MarpleTiltMachine::Update() {
 }
 
 GameState* MarpleTiltMachine::GetCurrentState() {
-    std::cout << "Current State - " << currState->Name() << std::endl;
     return currState;
 }

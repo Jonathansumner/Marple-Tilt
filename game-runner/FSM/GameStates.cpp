@@ -13,6 +13,10 @@ void StartUp::Update()
 
 std::string StartUp::Name() { return "Start Up"; }
 
+void StartUp::OnExit() {
+    return;
+}
+
 // Game Terminated Implementations
 void GameTerminated::OnEntry()
 {

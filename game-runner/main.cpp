@@ -35,11 +35,11 @@ std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
 std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
 
 static Canvas *canvas;
-//static MarpleTiltMachine runner;
-MarpleTiltMachine GameState::runner;
 
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
+
+MarpleTiltMachine GameState::runner;
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -185,62 +185,6 @@ void wallTest(bool border = true, bool wall = true) {
     }
 }
 
-void stateTest(MarpleTiltMachine runner, Canvas *c) {
-
-    runner.ChangeCurrentState(new MainMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new SettingsMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new SoundMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new GameplayMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new TutorialMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new BrightnessMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    MapMenu* mm = new MapMenu(c);
-    runner.ChangeCurrentState(mm);
-    update(c);
-    render(c);
-    sleep(10);
-    mm->ChooseMap(3);
-    update(c);
-    render(c);
-    sleep(60);
-    c->Clear();
-
-    runner.ChangeCurrentState(new CalibrateMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-}
-
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
@@ -258,10 +202,16 @@ int main(int argc, char *argv[]) {
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
+
 //  Test Objects
     GameState::runner.SetCanvas(canvas);
-    Home * home = new Home(32, 32, 5);
-    Marple * marple = new Marple(32, 32, 5, home);
+    //Home * home = new Home(32, 32, 5);
+    //Marple * marple = new Marple(32, 32, 5, home);
+
+    GameState::runner.currState = new MainMenu(canvas, NULL);
+    GameState::runner.GetCurrentState()->OnEntry();
+
+    Gyro.setOffsets();
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -272,8 +222,9 @@ int main(int argc, char *argv[]) {
         update(canvas, true); // copy frame to frame_prev and clear frame for new positions
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(marple, &Gyro);
-            ColliderCheck(marple);
+            updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);
+            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());
+            std::cout << tick << std::endl;
         }
         //After game updates
         gettimeofday(&t, nullptr);

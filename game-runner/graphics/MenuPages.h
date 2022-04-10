@@ -13,6 +13,8 @@ class GameState;
 
 int getOffset(char word[], int spaces);
 
+void drawMenu(rgb_matrix::Canvas *c, char word[]);
+
 void drawMainMenu(rgb_matrix::Canvas *c);
 
 void drawSettingsMenu(rgb_matrix::Canvas *c);

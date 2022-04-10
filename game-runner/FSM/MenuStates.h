@@ -2,6 +2,7 @@
 #include "GameState.h"
 
 class MapLoader;
+class Marple;
 void drawMainMenu(rgb_matrix::Canvas *c);
 void drawSettingsMenu(rgb_matrix::Canvas *c);
 void drawSoundMenu(rgb_matrix::Canvas *c);
@@ -15,7 +16,7 @@ void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> list, int page)
 class MainMenu : public GameState
 {
 public:
-    MainMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    MainMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -27,7 +28,7 @@ private:
 class SettingsMenu : public GameState
 {
 public:
-    SettingsMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    SettingsMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -36,7 +37,7 @@ public:
 class SoundMenu : public GameState
 {
 public:
-    SoundMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    SoundMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -45,7 +46,7 @@ public:
 class BrightnessMenu : public GameState
 {
 public:
-    BrightnessMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    BrightnessMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -54,7 +55,7 @@ public:
 class GameplayMenu : public GameState
 {
 public:
-    GameplayMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    GameplayMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -63,7 +64,7 @@ public:
 class TutorialMenu : public GameState
 {
 public:
-    TutorialMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    TutorialMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -72,7 +73,7 @@ public:
 class CalibrateMenu : public GameState
 {
 public:
-    CalibrateMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    CalibrateMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -81,7 +82,7 @@ public:
 class MapMenu : public GameState
 {
 public:
-    MapMenu(rgb_matrix::Canvas *c) : GameState{c} {};
+    MapMenu(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;

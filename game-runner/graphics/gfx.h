@@ -257,7 +257,7 @@ public:
 
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
-void fillBorder(Canvas *c, Color borderColour, int width);
+void fillBorder(rgb_matrix::Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
     if (!marple) {

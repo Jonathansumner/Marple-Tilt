@@ -7,16 +7,17 @@
 class StartUp : public GameState
 {
 public:
-    StartUp(rgb_matrix::Canvas *c) : GameState {c} {};
+    StartUp(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
+    void OnExit();
     std::string Name() override;
 };
 
 class GameTerminated : GameState
 {
 public:
-    GameTerminated(rgb_matrix::Canvas *c) : GameState{c} {};
+    GameTerminated(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -26,7 +27,7 @@ public:
 class GamePaused : GameState
 {
 public:
-    GamePaused(rgb_matrix::Canvas *c) : GameState{c} {};
+    GamePaused(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -35,7 +36,7 @@ public:
 class GameRunning : GameState
 {
 public:
-    GameRunning(rgb_matrix::Canvas *c) : GameState{c} {};
+    GameRunning(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -44,7 +45,7 @@ public:
 class GameOver : GameState
 {
 public:
-    GameOver(rgb_matrix::Canvas *c) : GameState{c} {};
+    GameOver(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -54,7 +55,7 @@ public:
 class TutorialPaused : GameState
 {
 public:
-    TutorialPaused(rgb_matrix::Canvas *c) : GameState{c} {};
+    TutorialPaused(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -63,7 +64,7 @@ public:
 class TutorialRunning : GameState
 {
 public:
-    TutorialRunning(rgb_matrix::Canvas *c) : GameState{c} {};
+    TutorialRunning(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
@@ -72,7 +73,7 @@ public:
 class TutorialOver : GameState
 {
 public:
-    TutorialOver(rgb_matrix::Canvas *c) : GameState{c} {};
+    TutorialOver(rgb_matrix::Canvas *c, Marple *m) : GameState{c, m} {};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;

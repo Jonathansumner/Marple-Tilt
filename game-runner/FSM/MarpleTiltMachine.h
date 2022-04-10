@@ -4,7 +4,6 @@
 
 class MarpleTiltMachine {
 private:
-    GameState* currState = nullptr;
     GameState* prevState = nullptr;
     rgb_matrix::Canvas *canvas = nullptr;
 
@@ -23,4 +22,6 @@ public:
 
     GameState* GetCurrentState();
     void SetCanvas(rgb_matrix::Canvas *c) {canvas = c;};
+
+    GameState *currState = nullptr;
 };
