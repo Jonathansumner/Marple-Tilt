@@ -36,16 +36,16 @@ void drawMainMenu(Canvas *c)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/play.png";
-    StateButton *chooseMap = new StateButton(14, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MapMenu(c, m));
+    StateButton *chooseMap = new StateButton(14, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MapMenu(c));
 
     char word2[] = "img/question.png";
-    StateButton *chooseTutorial = new StateButton(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new TutorialMenu(c, m));
+    StateButton *chooseTutorial = new StateButton(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new TutorialMenu(c));
 
      char word3[] = "img/compass.png";
-     StateButton *chooseCalibrate = new StateButton(14, 44, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new CalibrateMenu(c, m));
+     StateButton *chooseCalibrate = new StateButton(14, 44, 16, 16, "img/compass.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new CalibrateMenu(c));
 
      char word4[] = "img/wrench.png";
-     StateButton *chooseSettings = new StateButton(36, 44, 16, 16, "img/wrench.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SettingsMenu(c, m));
+     StateButton *chooseSettings = new StateButton(36, 44, 16, 16, "img/wrench.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SettingsMenu(c));
 }
 
 void drawSettingsMenu(Canvas *c)
@@ -57,13 +57,13 @@ void drawSettingsMenu(Canvas *c)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/sun.png";
-    StateButton *chooseBrightness = new StateButton(25, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new BrightnessMenu(c, m));
+    StateButton *chooseBrightness = new StateButton(25, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new BrightnessMenu(c));
 
     char word2[] = "img/audio.png";
-    StateButton *chooseSound = new StateButton(45, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SoundMenu(c, m));
+    StateButton *chooseSound = new StateButton(45, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new SoundMenu(c));
 
     char word3[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawSoundMenu(Canvas *c)
@@ -78,7 +78,7 @@ void drawSoundMenu(Canvas *c)
     drawImage("img/audiodown.png", c, {45, 30, 16, 16});
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawBrightnessMenu(Canvas *c)
@@ -92,7 +92,7 @@ void drawBrightnessMenu(Canvas *c)
     drawImage("img/sun.png", c, {30, 30, 16, 16});
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawGameplayMenu(Canvas *c)
@@ -104,7 +104,7 @@ void drawGameplayMenu(Canvas *c)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawTutorialMenu(Canvas *c)
@@ -116,7 +116,7 @@ void drawTutorialMenu(Canvas *c)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawCalibrateMenu(Canvas *c)
@@ -128,7 +128,7 @@ void drawCalibrateMenu(Canvas *c)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
 void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
@@ -152,7 +152,7 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
     const char *tmp = page.c_str();
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c, m));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
     drawImage("img/right.png", c, {52, 56, 10, 10});
