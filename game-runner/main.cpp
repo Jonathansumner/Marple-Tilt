@@ -204,14 +204,10 @@ int main(int argc, char *argv[]) {
         return 1;
 
 //  Test Objects
+    Gyro.setOffsets();
     GameState::runner.SetCanvas(canvas);
-    //Home * home = new Home(32, 32, 5);
-    //Marple * marple = new Marple(32, 32, 5, home);
-
     GameState::runner.currState = new MainMenu(canvas, NULL);
     GameState::runner.GetCurrentState()->OnEntry();
-
-    Gyro.setOffsets();
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
