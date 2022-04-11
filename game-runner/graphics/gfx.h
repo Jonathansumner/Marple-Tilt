@@ -168,6 +168,9 @@ public:
     static void colliderPoll(Marple * marple);
     LoadingBar* getBar();
     LoadingBar * bar;
+    static void clear() {
+        Colliders.clear();
+    }
     int getWidth();
     int getHeight();
     int getX();
@@ -266,4 +269,9 @@ static void ColliderCheck(Marple * marple) {
     MapCollisionBox::colliderMapPoll(marple);
     StateCollisionBox::colliderStatePoll(marple);
     CollisionBox::colliderPoll(marple);
+}
+
+static void clearAll(Canvas*c) {
+    Object::clearStage(c);
+    CollisionBox::clear();
 }

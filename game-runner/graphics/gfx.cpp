@@ -107,6 +107,7 @@ void fillBorder(Color borderColor, int width) {
 
 CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)(Marple * marple), bool loading_bar, bool touch_trig) { //
     Colliders.push_back(this);
+    std::cout<<"added collision to Colliders\n";
     x = x_pos;
     y = y_pos;
     width = w;
@@ -173,6 +174,7 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
 StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
 {
     stateColliders.push_back(this);
+    std::cout<<"added collision to stateColliders\n";
     callback = f;
     StateMachine = fsm;
     NewState = nS;
