@@ -107,7 +107,6 @@ void fillBorder(Color borderColor, int width) {
 
 CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*func)(Marple * marple), bool loading_bar, bool touch_trig) { //
     Colliders.push_back(this);
-    std::cout<<"added collision to Colliders\n";
     x = x_pos;
     y = y_pos;
     width = w;
@@ -152,6 +151,7 @@ bool CollisionBox::checkCollisionProx(Marple *marple, CollisionBox *collider, do
 
 void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
     for (CollisionBox *collider: Colliders) {
+        std::cout << "Check touch and prox!\n";
         if ((checkCollisionTouch(marple, collider) && collider->trigger_type) or //check based on which trigger type
             (checkCollisionProx(marple, collider) && !collider->trigger_type )) {
             if (collider->progress <= (collider->progress_secs * 60) - 1) {
@@ -171,13 +171,28 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
 
 // -- //
 
-StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
+StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS)
 {
     stateColliders.push_back(this);
-    std::cout<<"added collision to stateColliders\n";
     callback = f;
     StateMachine = fsm;
     NewState = nS;
+
+    x = x_pos;
+    y = y_pos;
+    width = w;
+    height = h;
+    progress = 0;
+    callback = f;
+    progress_secs = trigger_time;
+    if (loading_bar)
+    {
+        bar = new LoadingBar(x, y, height);
+    }
+    else
+    {
+        bar = nullptr;
+    }
 }
 
 void StateCollisionBox::colliderStatePoll(Marple *marple)
@@ -193,7 +208,9 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
             else
             {
                 collider->callback(collider->StateMachine, collider->NewState); // if progress bar limit reached, run specific callback
+                std::cout << "Callback finished\n";
                 collider->progress = 0;
+                return;
             }
         }
         else
@@ -219,12 +236,28 @@ bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collid
 
 // -- //
 
-MapCollisionBox::MapCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
+MapCollisionBox::MapCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID)
 {
     mapColliders.push_back(this);
     callback = f;
     mmState = mm;
     mapID = ID;
+
+    x = x_pos;
+    y = y_pos;
+    width = w;
+    height = h;
+    progress = 0;
+    callback = f;
+    progress_secs = trigger_time;
+    if (loading_bar)
+    {
+        bar = new LoadingBar(x, y, height);
+    }
+    else
+    {
+        bar = nullptr;
+    }
 }
 
 void MapCollisionBox::colliderMapPoll(Marple *marple)

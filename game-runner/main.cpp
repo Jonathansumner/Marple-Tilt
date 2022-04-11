@@ -206,7 +206,7 @@ int main(int argc, char *argv[]) {
 //  Test Objects
     Gyro.setOffsets();
     GameState::runner.SetCanvas(canvas);
-    GameState::runner.currState = new MainMenu(canvas, NULL);
+    GameState::runner.currState = new MainMenu(canvas);
     GameState::runner.GetCurrentState()->OnEntry();
 
     while (!interrupt_received) { // 60 ticks/updates per second
@@ -215,7 +215,8 @@ int main(int argc, char *argv[]) {
         //Before all updates
         update(canvas); // copy frame to frame_prev and update frame with new positions
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(canvas, true); // copy frame to frame_prev and clear frame for new positions
+        update(canvas, true); // copy frame to frame_prev and clear frame for new
+
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
             updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);

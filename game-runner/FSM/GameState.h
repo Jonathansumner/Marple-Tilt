@@ -10,7 +10,7 @@ class GameState {
         virtual ~GameState() {};
 
         virtual void OnEntry() {};
-        void OnExit() {Object::clearStage(canvas); std::cout << "Clearing!\n";};
+        void OnExit() {clearAll(canvas); std::cout << "Clearing!\n";};
         virtual void Update() {};
         virtual std::string Name() {return "";};
 

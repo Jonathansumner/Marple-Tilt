@@ -10,6 +10,7 @@ class MapButton;
 class StateButton;
 class MarpleTiltMachine;
 class GameState;
+class MapMenu;
 
 int getOffset(char word[], int spaces);
 
@@ -25,7 +26,7 @@ void drawBrightnessMenu(rgb_matrix::Canvas *c);
 
 void drawGameplayMenu(rgb_matrix::Canvas *c);
 
-void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> fileList, int pageNum);
+void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> fileList, int pageNum, MapMenu *mm);
 
 void drawCalibrateMenu(rgb_matrix::Canvas *c);
 

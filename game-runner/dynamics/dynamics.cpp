@@ -1,6 +1,7 @@
 #include "dynamics.h"
 
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
+    std::cout << "Marple update started\n";
     if (marple== nullptr) {
         return;
     }
@@ -96,6 +97,7 @@ void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) 
         std::cout << "x_acc: " << marple->x_acceleration << ", y_acc: " << marple->y_acceleration << " || ";
         std::cout << "x_vel: " << marple->x_velocity << ", y_vel: " << marple->y_velocity << "\n";
     }
+    std::cout << "MArple update finsished\n";
 }
 
 

@@ -11,6 +11,8 @@
 #include <bitset>
 #include <math.h>
 
+class GameState;
+class MarpleTiltMachine;
 class MapLoader
 {
     std::vector<std::string> fileList;

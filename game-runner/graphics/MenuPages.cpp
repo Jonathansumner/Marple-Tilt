@@ -31,8 +31,7 @@ void drawMainMenu(Canvas *c)
 {
     drawMenu(c, "Main Menu");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/play.png";
@@ -52,8 +51,7 @@ void drawSettingsMenu(Canvas *c)
 {
     drawMenu(c, "Settings");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/sun.png";
@@ -70,8 +68,7 @@ void drawSoundMenu(Canvas *c)
 {
     drawMenu(c, "Sound Menu");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     drawImage("img/audioup.png", c, {25, 30, 16, 16});
@@ -85,8 +82,7 @@ void drawBrightnessMenu(Canvas *c)
 {
     drawMenu(c, "Brightness");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     drawImage("img/sun.png", c, {30, 30, 16, 16});
@@ -99,8 +95,7 @@ void drawGameplayMenu(Canvas *c)
 {
     drawMenu(c, "Gameplay");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
@@ -111,8 +106,7 @@ void drawTutorialMenu(Canvas *c)
 {
     drawMenu(c, "Tutorial");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
@@ -123,30 +117,30 @@ void drawCalibrateMenu(Canvas *c)
 {
     drawMenu(c, "Calibrate");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/left.png";
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
-void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
+void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 {
     drawMenu(c, "Map Menu");
 
-    Home *home = new Home(32, 32, 5);
-    Marple *m = new Marple(32, 32, 3, home);
+    Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     GameState::runner.GetCurrentState()->setMarple(m);
 
     int filesLeft = files.size() - (pageNum * 4);
 
-    for (int i=1; i<=filesLeft && i<5; i++) {
-        string option = to_string(i + (pageNum * 4)) + " " + files[(i-1) + (pageNum * 4)];
-        const char *array = option.c_str();
+    // for (int i=1; i<=filesLeft && i<5; i++) {
+    //     string option = to_string(i + (pageNum * 4)) + " " + files[(i-1) + (pageNum * 4)];
+    //     const char *array = option.c_str();
 
-        DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
-    }
+    //     DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
+    // }
+
+    MapButton* testMap = new MapButton(32, 32, 16, 16, "img/map.png", &MapMenu::ChooseMapWrapper, mm, 3);
 
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();
@@ -156,4 +150,5 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum)
 
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
     drawImage("img/right.png", c, {52, 56, 10, 10});
+
 }

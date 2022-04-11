@@ -4,10 +4,10 @@
 
 void MarpleTiltMachine::Init() {
 
-    currState = new StartUp(canvas, NULL);
+    currState = new StartUp(canvas);
     currState->OnEntry();
     sleep(5);
-    ChangeCurrentState(new MainMenu(canvas, NULL));
+    ChangeCurrentState(new MainMenu(canvas));
 }
 
 void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {

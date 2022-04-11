@@ -1,5 +1,6 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
+#include "../FSM/MarpleTiltMachine.h"
 
 using namespace std;
 class Wall;
@@ -146,6 +147,9 @@ void MapLoader::loadMapFile(int fileIndex)
             }
         }
     }
+
+    Marple *m = new Marple(5, 55, 3, new Home(5, 55, 5));
+    GameState::runner.GetCurrentState()->setMarple(m);
 }
 
 vector<int> getColour(string hexString)

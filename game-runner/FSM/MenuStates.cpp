@@ -107,7 +107,7 @@ void MapMenu::OnEntry()
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
-    drawMapMenu(canvas, loader->getFileList(), 0);
+    drawMapMenu(canvas, loader->getFileList(), 0, this);
 }
 
 void MapMenu::Update()
@@ -119,9 +119,9 @@ void MapMenu::ChangePage(int change)
 {
     if (change == 1)
     {
-        drawMapMenu(canvas, loader->getFileList(), currPage + 1);
+        drawMapMenu(canvas, loader->getFileList(), currPage + 1, this);
     } else {
-        drawMapMenu(canvas, loader->getFileList(), currPage - 1);
+        drawMapMenu(canvas, loader->getFileList(), currPage - 1, this);
     }
 }
 
@@ -134,7 +134,7 @@ void MapMenu::ChooseMap(int mapID)
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
-    //canvas->Clear();
+    clearAll(canvas);
     loader->loadMapFile(mapID);
 }
 
