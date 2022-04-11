@@ -146,12 +146,9 @@ private:
         return check;
     }
 
-
-
     QColor color;
     QPixmap *pixmap;
     bool pressed;
-
     int marpleSize = 2;
     int itemKey = 1;
 
@@ -162,8 +159,6 @@ public slots:
         QImage im = map.toImage();
         coord coordinate;
         char en = 'W';
-        int x = 0;
-        int y = 0;
         std::ofstream outFile;
         outFile.open("D:/Marple-Tilt/desktop-app/map.csv");
         for(int i = 0; i < 64; i++){
