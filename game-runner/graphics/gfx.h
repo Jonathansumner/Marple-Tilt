@@ -204,6 +204,9 @@ public:
     StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS);
     static void colliderStatePoll(Marple * marple);
     static bool checkCollision(Marple *marple, StateCollisionBox *collider);
+    static void clear() {
+        stateColliders.clear();
+    }
 };
 
 class MapCollisionBox : public CollisionBox
@@ -218,6 +221,9 @@ public:
     MapCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID);
     static void colliderMapPoll(Marple* marple);
     static bool checkCollision(Marple* marple, MapCollisionBox *collider);
+    static void clear() {
+        mapColliders.clear();
+    }
 };
 
 class Button : public Object {
@@ -274,4 +280,6 @@ static void ColliderCheck(Marple * marple) {
 static void clearAll(Canvas*c) {
     Object::clearStage(c);
     CollisionBox::clear();
+    MapCollisionBox::clear();
+    StateCollisionBox::clear();
 }
