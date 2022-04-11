@@ -140,7 +140,7 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
     //     DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
     // }
 
-    MapButton* testMap = new MapButton(32, 32, 16, 16, "img/map.png", &MapMenu::ChooseMapWrapper, mm, 3);
+    StateButton* testMap = new StateButton(32, 32, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameRunning(c, mm->getLoader(), 3));
 
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();

@@ -87,6 +87,8 @@ public:
     void Update() override;
     std::string Name() override;
 
+    MapLoader* getLoader() {return loader;};
+
     void ChangePage(int change);
     static void ChangePageWrapper(MapMenu *mm, int n);
 

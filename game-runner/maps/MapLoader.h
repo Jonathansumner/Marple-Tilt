@@ -13,6 +13,10 @@
 
 class GameState;
 class MarpleTiltMachine;
+class Wall;
+class Marple;
+class Home;
+class Hole;
 class MapLoader
 {
     std::vector<std::string> fileList;
@@ -24,7 +28,7 @@ class MapLoader
         int loadFileList();
         std::vector<std::string> getFileList();
 
-        void loadMapFile(int fileIndex);
+        Marple* loadMapFile(int fileIndex);
 
 };
 

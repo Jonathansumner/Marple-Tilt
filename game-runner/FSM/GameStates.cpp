@@ -1,4 +1,5 @@
 #include "GameStates.h"
+#include "../maps/MapLoader.h"
 
 // StartUp Implementations
 void StartUp::OnEntry()
@@ -43,6 +44,7 @@ std::string GamePaused::Name() { return "Game Paused"; }
 // Game Running Function Implementations
 void GameRunning::OnEntry()
 {
+    loader->loadMapFile(mID);
 }
 
 void GameRunning::Update()

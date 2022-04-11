@@ -1,11 +1,8 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
-#include "../FSM/MarpleTiltMachine.h"
+#include "../FSM/GameState.h"
 
 using namespace std;
-class Wall;
-class Marple;
-class Hole;
 
 int MapLoader::loadFileList()
 {
@@ -40,7 +37,7 @@ vector<string> MapLoader::getFileList()
     return fileList;
 }
 
-void MapLoader::loadMapFile(int fileIndex)
+Marple* MapLoader::loadMapFile(int fileIndex)
 {
     ifstream file("maps/" + fileList[fileIndex] + ".csv");
 
@@ -149,7 +146,7 @@ void MapLoader::loadMapFile(int fileIndex)
     }
 
     Marple *m = new Marple(5, 55, 3, new Home(5, 55, 5));
-    GameState::runner.GetCurrentState()->setMarple(m);
+    return m;
 }
 
 vector<int> getColour(string hexString)

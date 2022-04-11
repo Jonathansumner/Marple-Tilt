@@ -1,7 +1,6 @@
 #pragma once
 
 #include "led-matrix.h"
-#include "graphics.h"
 
 #include <string.h>
 #include <vector>
