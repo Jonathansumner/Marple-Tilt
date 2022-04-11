@@ -7,14 +7,17 @@
 
 #include <QWidget>
 #include "map.h"
+#include "ImageInfo.h"
 #include <QTabWidget>
 
 class QPushButton;
 class QMenuBar;
+class paintTab;
 class Window : public QWidget {
 Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
+    paintTab *tab4;
 private:
     QMenuBar *menuBar;
     QPushButton *q_button;
@@ -25,6 +28,9 @@ private:
 
 signals:
 public slots:
+    void writeFile();
+private slots:
+
 };
 
 #endif // WINDOW_H
