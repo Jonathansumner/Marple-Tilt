@@ -6,7 +6,7 @@ class MarpleTiltMachine;
 class Marple;
 class GameState {
     public:
-        GameState(rgb_matrix::Canvas *c, Marple *m) {canvas = c; marple=m;};
+        GameState(rgb_matrix::Canvas *c) {canvas = c;};
         virtual ~GameState() {};
 
         virtual void OnEntry() {};
@@ -19,5 +19,5 @@ class GameState {
 
         rgb_matrix::Canvas *canvas;
         static MarpleTiltMachine runner;
-        Marple *marple;
+        Marple *marple = nullptr;
 };  
