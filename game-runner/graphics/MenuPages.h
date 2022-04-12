@@ -31,3 +31,5 @@ void drawCalibrateMenu(rgb_matrix::Canvas *c);
 
 void drawTutorialMenu(rgb_matrix::Canvas *c);
 
+void drawGameOver(rgb_matrix::Canvas *c, double t);
+

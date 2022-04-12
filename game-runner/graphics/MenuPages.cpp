@@ -150,5 +150,20 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
     drawImage("img/right.png", c, {52, 56, 10, 10});
+}
 
+void drawGameOver(rgb_matrix::Canvas *c, double time)
+{
+    drawMenu(c, "Game Over");
+
+    DrawText(c, font, 25, 20, titleColor, NULL, "Well Done!");
+    DrawText(c, font, 35, 20, titleColor, NULL, "You took");
+
+    char result[] = "54.5 secs";
+    DrawText(c, font, 45, 20, titleColor, NULL, result);
+
+    Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
+    GameState::runner.GetCurrentState()->setMarple(m);
+
+    StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }

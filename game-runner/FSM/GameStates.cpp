@@ -45,6 +45,7 @@ std::string GamePaused::Name() { return "Game Paused"; }
 void GameRunning::OnEntry()
 {
     loader->loadMapFile(mID);
+    startTime = clock();
 }
 
 void GameRunning::Update()
@@ -57,6 +58,10 @@ std::string GameRunning::Name() { return "Game Running"; }
 // Game Over Function Implementations
 void GameOver::OnEntry()
 {
+    clock_t end = clock();
+    double elapsed = double(end-start) / CLOCKS_PER_SEC;
+
+    drawGameOver(canvas, elapsed);
 }
 
 void GameOver::Update()

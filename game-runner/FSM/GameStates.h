@@ -1,8 +1,11 @@
 #pragma once
 #include "GameState.h"
 #include "../graphics/images.h"
+#include <ctime>
 
 class MapLoader;
+void drawGameOver(rgb_matrix::Canvas *c, double elapsed);
+
 // StartUp State
 
 class StartUp : public GameState
@@ -41,19 +44,23 @@ public:
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
+    clock_t getTime() {return startTime;};
+
 protected:
     MapLoader *loader;
     int mID;
-
+    std::clock_t startTime;
 };
 
 class GameOver : public GameState
 {
 public:
-    GameOver(rgb_matrix::Canvas *c) : GameState{c} {};
+    GameOver(rgb_matrix::Canvas *c, clock_t time) : GameState{c} {start = time;};
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
+protected:
+    clock_t start;
 };
 
 // Tutorial States
