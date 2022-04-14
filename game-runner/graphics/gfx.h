@@ -22,6 +22,7 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     BUTTON,
     HOME,
     END,
+    TEXT,
 };
 
 class MapMenu;
@@ -48,6 +49,9 @@ public:
     ~Object();
 
     virtual void setColour(std::vector<int> colour);
+    virtual vector<int> getColour() {
+        return {red, green, blue};
+    };
     virtual vector<float> getPos();
     virtual draw_type getType();
     virtual vector<float> move(float x, float y);
@@ -86,6 +90,29 @@ public:
     }
     float getX();
     float getY();
+};
+
+class Textbox : public Object {
+protected:
+    rgb_matrix::Font font;
+    rgb_matrix::Color text_colour;
+    const char * text;
+    rgb_matrix::Color * background;
+    Canvas * canvas;
+public:
+    Textbox(float x, float y, const rgb_matrix::Font& f, rgb_matrix::Color tc, Canvas* c, const char * txt, rgb_matrix::Color * bg=nullptr)
+        : Object{x, y, TEXT}
+    {
+        instances.push_back(this);
+        font = f;
+        text_colour = tc;
+        text = txt;
+        background = bg;
+        canvas = c;
+    }
+    void draw() {
+        rgb_matrix::DrawText(canvas, font, x_pos, y_pos, text_colour, background, text, 0);
+    }
 };
 
 class Marple : public Object {
@@ -159,12 +186,11 @@ protected:
     int progress_secs;
     void (*callback)(Marple * marple);
     bool trigger_type; // trigger_type = true : touch trigger | trigger_type = false : proximity trigger
-
     static bool checkCollisionTouch(Marple * marple, CollisionBox * collider);
     static bool checkCollisionProx(Marple *marple, CollisionBox *collider, double threshold = 1);
     static std::vector<CollisionBox *> Colliders; //TODO: make an Object instead? or keep separate track
 public:
-    CollisionBox(void) {};
+    CollisionBox(void){};
     CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(Marple * marple), bool loading_bar=true, bool touch_trig = true);
     static void colliderPoll(Marple * marple);
     LoadingBar* getBar();
@@ -259,33 +285,18 @@ class StateButton : public Button {
 
 };
 
-class MapButton : public Button
-{
-private:
-public:
-    MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int time = 2);
-};
-
-//OLD SHAPES
-
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
 void fillBorder(rgb_matrix::Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
-    std::cout << "before collider poll\n";
     CollisionBox::colliderPoll(marple);
-    std::cout << "before state poll\n";
     StateCollisionBox::colliderStatePoll(marple);
-    std::cout << "after state poll\n";
 }
 
 static void clearAll(Canvas*c) {
-    std::cout << "before clear all\n";
     Object::clearRenderBuffer();
     Object::clearStage(c);
-    std::cout << "after clearStage+renderbuffer\n";
     CollisionBox::clear();
     StateCollisionBox::clear();
-    std::cout << "before after clear all\n";
 }

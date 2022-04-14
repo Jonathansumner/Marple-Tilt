@@ -24,7 +24,7 @@ int getOffset(char word[], int spaces) {
 void drawMenu(Canvas *c, char title[]) {
     font.LoadFont("img/5x8.bdf");
     fillBorder(borderColor, 2);
-    DrawText(c, font, getOffset(title, 1), 2 + font.height(), fontColor, NULL, title, 0);
+    Textbox * title_box = new Textbox(getOffset(title, 1), 2 + font.height(), font, fontColor, c, title);
 }
 
 void drawMainMenu(Canvas *c)
@@ -140,14 +140,13 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
     //     DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
     // }
 
-    StateButton* testMap = new StateButton(32, 32, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameRunning(c, mm->getLoader(), 1));
+    StateButton* testMap = new StateButton(32, 32, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameRunning(c, mm->getLoader(), 0));
 
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();
 
     char word[] = "img/left.png";
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
-
     DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
     drawImage("img/right.png", c, {52, 56, 10, 10});
 }
@@ -159,7 +158,7 @@ void drawGameOver(rgb_matrix::Canvas *c, double time)
     DrawText(c, font, 25, 20, titleColor, NULL, "Well Done!");
     DrawText(c, font, 35, 20, titleColor, NULL, "You took");
 
-    char result[] = "54.5 secs";
+    const char result[] = "54.5 secs";
     DrawText(c, font, 45, 20, titleColor, NULL, result);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
@@ -168,6 +167,6 @@ void drawGameOver(rgb_matrix::Canvas *c, double time)
     StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
 }
 
-void endZone(int x, int y, int d, Canvas *c, clock_t t) {
+void drawZone(int x, int y, int d, Canvas *c, clock_t t) {
     End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameOver(c, t));
 }

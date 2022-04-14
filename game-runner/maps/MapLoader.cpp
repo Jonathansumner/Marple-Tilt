@@ -1,6 +1,5 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
-#include "../FSM/GameState.h"
 
 using namespace std;
 
@@ -60,8 +59,6 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
     }
 
     file.close();
-
-    //
 
     vector<Wall*> walls;
     vector<Hole*> holes;

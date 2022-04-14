@@ -274,9 +274,3 @@ float Home::getX() {
 float Home::getY() {
     return getPos()[1];
 }
-
-MapButton::MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int t) : Button{xp, yp, w, h, p}
-{
-
-    box = new MapCollisionBox(xp, yp, w, h, t, f, true, mm, mID);
-}

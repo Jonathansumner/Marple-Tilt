@@ -32,7 +32,6 @@ MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
-std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
 
 static Canvas *canvas;
 
@@ -82,6 +81,10 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
+                case TEXT: {
+                    dynamic_cast<Textbox *>(obj)->draw();
+                    break;
+                }
                 case END : {
                     int d = dynamic_cast<End *>(obj)->getDiameter();
                     auto *ref = dynamic_cast<End*>(obj);
@@ -110,9 +113,13 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
+            if (Object::frame[i][j]&&(Object::frame[i][j]->getColour() != Object::frame[i][j]->getColour())) {
+                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+            }
             if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-            } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+            }
+            else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, 0, 0, 0);
             }
         }
@@ -226,8 +233,7 @@ int main(int argc, char *argv[]) {
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
             updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);
-            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());
-            std::cout << tick << std::endl;
+            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());\
         }
         //After game updates
         gettimeofday(&t, nullptr);
@@ -239,7 +245,6 @@ int main(int argc, char *argv[]) {
         tick++;
     }
 
-    std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;
