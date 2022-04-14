@@ -1,4 +1,5 @@
 #include "gfx.h"
+#include <iostream>
 
 vector<float> Object::move(float x, float y) {
     if (x_pos + x >= 0 && x_pos + x < 64) {
@@ -31,16 +32,14 @@ void Object::setPos(std::vector<float> pos) {
     y_pos = pos[1];
 }
 
+Object::~Object() {
+}
+
 int Marple::getDiameter() {
     return diameter;
 }
 
-Marple::~Marple() {
-    instances.erase(std::remove(instances.begin(), instances.end(), this), instances.end());
-}
-
 void Marple::returnHome() {
-    std::cout << "setting position\n";
     setPos({home->getX(), home->getY()});
 }
 
@@ -64,10 +63,6 @@ int LoadingBar::getHeight() {
     return height;
 }
 
-
-// OLD SHAPES
-
-
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]) {
     int starting_x = (int) std::round(start_x);
     int starting_y = (int) std::round(start_y);
@@ -81,7 +76,7 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
     }
 }
 
-void fillBorder(Canvas *c, Color borderColor, int width) {
+void fillBorder(Color borderColor, int width) {
     Wall *walls[124];
     int rVal = static_cast<int>(borderColor.r),
             gVal = static_cast<int>(borderColor.g),
@@ -167,18 +162,29 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
     }
 }
 
-// -- //
-
-StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
+StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS)
 {
     stateColliders.push_back(this);
     callback = f;
     StateMachine = fsm;
     NewState = nS;
+
+    x = x_pos;
+    y = y_pos;
+    width = w;
+    height = h;
+    progress = 0;
+    callback = f;
+    progress_secs = trigger_time;
+    if (loading_bar) {
+        bar = new LoadingBar(x, y, height);
+    }
+    else {
+        bar = nullptr;
+    }
 }
 
-void StateCollisionBox::colliderStatePoll(Marple *marple)
-{ // TODO: make real-time?
+void StateCollisionBox::colliderStatePoll(Marple *marple) {
     for (StateCollisionBox *collider : stateColliders)
     {
         if (checkCollisionTouch(marple, collider))
@@ -191,13 +197,16 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
             {
                 collider->callback(collider->StateMachine, collider->NewState); // if progress bar limit reached, run specific callback
                 collider->progress = 0;
+                return;
             }
         }
         else
         {
             collider->progress = 0;
         }
-        collider->bar->setDiameter(collider->progress * ((float)collider->width / (float)(collider->progress_secs * 60)));
+        if (collider->bar) {
+            collider->bar->setDiameter(collider->progress * ((float) collider->width / (float) (collider->progress_secs * 60)));
+        }
     }
 }
 
@@ -213,55 +222,6 @@ bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collid
     }
     return false; // TODO: look into destructor and removing from vectors
 }
-
-// -- //
-
-MapCollisionBox::MapCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID) : CollisionBox{x_pos, y_pos, w, h, trigger_time, NULL, loading_bar}
-{
-    mapColliders.push_back(this);
-    callback = f;
-    mmState = mm;
-    mapID = ID;
-}
-
-void MapCollisionBox::colliderMapPoll(Marple *marple)
-{ // TODO: make real-time?
-    for (MapCollisionBox *collider : mapColliders)
-    {
-        if (checkCollision(marple, collider))
-        {
-            if (collider->progress <= (collider->progress_secs * 60) - 1)
-            {
-                collider->progress++;
-            }
-            else
-            {
-                collider->callback(collider->mmState, collider->mapID); // if progress bar limit reached, run specific callback
-                collider->progress = 0;
-            }
-        }
-        else
-        {
-            collider->progress = 0;
-        }
-        collider->bar->setDiameter(collider->progress * ((float)collider->width / (float)(collider->progress_secs * 60)));
-    }
-}
-
-bool MapCollisionBox::checkCollision(Marple *marple, MapCollisionBox *collider)
-{
-    int marp_x = marple->getPos()[0], marp_y = marple->getPos()[1], marp_d = marple->getDiameter();
-    if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
-         ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width))) &&
-        (((collider->y <= marp_y) && (marp_y <= collider->y + collider->height)) ||
-         ((collider->y <= marp_y + marp_d) && (marp_y + marp_d <= collider->y + collider->height))))
-    {
-        return true;
-    }
-    return false; // TODO: look into destructor and removing from vectors
-}
-
-// -- //
 
 int Button::getWidth() {
     return width;
@@ -313,10 +273,4 @@ float Home::getX() {
 
 float Home::getY() {
     return getPos()[1];
-}
-
-MapButton::MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int t) : Button{xp, yp, w, h, p}
-{
-
-    box = new MapCollisionBox(xp, yp, w, h, t, f, true, mm, mID);
 }

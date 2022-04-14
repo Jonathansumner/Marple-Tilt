@@ -1,5 +1,5 @@
 #include "GameStates.h"
-#include "../graphics/images.h"
+#include "../maps/MapLoader.h"
 
 // StartUp Implementations
 void StartUp::OnEntry()
@@ -13,6 +13,10 @@ void StartUp::Update()
 }
 
 std::string StartUp::Name() { return "Start Up"; }
+
+void StartUp::OnExit() {
+    return;
+}
 
 // Game Terminated Implementations
 void GameTerminated::OnEntry()
@@ -40,6 +44,8 @@ std::string GamePaused::Name() { return "Game Paused"; }
 // Game Running Function Implementations
 void GameRunning::OnEntry()
 {
+    setMarple(loader->loadMapFile(mID, canvas));
+    startTime = clock();
 }
 
 void GameRunning::Update()
@@ -52,6 +58,10 @@ std::string GameRunning::Name() { return "Game Running"; }
 // Game Over Function Implementations
 void GameOver::OnEntry()
 {
+    clock_t end = clock();
+    double elapsed = double(end-start) / CLOCKS_PER_SEC;
+
+    drawGameOver(canvas, elapsed);
 }
 
 void GameOver::Update()

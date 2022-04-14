@@ -10,8 +10,15 @@
 #include <ios>
 #include <bitset>
 #include <math.h>
+#include "led-matrix.h"
 
-#include "../graphics/gfx.h"
+class GameState;
+class MarpleTiltMachine;
+class Wall;
+class Marple;
+class Home;
+class Hole;
+void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t);
 
 class MapLoader
 {
@@ -24,7 +31,7 @@ class MapLoader
         int loadFileList();
         std::vector<std::string> getFileList();
 
-        void loadMapFile(int fileIndex);
+        Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c);
 
 };
 

@@ -1,8 +1,17 @@
 #pragma once
 #include "GameState.h"
-#include "../maps/MapLoader.h"
 
 class MapLoader;
+class Marple;
+void drawMainMenu(rgb_matrix::Canvas *c);
+void drawSettingsMenu(rgb_matrix::Canvas *c);
+void drawSoundMenu(rgb_matrix::Canvas *c);
+void drawBrightnessMenu(rgb_matrix::Canvas *c);
+void drawGameplayMenu(rgb_matrix::Canvas *c);
+void drawTutorialMenu(rgb_matrix::Canvas *c);
+void drawCalibrateMenu(rgb_matrix::Canvas *c);
+void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> list, int page, MapMenu *mm);
+void drawZone(int x, int y, int d, Marple *m, rgb_matrix::Canvas *c, clock_t t);
 
 // Menu States
 class MainMenu : public GameState
@@ -78,6 +87,8 @@ public:
     void OnEntry() override;
     void Update() override;
     std::string Name() override;
+
+    MapLoader* getLoader() {return loader;};
 
     void ChangePage(int change);
     static void ChangePageWrapper(MapMenu *mm, int n);

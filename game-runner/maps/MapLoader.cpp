@@ -1,4 +1,5 @@
 #include "MapLoader.h"
+#include "../graphics/gfx.h"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ vector<string> MapLoader::getFileList()
     return fileList;
 }
 
-void MapLoader::loadMapFile(int fileIndex)
+Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
 {
     ifstream file("maps/" + fileList[fileIndex] + ".csv");
 
@@ -59,10 +60,12 @@ void MapLoader::loadMapFile(int fileIndex)
 
     file.close();
 
-    //
-
     vector<Wall*> walls;
+    vector<Hole*> holes;
     int w = 0;
+    int h = 0;
+
+    Marple *m;
 
     // For every row
     for (int y=0; y<64; y++)
@@ -131,17 +134,28 @@ void MapLoader::loadMapFile(int fileIndex)
                     //cout << "Wall found at " << x << "," << y << endl;
                 }
             }
-            else if (mapData[y][x][0] == 'M')
+            else if (mapData[y][x][0] == 'S')
             {
-//                Marple marple(x, y, 2);
-//                marple.setColour(getColour(mapData[y][x].substr(2,6)));
+                m = new Marple(x, y, 3, new Home(x, y, 3));
+                x+=2;
+                //Marple marple(x, y, 2);
+                //marple.setColour(getColour(mapData[y][x].substr(2,6)));
+            }
+            else if (mapData[y][x][0] == 'E')
+            {
+                // Marple marple(x, y, 2);
+                drawZone(x, y, 3, c, clock());
+                x+=2;
             }
             else if (mapData[y][x][0] == 'H')
             {
-                // Marple marple(x, y, 2);
+                holes.push_back(new Hole(x, y, 3));
+                h++;
+                x+=2;
             }
         }
     }
+    return m;
 }
 
 vector<int> getColour(string hexString)

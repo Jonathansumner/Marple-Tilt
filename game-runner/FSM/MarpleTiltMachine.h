@@ -1,16 +1,14 @@
 #pragma once
 #include "GameStates.h"
 #include "MenuStates.h"
-#include "led-matrix.h"
 
 class MarpleTiltMachine {
 private:
-    GameState* currState = nullptr;
     GameState* prevState = nullptr;
     rgb_matrix::Canvas *canvas = nullptr;
 
 public:
-    MarpleTiltMachine(rgb_matrix::Canvas *c) {canvas = c;};
+    MarpleTiltMachine() {};
     ~MarpleTiltMachine() {};
 
     void Init();
@@ -23,4 +21,7 @@ public:
     void Destroy();
 
     GameState* GetCurrentState();
+    void SetCanvas(rgb_matrix::Canvas *c) {canvas = c;};
+
+    GameState *currState = nullptr;
 };

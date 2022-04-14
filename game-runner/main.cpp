@@ -32,9 +32,13 @@ MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
-std::vector<MapCollisionBox *> MapCollisionBox::mapColliders;
+
+static Canvas *canvas;
+
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
+
+MarpleTiltMachine GameState::runner;
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -77,8 +81,23 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
+                case TEXT: {
+                    dynamic_cast<Textbox *>(obj)->draw();
+                    break;
+                }
+                case END : {
+                    int d = dynamic_cast<End *>(obj)->getDiameter();
+                    auto *ref = dynamic_cast<End*>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                    break;
+                }
+                case HOME : {
+                    int d = dynamic_cast<Home *>(obj)->getDiameter();
+                    auto * ref = dynamic_cast<Home *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                }
                 case BUTTON: {
-                    Button * button = dynamic_cast<Button *>(obj);
+                    auto * button = dynamic_cast<Button *>(obj);
                     int d = std::round(button->getBarWidth());
                     int h = button->getHeight();
                     Button *ref;
@@ -91,6 +110,8 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
                 }
+                case BAR:
+                    break;
             }
         }
     }
@@ -99,9 +120,13 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
+            if (Object::frame[i][j]&&(Object::frame[i][j]->getColour() != Object::frame[i][j]->getColour())) {
+                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+            }
             if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-            } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+            }
+            else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, 0, 0, 0);
             }
         }
@@ -153,8 +178,7 @@ void gyroTest(Canvas *canvas, Marple *marple, float weighting_factor = 3) {
 
 void wallTest(bool border = true, bool wall = true) {
     Wall *walls[96];
-//    vector<int> colours = {rand() % 255, rand() % 255, rand() % 255};
-    vector<int> colours = {100, 100, 100};
+    vector<int> colours = {0, 100, 255};
     if (border) {
         for (int x = 0; x < 16; x++) {
             walls[x] = new Wall(static_cast<float>(x) * 4, 0, 4);
@@ -181,62 +205,6 @@ void wallTest(bool border = true, bool wall = true) {
     }
 }
 
-void stateTest(MarpleTiltMachine runner, Canvas *c) {
-
-    runner.ChangeCurrentState(new MainMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new SettingsMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new SoundMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new GameplayMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new TutorialMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    runner.ChangeCurrentState(new BrightnessMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-
-    MapMenu* mm = new MapMenu(c);
-    runner.ChangeCurrentState(mm);
-    update(c);
-    render(c);
-    sleep(10);
-    mm->ChooseMap(3);
-    update(c);
-    render(c);
-    sleep(60);
-    c->Clear();
-
-    runner.ChangeCurrentState(new CalibrateMenu(c));
-    update(c);
-    render(c);
-    sleep(10);
-    c->Clear();
-}
-
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
@@ -247,38 +215,32 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 50;
-    Canvas *canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    defaults.brightness = 100;
+    canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;
     font.LoadFont("img/5x8.bdf");
     if (canvas == nullptr)
         return 1;
-    // Test objects
-    Home home(32, 32, 3);
-    Marple marple(30, 30, 3, &home);
-    MarpleTiltMachine fsm(canvas);
 
-    marple.setColour({255, 0, 0});
-    Gyro.setOffsets(); //Calibrate gyro
-    //wallTest(true, false); // Display test function
-    //Hole hole(20, 20, 5, &marple);
-    //hole.setColour({0, 255, 0});
-
-    MapButton mB(30, 30, 16, 16, "img/compass.png", &MapMenu::ChooseMapWrapper, new MapMenu(canvas), 3);
+//  Test Objects
+    Gyro.setOffsets();
+    GameState::runner.SetCanvas(canvas);
+    GameState::runner.currState = new MainMenu(canvas);
+    GameState::runner.GetCurrentState()->OnEntry();
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
         timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
         //Before all updates
-
         update(canvas); // copy frame to frame_prev and update frame with new positions
         render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(canvas, true); // copy frame to frame_prev and clear frame for new positions
+        update(canvas, true); // copy frame to frame_prev and clear frame for new
+
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            //updateMarple(&marple, &Gyro);
-            ColliderCheck(&marple);
+            updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);
+            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());\
         }
         //After game updates
         gettimeofday(&t, nullptr);
@@ -290,7 +252,6 @@ int main(int argc, char *argv[]) {
         tick++;
     }
 
-    std::cout << "\nProgram terminated\n";
     canvas->Clear();
     delete canvas;
     return 0;

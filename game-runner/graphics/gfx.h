@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <graphics.h>
 #include <cmath>
+#include <iostream>
 #include "led-matrix.h"
-#include "../FSM/MarpleTiltMachine.h"
 
 using namespace rgb_matrix;
 using std::vector;
@@ -21,10 +21,13 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     BAR,
     BUTTON,
     HOME,
+    END,
+    TEXT,
 };
 
 class MapMenu;
 class MarpleTiltMachine;
+class GameState;
 
 class Object
 {
@@ -43,20 +46,41 @@ public:
         red = 255, green = 255, blue = 255;
     }
 
+    ~Object();
+
     virtual void setColour(std::vector<int> colour);
+    virtual vector<int> getColour() {
+        return {red, green, blue};
+    };
     virtual vector<float> getPos();
     virtual draw_type getType();
     virtual vector<float> move(float x, float y);
     virtual void setPos(std::vector<float> pos);
 
-private:
+    static void clearStage(Canvas * c) {
+        c->Clear();
+        for(Object * obj : instances) {
+            delete obj; // delete object pointer (+ run destructor on object)
+        }
+        instances.clear(); // empty list of all objects
+    }
+
+    static void clearRenderBuffer() {
+        for (int x=0; x < 64; x++) {
+            for (int y = 0; y < 64; y++) {
+                frame_prev[x][y] = nullptr;
+                frame[x][y] = nullptr;
+            }
+        }
+    }
+
+protected:
     draw_type type;
     float x_pos;
     float y_pos;
 };
 
 class Home : public Object {
-private:
     int diameter;
 public:
     Home(float x, float y, int d)
@@ -64,8 +88,34 @@ public:
     {
         diameter = d;
     }
+    int getDiameter() {
+        return diameter;
+    };
     float getX();
     float getY();
+};
+
+class Textbox : public Object {
+protected:
+    rgb_matrix::Font font;
+    rgb_matrix::Color text_colour;
+    const char * text;
+    rgb_matrix::Color * background;
+    Canvas * canvas;
+public:
+    Textbox(float x, float y, const rgb_matrix::Font& f, rgb_matrix::Color tc, Canvas* c, const char * txt, rgb_matrix::Color * bg=nullptr)
+        : Object{x, y, TEXT}
+    {
+        instances.push_back(this);
+        font = f;
+        text_colour = tc;
+        text = txt;
+        background = bg;
+        canvas = c;
+    }
+    void draw() {
+        rgb_matrix::DrawText(canvas, font, x_pos, y_pos, text_colour, background, text, 0);
+    }
 };
 
 class Marple : public Object {
@@ -83,9 +133,12 @@ public:
         x_acceleration = 0;
         y_acceleration = 0;
         home = h;
+        red = 255;
+        green = 0;
+        blue = 0;
     }
 
-    ~Marple();
+//    ~Marple();
 
     int getDiameter();
     void returnHome();
@@ -136,15 +189,18 @@ protected:
     int progress_secs;
     void (*callback)(Marple * marple);
     bool trigger_type; // trigger_type = true : touch trigger | trigger_type = false : proximity trigger
-
     static bool checkCollisionTouch(Marple * marple, CollisionBox * collider);
     static bool checkCollisionProx(Marple *marple, CollisionBox *collider, double threshold = 1);
     static std::vector<CollisionBox *> Colliders; //TODO: make an Object instead? or keep separate track
 public:
+    CollisionBox(void){};
     CollisionBox(int x, int y, int w, int h, int progress_secs, void (*func)(Marple * marple), bool loading_bar=true, bool touch_trig = true);
     static void colliderPoll(Marple * marple);
     LoadingBar* getBar();
     LoadingBar * bar;
+    static void clear() {
+        Colliders.clear();
+    }
     int getWidth();
     int getHeight();
     int getX();
@@ -157,7 +213,7 @@ private:
     int diameter;
     CollisionBox *box;
 public:
-    Hole(float x, float y, int d, Marple * marple)
+    Hole(float x, float y, int d)
             : Object{x, y, HOLE}
     {
         instances.push_back(this);
@@ -178,20 +234,9 @@ public:
     StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS);
     static void colliderStatePoll(Marple * marple);
     static bool checkCollision(Marple *marple, StateCollisionBox *collider);
-};
-
-class MapCollisionBox : public CollisionBox
-{
-private:
-    void (*callback)(MapMenu *, int);
-    MapMenu *mmState;
-    int mapID;
-    static std::vector<MapCollisionBox*> mapColliders;
-
-public:
-    MapCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID);
-    static void colliderMapPoll(Marple* marple);
-    static bool checkCollision(Marple* marple, MapCollisionBox *collider);
+    static void clear() {
+        stateColliders.clear();
+    }
 };
 
 class Button : public Object {
@@ -215,6 +260,26 @@ public:
     char * getPath();
 };
 
+class End : public Object {
+private:
+    int diameter;
+    StateCollisionBox *box;
+public:
+    End(float x, float y, int d, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=1)
+            : Object{x, y, END}
+    {
+        green = 100;
+        red = 100;
+        blue = 0;
+        instances.push_back(this);
+        diameter = d;
+        box = new StateCollisionBox(x, y, d, d, 0, f, false, fsm, ns);
+    }
+    int getDiameter() {
+        return diameter;
+    }
+};
+
 class StateButton : public Button {
     private:
         
@@ -223,21 +288,18 @@ class StateButton : public Button {
 
 };
 
-class MapButton : public Button
-{
-private:
-public:
-    MapButton(int xp, int yp, int w, int h, char *p, void (*f)(MapMenu *, int), MapMenu *mm, int mID, int time = 2);
-};
-
-//OLD SHAPES
-
 void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(&array)[64][64]);
 
-void fillBorder(Canvas *c, Color borderColour, int width);
+void fillBorder(rgb_matrix::Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
-    MapCollisionBox::colliderMapPoll(marple);
-    StateCollisionBox::colliderStatePoll(marple);
     CollisionBox::colliderPoll(marple);
+    StateCollisionBox::colliderStatePoll(marple);
+}
+
+static void clearAll(Canvas*c) {
+    Object::clearRenderBuffer();
+    Object::clearStage(c);
+    CollisionBox::clear();
+    StateCollisionBox::clear();
 }
