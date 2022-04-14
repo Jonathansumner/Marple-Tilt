@@ -1,7 +1,6 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
 #include "../FSM/GameState.h"
-#include "../FSM/MarpleTiltMachine.h"
 
 using namespace std;
 
@@ -38,7 +37,7 @@ vector<string> MapLoader::getFileList()
     return fileList;
 }
 
-Marple* MapLoader::loadMapFile(int fileIndex)
+Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
 {
     ifstream file("maps/" + fileList[fileIndex] + ".csv");
 
@@ -65,7 +64,11 @@ Marple* MapLoader::loadMapFile(int fileIndex)
     //
 
     vector<Wall*> walls;
+    vector<Hole*> holes;
     int w = 0;
+    int h = 0;
+
+    Marple *m;
 
     // For every row
     for (int y=0; y<64; y++)
@@ -134,23 +137,27 @@ Marple* MapLoader::loadMapFile(int fileIndex)
                     //cout << "Wall found at " << x << "," << y << endl;
                 }
             }
-            else if (mapData[y][x][0] == 'M')
+            else if (mapData[y][x][0] == 'S')
             {
-//                Marple marple(x, y, 2);
-//                marple.setColour(getColour(mapData[y][x].substr(2,6)));
+                m = new Marple(x, y, 3, new Home(x, y, 3));
+                x+=2;
+                //Marple marple(x, y, 2);
+                //marple.setColour(getColour(mapData[y][x].substr(2,6)));
+            }
+            else if (mapData[y][x][0] == 'E')
+            {
+                // Marple marple(x, y, 2);
+                drawZone(x, y, 3, c, clock());
+                x+=2;
             }
             else if (mapData[y][x][0] == 'H')
             {
-                // Marple marple(x, y, 2);
+                holes.push_back(new Hole(x, y, 3));
+                h++;
+                x+=2;
             }
         }
     }
-    Marple *m = new Marple(5, 55, 3, new Home(5, 55, 5));
-    clock_t time = clock();
-    End * end = new End(50, 16, 3, m, &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameOver(GameState::runner.GetCurrentState()->canvas, time));
-    Hole * hole1 = new Hole( 15, 30, 4, m);
-    Hole * hole2 = new Hole( 25, 45, 4, m);
-    Hole * hole3 = new Hole( 35, 50, 4, m);
     return m;
 }
 

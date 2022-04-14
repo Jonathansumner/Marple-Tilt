@@ -184,7 +184,7 @@ private:
     int diameter;
     CollisionBox *box;
 public:
-    Hole(float x, float y, int d, Marple * marple)
+    Hole(float x, float y, int d)
             : Object{x, y, HOLE}
     {
         instances.push_back(this);
@@ -253,7 +253,7 @@ private:
     int diameter;
     StateCollisionBox *box;
 public:
-    End(float x, float y, int d, Marple * marple, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=1)
+    End(float x, float y, int d, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=1)
             : Object{x, y, END}
     {
         green = 100;

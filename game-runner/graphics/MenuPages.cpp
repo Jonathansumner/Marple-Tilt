@@ -140,7 +140,7 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
     //     DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
     // }
 
-    StateButton* testMap = new StateButton(32, 32, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameRunning(c, mm->getLoader(), 3));
+    StateButton* testMap = new StateButton(32, 32, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameRunning(c, mm->getLoader(), 1));
 
     string page = "page " + to_string(pageNum + 1);
     const char *tmp = page.c_str();
@@ -166,4 +166,8 @@ void drawGameOver(rgb_matrix::Canvas *c, double time)
     GameState::runner.GetCurrentState()->setMarple(m);
 
     StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &GameState::runner, new MainMenu(c));
+}
+
+void endZone(int x, int y, int d, Canvas *c, clock_t t) {
+    End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameOver(c, t));
 }

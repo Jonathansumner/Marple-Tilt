@@ -11,6 +11,7 @@ void drawGameplayMenu(rgb_matrix::Canvas *c);
 void drawTutorialMenu(rgb_matrix::Canvas *c);
 void drawCalibrateMenu(rgb_matrix::Canvas *c);
 void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> list, int page, MapMenu *mm);
+void drawZone(int x, int y, int d, Marple *m, rgb_matrix::Canvas *c, clock_t t);
 
 // Menu States
 class MainMenu : public GameState

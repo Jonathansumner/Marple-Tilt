@@ -131,9 +131,8 @@ void MapMenu::ChangePageWrapper(MapMenu *mm, int n) {
 
 void MapMenu::ChooseMap(int mapID)
 {
-    
     clearAll(canvas);
-    setMarple(loader->loadMapFile(mapID));
+    setMarple(loader->loadMapFile(mapID, canvas));
 }
 
 void MapMenu::ChooseMapWrapper(MapMenu *mm, int mapID)
