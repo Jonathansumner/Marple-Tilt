@@ -1,6 +1,7 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
 #include "../FSM/GameState.h"
+#include "../FSM/MarpleTiltMachine.h"
 
 using namespace std;
 
@@ -144,8 +145,12 @@ Marple* MapLoader::loadMapFile(int fileIndex)
             }
         }
     }
-
     Marple *m = new Marple(5, 55, 3, new Home(5, 55, 5));
+    clock_t time = clock();
+    End * end = new End(50, 16, 3, m, &MarpleTiltMachine::StaticStateChange, &GameState::runner, new GameOver(GameState::runner.GetCurrentState()->canvas, time));
+    Hole * hole1 = new Hole( 15, 30, 4, m);
+    Hole * hole2 = new Hole( 25, 45, 4, m);
+    Hole * hole3 = new Hole( 35, 50, 4, m);
     return m;
 }
 

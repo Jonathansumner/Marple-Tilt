@@ -82,6 +82,13 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
+                case END : {
+//                    int d = dynamic_cast<End *>(obj)->getDiameter();
+                    int d = 10;
+                    auto *ref = dynamic_cast<End*>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                    break;
+                }
                 case BUTTON: {
                     Button * button = dynamic_cast<Button *>(obj);
                     int d = std::round(button->getBarWidth());

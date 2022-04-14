@@ -21,6 +21,7 @@ enum draw_type { //TODO try make some way of automatic handling of assets?
     BAR,
     BUTTON,
     HOME,
+    END,
 };
 
 class MapMenu;
@@ -55,31 +56,27 @@ public:
     static void clearStage(Canvas * c) {
         c->Clear();
         for(Object * obj : instances) {
-            if (obj != nullptr) {
-            obj->clearFromFrame(); // remove object instances from display buffer
             delete obj; // delete object pointer (+ run destructor on object)
-            }
         }
         instances.clear(); // empty list of all objects
     }
 
-private:
-    void clearFromFrame() {
-        for (auto & x : Object::frame) {
-            for (auto & y : x) {
-                if (y&&y == this) {
-                    y = nullptr;
-                }
+    static void clearRenderBuffer() {
+        for (int x=0; x < 64; x++) {
+            for (int y = 0; y < 64; y++) {
+                frame_prev[x][y] = nullptr;
+                frame[x][y] = nullptr;
             }
         }
     }
+
+protected:
     draw_type type;
     float x_pos;
     float y_pos;
 };
 
 class Home : public Object {
-private:
     int diameter;
 public:
     Home(float x, float y, int d)
@@ -106,6 +103,9 @@ public:
         x_acceleration = 0;
         y_acceleration = 0;
         home = h;
+        red = 255;
+        green = 0;
+        blue = 0;
     }
 
 //    ~Marple();
@@ -248,6 +248,26 @@ public:
     char * getPath();
 };
 
+class End : public Object {
+private:
+    int diameter;
+    StateCollisionBox *box;
+public:
+    End(float x, float y, int d, Marple * marple, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=1)
+            : Object{x, y, END}
+    {
+        green = 100;
+        red = 100;
+        blue = 0;
+        instances.push_back(this);
+        diameter = d;
+        box = new StateCollisionBox(x, y, d, d, 0, f, false, fsm, ns);
+    }
+    int getDiameter() {
+        return diameter;
+    }
+};
+
 class StateButton : public Button {
     private:
         
@@ -270,17 +290,19 @@ void fillRect(float start_x, float start_y, int w, int h, Object *obj, Object *(
 void fillBorder(rgb_matrix::Color borderColour, int width);
 
 static void ColliderCheck(Marple * marple) {
-    if (!marple) {
-        return;
-    }
+    std::cout << "before collider poll\n";
     CollisionBox::colliderPoll(marple);
+    std::cout << "before state poll\n";
     StateCollisionBox::colliderStatePoll(marple);
-    MapCollisionBox::colliderMapPoll(marple);
+    std::cout << "after state poll\n";
 }
 
 static void clearAll(Canvas*c) {
+    std::cout << "before clear all\n";
+    Object::clearRenderBuffer();
     Object::clearStage(c);
+    std::cout << "after clearStage+renderbuffer\n";
     CollisionBox::clear();
-    MapCollisionBox::clear();
     StateCollisionBox::clear();
+    std::cout << "before after clear all\n";
 }

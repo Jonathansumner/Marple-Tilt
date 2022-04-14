@@ -44,7 +44,7 @@ std::string GamePaused::Name() { return "Game Paused"; }
 // Game Running Function Implementations
 void GameRunning::OnEntry()
 {
-    loader->loadMapFile(mID);
+    setMarple(loader->loadMapFile(mID));
     startTime = clock();
 }
 

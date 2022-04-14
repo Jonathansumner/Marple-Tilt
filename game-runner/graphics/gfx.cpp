@@ -124,7 +124,10 @@ CollisionBox::CollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time,
 }
 
 bool CollisionBox::checkCollisionTouch(Marple *marple, CollisionBox *collider) {
+    std::cout << "start of touch check\n";
+    std::cout << collider->getX() << ", " << collider->getY();
     int marp_x = (int)std::round(marple->getPos()[0]), marp_y = (int)std::round(marple->getPos()[1]), marp_d = marple->getDiameter();
+    std::cout << "after marp params\n";
     if ((((collider->x <= marp_x) && (marp_x <= collider->x + collider->width)) ||
          ((collider->x <= marp_x + marp_d) && (marp_x + marp_d <= collider->x + collider->width)))
         &&
@@ -201,12 +204,14 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
     {
         if (checkCollisionTouch(marple, collider))
         {
+            std::cout << "after state collision touch check\n";
             if (collider->progress <= (collider->progress_secs * 60) - 1)
             {
                 collider->progress++;
             }
             else
             {
+                std::cout << "before state callback\n";
                 collider->callback(collider->StateMachine, collider->NewState); // if progress bar limit reached, run specific callback
                 std::cout << "Callback finished\n";
                 collider->progress = 0;
@@ -217,7 +222,11 @@ void StateCollisionBox::colliderStatePoll(Marple *marple)
         {
             collider->progress = 0;
         }
-        collider->bar->setDiameter(collider->progress * ((float)collider->width / (float)(collider->progress_secs * 60)));
+        std::cout << "before update state bar diameter\n";
+
+        if (collider->bar) {
+            collider->bar->setDiameter(collider->progress * ((float) collider->width / (float) (collider->progress_secs * 60)));
+        }
     }
 }
 
