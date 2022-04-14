@@ -91,8 +91,13 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
+                case HOME : {
+                    int d = dynamic_cast<Home *>(obj)->getDiameter();
+                    auto * ref = dynamic_cast<Home *>(obj);
+                    fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                }
                 case BUTTON: {
-                    Button * button = dynamic_cast<Button *>(obj);
+                    auto * button = dynamic_cast<Button *>(obj);
                     int d = std::round(button->getBarWidth());
                     int h = button->getHeight();
                     Button *ref;
@@ -105,6 +110,8 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
                 }
+                case BAR:
+                    break;
             }
         }
     }

@@ -88,6 +88,9 @@ public:
     {
         diameter = d;
     }
+    int getDiameter() {
+        return diameter;
+    };
     float getX();
     float getY();
 };
