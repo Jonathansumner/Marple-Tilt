@@ -83,8 +83,7 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     break;
                 }
                 case END : {
-//                    int d = dynamic_cast<End *>(obj)->getDiameter();
-                    int d = 10;
+                    int d = dynamic_cast<End *>(obj)->getDiameter();
                     auto *ref = dynamic_cast<End*>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
@@ -202,7 +201,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 50;
+    defaults.brightness = 100;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;

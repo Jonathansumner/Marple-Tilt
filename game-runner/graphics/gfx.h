@@ -210,23 +210,6 @@ public:
     }
 };
 
-class MapCollisionBox : public CollisionBox
-{
-private:
-    void (*callback)(MapMenu *, int);
-    MapMenu *mmState;
-    int mapID;
-    static std::vector<MapCollisionBox*> mapColliders;
-
-public:
-    MapCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MapMenu *, int), bool loading_bar, MapMenu *mm, int ID);
-    static void colliderMapPoll(Marple* marple);
-    static bool checkCollision(Marple* marple, MapCollisionBox *collider);
-    static void clear() {
-        mapColliders.clear();
-    }
-};
-
 class Button : public Object {
 protected:
     char * path;
