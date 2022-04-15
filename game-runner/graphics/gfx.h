@@ -14,15 +14,15 @@
 using namespace rgb_matrix;
 using std::vector;
 
-enum draw_type { //TODO try make some way of automatic handling of assets?
+enum draw_type { //Order of enum ordinal determines drawing order, and therefore the drawing layer priority
+    TEXT,
     MARPLE,
     HOLE,
     WALL,
-    BAR,
-    BUTTON,
     HOME,
     END,
-    TEXT,
+    BAR,
+    BUTTON,
 };
 
 class MapMenu;

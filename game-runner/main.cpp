@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <unistd.h>
 #include <cstring>
+#include <algorithm>
 
 #include "graphics/gfx.h"
 #include "dynamics/dynamics.h"
@@ -53,7 +54,9 @@ static void InterruptHandler(int signo) {
     interrupt_received = true;
 }
 
-void update(Canvas*c, bool clear = false) { // Update object references within the matrix array | TODO get advice about handling polymorphic pointer arrays
+void update(Canvas *c, bool clear = false) { // Update object references within the render buffer
+    sort(Object::instances.begin(), Object::instances.end(),
+         [](Object *cmp1, Object *cmp2) { return cmp1->getType() > cmp2->getType(); });
     if (clear) memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
     for (Object *obj: Object::instances) {
         if (obj) {
@@ -87,17 +90,17 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                 }
                 case END : {
                     int d = dynamic_cast<End *>(obj)->getDiameter();
-                    auto *ref = dynamic_cast<End*>(obj);
+                    auto *ref = dynamic_cast<End *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                     break;
                 }
                 case HOME : {
                     int d = dynamic_cast<Home *>(obj)->getDiameter();
-                    auto * ref = dynamic_cast<Home *>(obj);
+                    auto *ref = dynamic_cast<Home *>(obj);
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
                 }
                 case BUTTON: {
-                    auto * button = dynamic_cast<Button *>(obj);
+                    auto *button = dynamic_cast<Button *>(obj);
                     int d = std::round(button->getBarWidth());
                     int h = button->getHeight();
                     Button *ref;
@@ -106,7 +109,10 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
                     } else {
                         ref = nullptr;
                     }
-                    if (ref) {drawImage(button->getPath(), c, {(int)button->getPos()[0], (int)button->getPos()[1], button->getWidth(), button->getHeight()});}
+                    if (ref) { drawImage(button->getPath(), c,
+                                         {(int) button->getPos()[0], (int) button->getPos()[1], button->getWidth(),
+                                          button->getHeight()});
+                    }
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
                 }
@@ -120,13 +126,9 @@ void update(Canvas*c, bool clear = false) { // Update object references within t
 void render(Canvas *canvas) { // render each pixel with respect to the object reference
     for (int i = 0; i < 64; i++) {
         for (int j = 0; j < 64; j++) {
-            if (Object::frame[i][j]&&(Object::frame[i][j]->getColour() != Object::frame[i][j]->getColour())) {
-                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-            }
             if (Object::frame[i][j] && !Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
-            }
-            else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
+            } else if (!Object::frame[i][j] && Object::frame_prev[i][j]) {
                 canvas->SetPixel(i, j, 0, 0, 0);
             }
         }
@@ -193,14 +195,14 @@ void wallTest(bool border = true, bool wall = true) {
     }
     if (wall) {
         for (int x = 0; x < 8; x++) {
-        walls[x + 64] = new Wall(12, 32 + static_cast<float>(x * 4), 4);
-        walls[x + 64]->setColour(colours);
-        walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
-        walls[x + 72]->setColour(colours);
-        walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
-        walls[x + 80]->setColour(colours);
-        walls[x + 88] = new Wall(48, static_cast<float>(x * 4), 4);
-        walls[x + 88]->setColour(colours);
+            walls[x + 64] = new Wall(12, 32 + static_cast<float>(x * 4), 4);
+            walls[x + 64]->setColour(colours);
+            walls[x + 72] = new Wall(24, static_cast<float>(x * 4), 4);
+            walls[x + 72]->setColour(colours);
+            walls[x + 80] = new Wall(36, 32 + static_cast<float>(x * 4), 4);
+            walls[x + 80]->setColour(colours);
+            walls[x + 88] = new Wall(48, static_cast<float>(x * 4), 4);
+            walls[x + 88]->setColour(colours);
         }
     }
 }
@@ -215,7 +217,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 100;
+    defaults.brightness = 50;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;
@@ -240,7 +242,7 @@ int main(int argc, char *argv[]) {
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
             updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);
-            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());\
+            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());
         }
         //After game updates
         gettimeofday(&t, nullptr);
@@ -256,3 +258,4 @@ int main(int argc, char *argv[]) {
     delete canvas;
     return 0;
 }
+

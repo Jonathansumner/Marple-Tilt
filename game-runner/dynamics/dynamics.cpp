@@ -1,7 +1,6 @@
 #include "dynamics.h"
 
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
-    std::cout << "Marple update started\n";
     if (marple== nullptr) {
         return;
     }
@@ -97,25 +96,4 @@ void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) 
         std::cout << "x_acc: " << marple->x_acceleration << ", y_acc: " << marple->y_acceleration << " || ";
         std::cout << "x_vel: " << marple->x_velocity << ", y_vel: " << marple->y_velocity << "\n";
     }
-    std::cout << "MArple update finsished\n";
 }
-
-
-
-
-/*
-*pass in marple object
-*get current velocity
-*read current angle - > acceleration
-*100 -> -100 : (1p/s)/s -> -1p/s/s
-*apply the acceleration
-*position + (velocity + acceleration) = new position
-
-*once new position obtained, check for collisions
-*if in new position there is a wall
-*check if marple new position would touch wall or be inside wall
-*if inside wall, reposition, so it only touches wall
-*if touching wall invert the acceleration so it "bounces off" wall
-*check if marple new position would touch hole
-*if touches hole, set new position to start position to teleport it back to the start.
-*/
