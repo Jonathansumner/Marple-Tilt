@@ -45,15 +45,19 @@ vector<string> MapLoader::getFileList(int pageNum)
     vector<string> files;
     int len = fileList.size();
 
+    std::cout << "get files\n";
+
     if (len <= pageNum * 3) 
     {
         return files;
-    } else if (len <= (pageNum+1) * 3) 
+    } else if (len <= (pageNum + 1) * 3) 
     {
-        return vector<string>(files.begin() + (pageNum * 3), files.end());
+        std::cout << "return files\n";
+        return vector<string>(fileList.begin() + (pageNum * 3), fileList.end());
     } else {
         int n = pageNum * 3;
-        return vector<string>(files.begin() + n, files.begin() + n + 3);
+        std::cout << "return files\n";
+        return vector<string>(fileList.begin() + n, fileList.begin() + n + 3);
     }
 }
 

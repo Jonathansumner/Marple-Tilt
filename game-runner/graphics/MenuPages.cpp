@@ -126,29 +126,47 @@ void drawCalibrateMenu(Canvas *c)
 
 void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 {
+    cout << "Starting drawing\n";
     drawMenu(c, "Map Menu");
+    cout << "Menu Core Drawn\n";
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
 
     vector<StateButton*> buttons;
     vector<Textbox*> boxes;
-    int i = 1;
+    int i = 0;
 
-    for (string file : files)
+    if (files.size() > 0) 
     {
-        buttons.push_back(new StateButton(14, i*16, 16, 16, "img/map.png", 
-                            &MarpleTiltMachine::StaticStateChange, &BaseState::runner, 
-                            new GameRunning(c, mm->getLoader(), (i-1)*pageNum)));
-        boxes.push_back(new Textbox(14, i*16, font, titleColor, c, &file[0], NULL));
-        i++;
+        for (string file : files)
+        {
+            char *tmp = new char[file.length() + 1];
+            strcpy(tmp, file.c_str());
+
+            buttons.push_back(new StateButton(6, 12 + (i*16), 16, 16, "img/map.png", 
+                                &MarpleTiltMachine::StaticStateChange, &BaseState::runner, 
+                                new GameRunning(c, mm->getLoader(), (i)*pageNum+1)));
+            boxes.push_back(new Textbox(24, 20 + (i*16), font, borderColor, c, tmp, NULL));
+            i++;
+        }
+    } else 
+    {
+        boxes.push_back(new Textbox(30, 30, font, titleColor, c, "No Maps Found", NULL));
     }
 
-    string page = "page " + to_string(pageNum + 1);
+    cout << "State Buttons drawn\n";
 
-    boxes.push_back(new Textbox(20, 60, font, titleColor, c, &page[0], NULL));
+    string page = string("page ") + to_string(pageNum + 1);
+    char *arr = new char[page.length() + 1];
+    strcpy(arr, page.c_str());
+
+    boxes.push_back(new Textbox(20, 60, font, titleColor, c, arr, NULL));
 
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+
+    boxes.clear();
+    buttons.clear();
 }
 
 void drawGameOver(rgb_matrix::Canvas *c, double time)

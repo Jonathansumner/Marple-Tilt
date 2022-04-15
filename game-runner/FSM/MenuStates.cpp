@@ -1,5 +1,6 @@
 #include "MenuStates.h"
 #include "../maps/MapLoader.h"
+#include <iostream>
 
 // Main Menu Implementations
 
@@ -72,6 +73,7 @@ void MapMenu::OnEntry()
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
+    std::cout << "Draw!\n";
     drawMapMenu(canvas, loader->getFileList(0), 0, this);
 }
 
