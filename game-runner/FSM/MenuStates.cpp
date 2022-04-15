@@ -72,16 +72,18 @@ void MapMenu::OnEntry()
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
-    drawMapMenu(canvas, loader->getFileList(), 0, this);
+    drawMapMenu(canvas, loader->getFileList(0), 0, this);
 }
 
 void MapMenu::ChangePage(int change)
 {
     if (change == 1)
     {
-        drawMapMenu(canvas, loader->getFileList(), currPage + 1, this);
+        currPage++;
+        drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
     } else {
-        drawMapMenu(canvas, loader->getFileList(), currPage - 1, this);
+        currPage--;
+        drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
     }
 }
 

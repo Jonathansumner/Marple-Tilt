@@ -40,9 +40,21 @@ int MapLoader::loadFileList()
 
 }
 
-vector<string> MapLoader::getFileList()
+vector<string> MapLoader::getFileList(int pageNum)
 {
-    return fileList;
+    vector<string> files;
+    int len = fileList.size();
+
+    if (len <= pageNum * 3) 
+    {
+        return files;
+    } else if (len <= (pageNum+1) * 3) 
+    {
+        return vector<string>(files.begin() + (pageNum * 3), files.end());
+    } else {
+        int n = pageNum * 3;
+        return vector<string>(files.begin() + n, files.begin() + n + 3);
+    }
 }
 
 Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)

@@ -22,9 +22,11 @@ class MapLoader
         ~MapLoader() {};
 
         int loadFileList();
-        std::vector<std::string> getFileList();
+        std::vector<std::string> getFileList(int n);
 
         Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c);
+
+
 
 };
 

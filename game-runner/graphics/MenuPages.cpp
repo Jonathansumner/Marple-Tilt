@@ -131,30 +131,24 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
 
-    int filesLeft = files.size() - (pageNum * 4);
+    vector<StateButton*> buttons;
+    vector<Textbox*> boxes;
+    int i = 1;
 
-    // for (int i=1; i<=filesLeft && i<5; i++) {
-    //     string option = to_string(i + (pageNum * 4)) + " " + files[(i-1) + (pageNum * 4)];
-    //     const char *array = option.c_str();
-
-    //     DrawText(c, font, 6, 10 + (i*10), fontColor, NULL, array, 0);
-    // }
-
-    StateButton *Map1 = new StateButton(14, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameRunning(c, mm->getLoader(), 0));
-
-    StateButton *Map2 = new StateButton(14, 44, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameRunning(c, mm->getLoader(), 2));
-
-    StateButton *Map3 = new StateButton(36, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameRunning(c, mm->getLoader(), 1));
-
-    StateButton *Map4 = new StateButton(36, 44, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameRunning(c, mm->getLoader(), 3));
+    for (string file : files)
+    {
+        buttons.push_back(new StateButton(14, i*16, 16, 16, "img/map.png", 
+                            &MarpleTiltMachine::StaticStateChange, &BaseState::runner, 
+                            new GameRunning(c, mm->getLoader(), (i-1)*pageNum)));
+        boxes.push_back(new Textbox(14, i*16, font, titleColor, c, &file[0], NULL));
+        i++;
+    }
 
     string page = "page " + to_string(pageNum + 1);
-    const char *tmp = page.c_str();
 
-    char word[] = "img/left.png";
+    boxes.push_back(new Textbox(20, 60, font, titleColor, c, &page[0], NULL));
+
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
-    DrawText(c, font, 20, 60, titleColor, NULL, tmp, 0);
-    drawImage("img/right.png", c, {52, 56, 10, 10});
 }
 
 void drawGameOver(rgb_matrix::Canvas *c, double time)
