@@ -37,8 +37,7 @@ private slots:
     void startMode(Paint *painter);
     void endMode(Paint *painter);
     void selectColour(Paint *painter, ColourPick *picker);
-
-
+    void erase(Paint *painter);
 
 };
 

@@ -29,31 +29,42 @@ paintTab::paintTab(QWidget *parent) :
     QPushButton *wall = new QPushButton(right);
     wall->setText("Wall");
     wall->setStyleSheet("background-color: #61d5ff");
+    wall->setFixedSize(120,60);
     connect(wall, &QPushButton::released, this, std::bind(&paintTab::wallMode, this, painter));
     QPushButton *hole = new QPushButton(right);
     hole->setText("Hole");
     hole->setStyleSheet("background-color: #9c9c9c");
+    hole->setFixedSize(120,60);
     connect(hole, &QPushButton::released, this, std::bind(&paintTab::holeMode, this, painter));
     QPushButton *start = new QPushButton(right);
     start->setText("Marple-Start");
     start->setStyleSheet("background-color: #84dd3c");
+    start->setFixedSize(120,60);
     connect(start, &QPushButton::released, this, std::bind(&paintTab::startMode, this, painter));
     QPushButton *end = new QPushButton(right);
     end->setText("End-Goal");
     end->setStyleSheet("background-color: #c15e60");
+    end->setFixedSize(120,60);
     connect(end, &QPushButton::released, this, std::bind(&paintTab::endMode, this, painter));
 
-    QPushButton *what = new QPushButton(right);
-    connect(what, &QPushButton::released, colourPicker, std::bind(&paintTab::selectColour, this, painter, colourPicker));
-    what->setStyleSheet("background-color: #ffaa7f");
-    what->setText("Select Colour");
+    QPushButton *paintButton = new QPushButton(right);
+    connect(paintButton, &QPushButton::released, colourPicker, std::bind(&paintTab::selectColour, this, painter, colourPicker));
+    paintButton->setStyleSheet("background-color: #ffaa7f");
+    paintButton->setText("Change Colour");
+    paintButton->setFixedSize(120,60);
 
+    QPushButton *eraser = new QPushButton(right);
+    connect(eraser, &QPushButton::released, this, std::bind(&paintTab::erase, this, painter));
+    eraser->setStyleSheet("background-color: #fff0ca");
+    eraser->setText("Eraser");
+    eraser->setFixedSize(120,60);
 
     rightFrame->addWidget(wall, 0, 0, Qt::AlignCenter);
     rightFrame->addWidget(hole, 1, 0, Qt::AlignCenter);
     rightFrame->addWidget(start, 2, 0, Qt::AlignCenter);
     rightFrame->addWidget(end, 3, 0, Qt::AlignCenter);
-    rightFrame->addWidget(what,4,1,Qt::AlignCenter);
+    rightFrame->addWidget(eraser, 4, 0, Qt::AlignCenter);
+    rightFrame->addWidget(paintButton,4,1,Qt::AlignCenter);
 
     frame->addWidget(left, 0, 0);
     frame->addWidget(right, 0,1);
@@ -85,5 +96,13 @@ void::paintTab::endMode(Paint *painter){
 }
 
 void::paintTab::selectColour(Paint *painter, ColourPick *picker){
-    painter->setColour(picker->onColour());
+    int element = painter->getElement();
+    if(element != 4){
+        painter->setColour(picker->onColour());
+    }
+}
+
+void::paintTab::erase(Paint *painter){
+    painter->setColour("#ffffff");
+    painter->setElement(4);
 }
