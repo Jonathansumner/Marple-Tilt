@@ -14,7 +14,7 @@
 #include "graphics/MenuPages.h"
 
 #include "FSM/MarpleTiltMachine.h"
-#include "maps/MapLoader.h"
+#include "FSM/MenuStates.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -38,7 +38,7 @@ static Canvas *canvas;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
-MarpleTiltMachine GameState::runner;
+MarpleTiltMachine BaseState::runner;
 
 //Interrupt flags and Timers
 volatile bool interrupt_received = false;
@@ -225,9 +225,9 @@ int main(int argc, char *argv[]) {
 
 //  Test Objects
     Gyro.setOffsets();
-    GameState::runner.SetCanvas(canvas);
-    GameState::runner.currState = new MainMenu(canvas);
-    GameState::runner.GetCurrentState()->OnEntry();
+    BaseState::runner.setCanvas(canvas);
+    BaseState::runner.currState = new MainMenu(canvas);
+    BaseState::runner.GetCurrentState()->OnEntry();
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);
@@ -239,8 +239,8 @@ int main(int argc, char *argv[]) {
 
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro);
-            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());\
+            updateMarple(BaseState::runner.GetCurrentState()->getMarple(), &Gyro);
+            ColliderCheck(BaseState::runner.GetCurrentState()->getMarple());
         }
         //After game updates
         gettimeofday(&t, nullptr);

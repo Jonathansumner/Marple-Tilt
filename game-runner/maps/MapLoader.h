@@ -1,18 +1,11 @@
 #pragma once
 
-#include <iostream>
-#include <unistd.h>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <dirent.h>
-#include <ios>
-#include <bitset>
-#include <math.h>
+
 #include "led-matrix.h"
 
-class GameState;
+class BaseState;
 class MarpleTiltMachine;
 class Wall;
 class Marple;

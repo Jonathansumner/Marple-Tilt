@@ -8,7 +8,7 @@
 class MapButton;
 class StateButton;
 class MarpleTiltMachine;
-class GameState;
+class BaseState;
 class MapMenu;
 class GameOver;
 class Marple;
