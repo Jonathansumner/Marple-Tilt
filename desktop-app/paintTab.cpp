@@ -112,9 +112,44 @@ paintTab::paintTab(QWidget *parent) :
     borderPush->setText("Draw Border");
     borderPush->setStyleSheet("background-color: #ffdf6b");
     borderPush->setFixedSize(120,60);
-    rightFrame->addWidget(borderPush, 1, 1, Qt::AlignCenter);
+    rightFrame->addWidget(borderPush, 2, 1, Qt::AlignCenter);
     connect(borderPush, &QPushButton::released, this, std::bind(&paintTab::border, this, painter));
 
+    QFrame *msFrame = new QFrame(right);
+    msFrame->setWindowIconText("Brush Size");
+    rightFrame->addWidget(msFrame, 1, 1, Qt::AlignCenter);
+    QGridLayout *mSize = new QGridLayout(msFrame);
+    QLabel *mLabel = new QLabel(msFrame);
+    mLabel->setText("Marple-Size: ");
+    QLabel *wLabel = new QLabel(msFrame);
+    wLabel->setText("(!Will reset non");
+    QLabel *dLabel = new QLabel(msFrame);
+    dLabel->setText("-wall elements!)");
+
+    QPushButton *oneM = new QPushButton(right);
+    oneM->setText("1");
+    oneM->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *twoM = new QPushButton(right);
+    twoM->setText("2");
+    twoM->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *threeM = new QPushButton(right);
+    threeM->setText("3");
+    threeM->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *fourM = new QPushButton(right);
+    fourM->setText("4");
+    fourM->setStyleSheet("background-color: #d5ccf0");
+    mSize->addWidget(oneM, 0, 0, Qt::AlignCenter);
+    mSize->addWidget(twoM, 0, 1, Qt::AlignCenter);
+    mSize->addWidget(threeM, 0, 2, Qt::AlignCenter);
+    mSize->addWidget(fourM, 0, 3, Qt::AlignCenter);
+    mSize->addWidget(mLabel, 1, 1, Qt::AlignRight);
+    mSize->addWidget(wLabel, 1, 2, Qt::AlignLeft);
+    mSize->addWidget(dLabel, 1, 3, Qt::AlignLeft);
+
+    connect(oneM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 1));
+    connect(twoM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 2));
+    connect(threeM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 3));
+    connect(fourM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 4));
 
 
 }
@@ -158,4 +193,8 @@ void::paintTab::setBrushSize(Paint *painter, int i){
 
 void::paintTab::border(Paint *painter){
     painter->borderIn();
+}
+
+void::paintTab::setMarpleSize(Paint *painter, int i){
+    painter->setMarpleSize(i);
 }

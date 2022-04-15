@@ -40,6 +40,7 @@ private slots:
     void erase(Paint *painter);
     void setBrushSize(Paint *painter, int i);
     void border(Paint *painter);
+    void setMarpleSize(Paint *painter, int i);
 };
 
 #endif //UNTITLED1_PAINTTAB_H
