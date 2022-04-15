@@ -26,6 +26,7 @@ public:
         pixmap->fill();
         resize(640, 640);
         coordinates = new QVector<coord>();
+        brushSize = 1;
 
 
     }
@@ -59,6 +60,18 @@ public:
         return element;
     }
 
+    void setBrushSize(int i){
+        brushSize = i;
+    }
+
+    void borderIn(){
+        border();
+    }
+
+    void setMarpleSize(int mSize){
+        marpleSize = mSize;
+    }
+
 
 protected:
     void paintEvent(QPaintEvent *) {
@@ -82,6 +95,8 @@ protected:
             draw(e);
         }
     }
+
+
 
 private:
     void draw(QMouseEvent *e) {
@@ -117,8 +132,8 @@ private:
             else{
                 bool check = false;
 
-                for(int i = 0; i < marpleSize; i++){
-                    for(int j = 0; j < marpleSize; j++){
+                for(int i = 0; i < brushSize; i++){
+                    for(int j = 0; j < brushSize; j++){
                         if(itemCheck(x+i,y-j)){
                             check = true;
                         }
@@ -169,12 +184,28 @@ private:
         return check;
     }
 
+    void border(){
+        QPainter painter(pixmap);
+        painter.setPen(color);
+        for(int i = 0; i < 64; i++){
+            for(int j = 0; j < brushSize; j++){
+                painter.drawPoint(0+j, 0+j+i);
+                painter.drawPoint(0+j+i, 0+j);
+                painter.drawPoint(63-j-i, 63-j);
+                painter.drawPoint(63-j, 63-j-i);
+            }
+
+        }
+
+        repaint();
+    }
+
     QColor color;
     QPixmap *pixmap;
     bool pressed;
     int marpleSize = 3;
     int itemKey = 1;
-    int brushSize = 3;
+    int brushSize;
 
 signals:
 public slots:

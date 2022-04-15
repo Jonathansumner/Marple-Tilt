@@ -6,6 +6,8 @@
 #include <QGridLayout>
 #include "Paint.h"
 #include <QPushButton>
+#include <QFrame>
+#include <QLabel>
 #include "ColourPick.h"
 
 paintTab::paintTab(QWidget *parent) :
@@ -19,11 +21,14 @@ paintTab::paintTab(QWidget *parent) :
     QWidget *right= new QWidget;
     right->setStyleSheet("background-color: #d7d6f0");
 
+
     QGridLayout *rightFrame = new QGridLayout(right);
     rightFrame->setSpacing(0);
     rightFrame->setContentsMargins(0, 80, 0, 80);
 
+
     Paint *painter = new Paint(left);
+
     ColourPick *colourPicker = new ColourPick(right);
 
     QPushButton *wall = new QPushButton(right);
@@ -73,6 +78,45 @@ paintTab::paintTab(QWidget *parent) :
     connect(writeFileButton, &QPushButton::released, painter, &Paint::writeFile);
     writeFileButton->setStyleSheet("background-color: #7fa0de");
     writeFileButton->setText("Save to File");
+
+    QFrame *brushFrame = new QFrame(right);
+    brushFrame->setWindowIconText("Brush Size");
+    rightFrame->addWidget(brushFrame, 0, 1, Qt::AlignCenter);
+    QGridLayout *brushSize = new QGridLayout(brushFrame);
+    QLabel *brushLabel = new QLabel(brushFrame);
+    brushLabel->setText("Brush Size");
+    QPushButton *oneB = new QPushButton(right);
+    oneB->setText("1");
+    oneB->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *twoB = new QPushButton(right);
+    twoB->setText("2");
+    twoB->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *threeB = new QPushButton(right);
+    threeB->setText("3");
+    threeB->setStyleSheet("background-color: #d5ccf0");
+    QPushButton *fourB = new QPushButton(right);
+    fourB->setText("4");
+    fourB->setStyleSheet("background-color: #d5ccf0");
+    brushSize->addWidget(oneB, 0, 0, Qt::AlignCenter);
+    brushSize->addWidget(twoB, 0, 1, Qt::AlignCenter);
+    brushSize->addWidget(threeB, 0, 2, Qt::AlignCenter);
+    brushSize->addWidget(fourB, 0, 3, Qt::AlignCenter);
+    brushSize->addWidget(brushLabel, 1, 1, Qt::AlignRight);
+
+    connect(oneB, &QPushButton::released, this, std::bind(&paintTab::setBrushSize, this, painter, 1));
+    connect(twoB, &QPushButton::released, this, std::bind(&paintTab::setBrushSize, this, painter, 2));
+    connect(threeB, &QPushButton::released, this, std::bind(&paintTab::setBrushSize, this, painter, 3));
+    connect(fourB, &QPushButton::released, this, std::bind(&paintTab::setBrushSize, this, painter, 4));
+
+    QPushButton *borderPush = new QPushButton(right);
+    borderPush->setText("Draw Border");
+    borderPush->setStyleSheet("background-color: #ffdf6b");
+    borderPush->setFixedSize(120,60);
+    rightFrame->addWidget(borderPush, 1, 1, Qt::AlignCenter);
+    connect(borderPush, &QPushButton::released, this, std::bind(&paintTab::border, this, painter));
+
+
+
 }
 
 void::paintTab::wallMode(Paint *painter){
@@ -105,4 +149,13 @@ void::paintTab::selectColour(Paint *painter, ColourPick *picker){
 void::paintTab::erase(Paint *painter){
     painter->setColour("#ffffff");
     painter->setElement(4);
+}
+
+void::paintTab::setBrushSize(Paint *painter, int i){
+    painter->setBrushSize(i);
+
+}
+
+void::paintTab::border(Paint *painter){
+    painter->borderIn();
 }

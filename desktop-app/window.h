@@ -17,7 +17,7 @@ class Window : public QWidget {
 Q_OBJECT
 public:
     explicit Window(QWidget *parent = 0);
-    paintTab *tab4;
+    paintTab *painterTab;
 private:
     QMenuBar *menuBar;
     QPushButton *q_button;
@@ -28,7 +28,8 @@ private:
 
 signals:
 public slots:
-    void writeFile();
+
+
 private slots:
 
 };

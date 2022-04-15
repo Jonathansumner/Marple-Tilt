@@ -38,7 +38,8 @@ private slots:
     void endMode(Paint *painter);
     void selectColour(Paint *painter, ColourPick *picker);
     void erase(Paint *painter);
-
+    void setBrushSize(Paint *painter, int i);
+    void border(Paint *painter);
 };
 
 #endif //UNTITLED1_PAINTTAB_H
