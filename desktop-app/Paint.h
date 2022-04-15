@@ -70,6 +70,10 @@ public:
 
     void setMarpleSize(int mSize){
         marpleSize = mSize;
+        for(int i = 0; i<20; i++){
+            resetElements();
+        }
+
     }
 
 
@@ -198,6 +202,28 @@ private:
         }
 
         repaint();
+    }
+
+    void resetElements(){
+        QColor colorStore = color;
+        color = "#ffffff";
+        QPainter painter(pixmap);
+        painter.setPen(color);
+        int x = 0;
+        int y = 0;
+        for(int i = 0; i < coordinates->size(); i++){
+            x = coordinates->at(i).x;
+            y = coordinates->at(i).y;
+            painter.drawPoint(x,y);
+            coordinates->remove(i);
+        }
+        if(coordinates->empty()){
+            std::cout << "Probably Empty?";
+            std::cout << "\n";
+        }
+        color = colorStore;
+        repaint();
+
     }
 
     QColor color;
