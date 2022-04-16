@@ -45,8 +45,6 @@ vector<string> MapLoader::getFileList(int pageNum)
     vector<string> files;
     int len = fileList.size();
 
-    std::cout << "get files\n";
-
     if (len <= pageNum * 3) 
     {
         return files;
@@ -101,7 +99,6 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             // Is a Wall here?
             if (mapData[y][x][0] == 'W')
             {   
-
                 // Check for 2x2 square
                 if (y < 63 && x < 63 && 
                     mapData[y+1][x][0] == 'W' && 
@@ -161,7 +158,7 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             }
             else if (mapData[y][x][0] == 'S')
             {
-                int size = mapData[y][x][8];
+                int size = mapData[y][x][8] - '0';
                 m = new Marple(x, y, size, new Home(x, y, size));
 
                 if (size > 1)
@@ -182,8 +179,9 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             }
             else if (mapData[y][x][0] == 'E')
             {
-                int size = mapData[y][x][8];
-                drawZone(x, y, 3, c, clock());
+                int size = mapData[y][x][8] - '0';
+                cout << size << endl;
+                drawZone(x, y, size, c, clock());
 
                 if (size > 1)
                 {
@@ -203,7 +201,7 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             }
             else if (mapData[y][x][0] == 'H')
             {
-                int size = mapData[y][x][8];
+                int size = mapData[y][x][8] - '0';
 
                 holes.push_back(new Hole(x, y, size));
 

@@ -24,7 +24,11 @@ int getOffset(char word[], int spaces) {
 void drawMenu(Canvas *c, char* title) {
     font.LoadFont("img/5x8.bdf");
     fillBorder(borderColor, 2);
-    Textbox * title_box = new Textbox(getOffset(title, 1), 2 + font.height(), font, fontColor, c, title);
+    if (title != "")
+    {
+        Textbox *title_box = new Textbox(getOffset(title, 1), 2 + font.height(), font, fontColor, c, title);
+    }
+
 }
 
 void drawMainMenu(Canvas *c)
@@ -126,9 +130,7 @@ void drawCalibrateMenu(Canvas *c)
 
 void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 {
-    cout << "Starting drawing\n";
     drawMenu(c, "Map Menu");
-    cout << "Menu Core Drawn\n";
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
@@ -144,18 +146,16 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
             char *tmp = new char[file.length() + 1];
             strcpy(tmp, file.c_str());
 
-            buttons.push_back(new StateButton(6, 12 + (i*16), 16, 16, "img/map.png", 
+            buttons.push_back(new StateButton(4, 12 + (i*12), 12, 12, "img/map.png", 
                                 &MarpleTiltMachine::StaticStateChange, &BaseState::runner, 
-                                new GameRunning(c, mm->getLoader(), (i)*pageNum+1)));
-            boxes.push_back(new Textbox(24, 20 + (i*16), font, borderColor, c, tmp, NULL));
+                                new GameRunning(c, mm->getLoader(), (i)+(pageNum*3)), 1));
+            boxes.push_back(new Textbox(22, 16 + (i*12), font, borderColor, c, tmp, NULL));
             i++;
         }
     } else 
     {
         boxes.push_back(new Textbox(30, 30, font, titleColor, c, "No Maps Found", NULL));
     }
-
-    cout << "State Buttons drawn\n";
 
     string page = string("page ") + to_string(pageNum + 1);
     char *arr = new char[page.length() + 1];
@@ -171,13 +171,22 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 
 void drawGameOver(rgb_matrix::Canvas *c, double time)
 {
-    drawMenu(c, "Game Over");
+    drawMenu(c, "");
 
-    DrawText(c, font, 25, 20, titleColor, NULL, "Well Done!");
-    DrawText(c, font, 35, 20, titleColor, NULL, "You took");
+    string s = "Well Done!";
+    char *arr = new char[s.length() + 1];
+    strcpy(arr, s.c_str());
+    Textbox *resultBox = new Textbox(6, 20, font, borderColor, c, arr, NULL);
 
-    const char result[] = "54.5 secs";
-    DrawText(c, font, 45, 20, titleColor, NULL, result);
+    string s2 = "You Took";
+    char *arr2 = new char[s2.length() + 1];
+    strcpy(arr2, s2.c_str());
+    Textbox *resultBox2 = new Textbox(6, 30, font, borderColor, c, arr2, NULL);
+
+    string timeString = to_string(floor(time * 100.0) / 100.0) + string(" secs");
+    char *tArr = new char[timeString.length() + 1];
+    strcpy(tArr, timeString.c_str());
+    Textbox *scoreBox = new Textbox(6, 40, font, borderColor, c, tArr, NULL);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
