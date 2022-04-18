@@ -1,4 +1,4 @@
-#include "MarpleTiltMachine.h"
+#include "marple-tilt-machine.h"
 #include <iostream>
 #include <unistd.h>
 

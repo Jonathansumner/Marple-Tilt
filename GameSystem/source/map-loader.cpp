@@ -1,5 +1,7 @@
-#include "MapLoader.h"
-#include "gfx.h"
+#include "map-loader.h"
+#include "led-matrix.h"
+#include "game-objects.h"
+#include "collision-boxes.h"
 
 #include <sstream>
 #include <dirent.h>
@@ -67,7 +69,7 @@ vector<string> MapLoader::getFileList(int pageNum)
     }
 }
 
-Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c, bool tutorial)
+Marple* MapLoader::loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutorial)
 {
     ifstream file;
     int tutNum;
@@ -222,7 +224,7 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c, bool tutorial)
             {
                 int size = mapData[y][x][8] - '0';
 
-                holes.push_back(new Hole(x, y, size));
+                holes.push_back(new Hole(x, y, size, new CollisionBox(x, y, size, size, 0, &Marple::returnWrapper, false, false)));
 
                 if (size > 1) {
                     mapData[y + 1][x] = "";

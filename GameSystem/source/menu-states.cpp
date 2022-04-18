@@ -1,5 +1,5 @@
-#include "MenuStates.h"
-#include "MapLoader.h"
+#include "menu-states.h"
+#include "map-loader.h"
 #include <iostream>
 
 // Main Menu Implementations

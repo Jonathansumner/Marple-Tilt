@@ -8,14 +8,19 @@
 #include <cstring>
 #include <algorithm>
 
-#include "gfx.h"
 #include "dynamics.h"
 #include "MPU6050.h"
 #include "images.h"
-#include "MenuPages.h"
+#include "menu-pages.h"
 
-#include "MarpleTiltMachine.h"
-#include "MenuStates.h"
+#include "marple-tilt-machine.h"
+#include "menu-states.h"
+#include "game-objects.h"
+#include "collision-boxes.h"
+#include "render.h"
+#include "textbox.h"
+#include "button.h"
+#include "images.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -217,7 +222,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 5;
+    defaults.brightness = 10;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;

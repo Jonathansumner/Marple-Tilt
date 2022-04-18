@@ -5,12 +5,8 @@
 
 #include "led-matrix.h"
 
-class BaseState;
-class MarpleTiltMachine;
-class Wall;
 class Marple;
-class Home;
-class Hole;
+
 void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t, int tutNum);
 
 class MapLoader

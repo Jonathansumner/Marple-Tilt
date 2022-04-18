@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseState.h"
+#include "base-state.h"
 #include "images.h"
 #include <ctime>
 

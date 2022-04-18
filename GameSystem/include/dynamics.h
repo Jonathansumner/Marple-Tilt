@@ -3,9 +3,10 @@
 
 #endif //MARPLE_TILT_DYNAMICS_H
 
-#include "gfx.h"
-#include "MPU6050.h"
 #include <iostream>
+
+class MPU6050;
+class Marple;
 
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug = false, float bounce_loss = 0.75);
 

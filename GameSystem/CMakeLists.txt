@@ -14,14 +14,18 @@ string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
 add_executable(${PROJECT_NAME} 
     source/main.cpp
-    source/gfx.cpp source/images.cpp
-    source/MenuPages.cpp
+    source/object.cpp source/game-objects.cpp
+    source/collision-box.cpp source/collision-boxes.cpp
+    source/button.cpp source/buttons.cpp
+    source/loading-bar.cpp source/textbox.cpp
+    source/render.cpp source/images.cpp
+    source/menu-pages.cpp
     source/dynamics.cpp 
-    source/GameStates.cpp source/MenuStates.cpp 
-    source/MarpleTiltMachine.cpp source/BaseState.cpp
-    source/MapLoader.cpp)
+    source/game-states.cpp source/menu-states.cpp 
+    source/marple-tilt-machine.cpp source/base-state.cpp
+    source/map-loader.cpp)
 
-add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
+add_subdirectory(external/mpu6050-api)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

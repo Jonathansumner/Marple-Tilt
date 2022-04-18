@@ -1,5 +1,8 @@
 #include "dynamics.h"
 
+#include "game-objects.h"
+#include "MPU6050.h"
+
 void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
     if (marple== nullptr) {
         return;

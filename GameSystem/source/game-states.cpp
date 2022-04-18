@@ -1,5 +1,5 @@
-#include "GameStates.h"
-#include "MapLoader.h"
+#include "game-states.h"
+#include "map-loader.h"
 
 // StartUp Implementations
 void StartUp::OnEntry()

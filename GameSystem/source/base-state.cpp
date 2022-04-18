@@ -1,5 +1,5 @@
-#include "BaseState.h"
-#include "gfx.h"
+#include "base-state.h"
+#include "render.h"
 
 using rgb_matrix::Canvas;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseState.h"
+#include "base-state.h"
 
 class MapLoader;
 class Marple;

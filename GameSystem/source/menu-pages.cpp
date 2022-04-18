@@ -1,9 +1,16 @@
-#include "MenuPages.h"
+#include "menu-pages.h"
 #include <iostream>
 
-#include "gfx.h"
 #include "images.h"
-#include "MarpleTiltMachine.h"
+#include "graphics.h"
+#include "marple-tilt-machine.h"
+#include "render.h"
+#include "buttons.h"
+#include "textbox.h"
+#include "game-objects.h"
+#include "collision-boxes.h"
+
+#include <math.h>
 
 using namespace rgb_matrix;
 using namespace std;
@@ -250,18 +257,18 @@ void drawFullTutorial(Canvas *c)
 void drawZone(int x, int y, int d, Canvas *c, clock_t t, int tutNum) {
     if (tutNum == 1)
     {
-        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new FullTutorial(c));
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new FullTutorial(c), new StateCollisionBox(x, y, d, d, 0, &MarpleTiltMachine::StaticStateChange, false, &BaseState::runner, new FullTutorial(c)));
     }
     else if (tutNum == 2)
     {
-        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new HoleTutorial(c));
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new HoleTutorial(c), new StateCollisionBox(x, y, d, d, 0, &MarpleTiltMachine::StaticStateChange, false, &BaseState::runner, new HoleTutorial(c)));
     }
     else if (tutNum == 3)
     {
-        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new TutorialOver(c));
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new TutorialOver(c), new StateCollisionBox(x, y, d, d, 0, &MarpleTiltMachine::StaticStateChange, false, &BaseState::runner, new TutorialOver(c)));
     }
     else
     {
-        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameOver(c, t));
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameOver(c, t), new StateCollisionBox(x, y, d, d, 0, &MarpleTiltMachine::StaticStateChange, false, &BaseState::runner, new GameOver(c, t)));
     }
 }
