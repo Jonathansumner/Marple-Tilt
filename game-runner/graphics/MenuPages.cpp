@@ -75,11 +75,11 @@ void drawSoundMenu(Canvas *c)
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
 
-    drawImage("img/audioup.png", c, {25, 30, 16, 16});
-    drawImage("img/audiodown.png", c, {45, 30, 16, 16});
+    Textbox *tempBox = new Textbox(30, 20, font, borderColor, c, "Coming", NULL);
+    Textbox *tempBox2 = new Textbox(32, 30, font, borderColor, c, "Soon", NULL);
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SettingsMenu(c));
 }
 
 void drawBrightnessMenu(Canvas *c)
@@ -89,10 +89,11 @@ void drawBrightnessMenu(Canvas *c)
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
 
-    drawImage("img/sun.png", c, {30, 30, 16, 16});
+    Textbox *tempBox = new Textbox(20, 30, font, borderColor, c, "Coming", NULL);
+    Textbox *tempBox2 = new Textbox(22, 30, font, borderColor, c, "Soon", NULL);
 
     char word[] = "img/left.png";
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SettingsMenu(c));
 }
 
 void drawGameplayMenu(Canvas *c)
@@ -101,6 +102,9 @@ void drawGameplayMenu(Canvas *c)
 
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
+
+    Textbox *tempBox = new Textbox(20, 30, font, borderColor, c, "Coming", NULL);
+    Textbox *tempBox2 = new Textbox(22, 40, font, borderColor, c, "Soon", NULL);
 
     char word[] = "img/left.png";
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
@@ -124,6 +128,9 @@ void drawCalibrateMenu(Canvas *c)
 
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
+
+    Textbox *tempBox = new Textbox(20, 30, font, borderColor, c, "Coming", NULL);
+    Textbox *tempBox2 = new Textbox(22, 40, font, borderColor, c, "Soon", NULL);
 
     char word[] = "img/left.png";
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
