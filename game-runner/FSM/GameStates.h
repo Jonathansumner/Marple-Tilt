@@ -20,14 +20,6 @@ public:
     std::string Name() override;
 };
 
-class GameTerminated : public BaseState
-{
-public:
-    GameTerminated(rgb_matrix::Canvas *c) : BaseState{c} {};
-    virtual void OnEntry() override;
-    std::string Name() override;
-};
-
 class GameRunning : public BaseState
 {
 public:
@@ -50,14 +42,6 @@ public:
     std::string Name() override;
 protected:
     clock_t start;
-};
-
-class TutorialStart : public BaseState
-{
-public:
-    TutorialStart(rgb_matrix::Canvas *c) : BaseState{c} {};
-    virtual void OnEntry() override;
-    std::string Name() override;
 };
 
 class MoveTutorial : public BaseState

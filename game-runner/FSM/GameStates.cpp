@@ -9,14 +9,6 @@ void StartUp::OnEntry()
 
 std::string StartUp::Name() { return "Start Up"; }
 
-//
-
-void GameTerminated::OnEntry()
-{
-}
-
-std::string GameTerminated::Name() { return "Game Terminated"; }
-
 // Game Running Function Implementations
 
 void GameRunning::OnEntry()
@@ -40,13 +32,6 @@ void GameOver::OnEntry()
 std::string GameOver::Name() { return "Game Over"; }
 
 // Tutorial Running Implementations
-
-void TutorialStart::OnEntry()
-{
-
-}
-
-std::string TutorialStart::Name() { return "Tutorial Start"; }
 
 void MoveTutorial::OnEntry()
 {
