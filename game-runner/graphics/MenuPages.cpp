@@ -212,12 +212,12 @@ void drawTutOver(rgb_matrix::Canvas *c)
     string s = "You are now";
     char *arr = new char[s.length() + 1];
     strcpy(arr, s.c_str());
-    Textbox *resultBox = new Textbox(8, 20, font, borderColor, c, arr, NULL);
+    Textbox *resultBox = new Textbox(4, 20, font, borderColor, c, arr, NULL);
 
     string s2 = "ready to play";
     char *arr2 = new char[s2.length() + 1];
     strcpy(arr2, s2.c_str());
-    Textbox *resultBox2 = new Textbox(6, 30, font, borderColor, c, arr2, NULL);
+    Textbox *resultBox2 = new Textbox(4, 30, font, borderColor, c, arr2, NULL);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
@@ -225,11 +225,36 @@ void drawTutOver(rgb_matrix::Canvas *c)
     StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
 }
 
-void drawMoveTutorial()
+void drawMoveTutorial(Canvas *c)
 {
-
+    Textbox *box = new Textbox(2, 10, font, borderColor, c, "Tilt to Move", NULL);
 }
 
-void drawZone(int x, int y, int d, Canvas *c, clock_t t) {
-    End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameOver(c, t));
+void drawHoleTutorial(Canvas *c)
+{
+    Textbox *box = new Textbox(2, 10, font, borderColor, c, "Avoid Holes", NULL);
+}
+
+void drawFullTutorial(Canvas *c)
+{
+    Textbox *box = new Textbox(2, 10, font, borderColor, c, "Now play!", NULL);
+}
+
+void drawZone(int x, int y, int d, Canvas *c, clock_t t, int tutNum) {
+    if (tutNum == 1)
+    {
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new FullTutorial(c));
+    }
+    else if (tutNum == 2)
+    {
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new HoleTutorial(c));
+    }
+    else if (tutNum == 3)
+    {
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new TutorialOver(c));
+    }
+    else
+    {
+        End *end = new End(x, y, d, &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new GameOver(c, t));
+    }
 }

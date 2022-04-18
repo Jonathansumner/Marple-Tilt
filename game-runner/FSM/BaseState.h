@@ -6,7 +6,7 @@ class MarpleTiltMachine;
 class Marple;
 class MPU6050;
 
-void updateMarple(Marple *marple, MPU6050 *gyro, bool debug = false, float bounce_loss = 0.75);
+//void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss);
 
 // Base class for states
 class BaseState

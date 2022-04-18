@@ -5,10 +5,14 @@
 
 class MapLoader;
 void drawGameOver(rgb_matrix::Canvas *c, double elapsed);
+void drawMoveTutorial(rgb_matrix::Canvas *c);
+void drawHoleTutorial(rgb_matrix::Canvas *c);
+void drawFullTutorial(rgb_matrix::Canvas *c);
+void drawTutOver(rgb_matrix::Canvas *c);
 
-// StartUp State
+    // StartUp State
 
-class StartUp : public BaseState
+    class StartUp : public BaseState
 {
 public:
     StartUp(rgb_matrix::Canvas *c) : BaseState{c} {};

@@ -50,19 +50,33 @@ std::string TutorialStart::Name() { return "Tutorial Start"; }
 
 void MoveTutorial::OnEntry()
 {
-    
+    MapLoader *loader = new MapLoader();
+    loader->loadFileList(true);
+    setMarple(loader->loadMapFile(1, canvas, true));
+    drawMoveTutorial(canvas);
+    delete loader;
 }
 
 std::string MoveTutorial::Name() { return "Tutorial - Movement"; }
 
 void HoleTutorial::OnEntry()
 {
+    MapLoader *loader = new MapLoader();
+    loader->loadFileList(true);
+    setMarple(loader->loadMapFile(0, canvas, true));
+    drawHoleTutorial(canvas);
+    delete loader;
 }
 
 std::string HoleTutorial::Name() { return "Tutorial - Holes"; }
 
 void FullTutorial::OnEntry()
 {
+    MapLoader *loader = new MapLoader();
+    loader->loadFileList(true);
+    setMarple(loader->loadMapFile(2, canvas, true));
+    drawFullTutorial(canvas);
+    delete loader;
 }
 
 std::string FullTutorial::Name() { return "Tutorial - Full Game"; }
@@ -71,6 +85,7 @@ std::string FullTutorial::Name() { return "Tutorial - Full Game"; }
 
 void TutorialOver::OnEntry()
 {
+    drawTutOver(canvas);
 }
 
 std::string TutorialOver::Name() { return "Tutorial Over"; }

@@ -12,11 +12,19 @@
 
 using namespace std;
 
-int MapLoader::loadFileList()
+int MapLoader::loadFileList(bool tutorial)
 {
     struct dirent *d;
     DIR *dr;
-    dr = opendir("maps");
+
+    if (tutorial)
+    {
+        dr = opendir("tutorial_maps");
+    }
+    else
+    {
+        dr = opendir("maps");
+    }
 
     if (dr != NULL)
     {
@@ -59,9 +67,20 @@ vector<string> MapLoader::getFileList(int pageNum)
     }
 }
 
-Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
+Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c, bool tutorial)
 {
-    ifstream file("maps/" + fileList[fileIndex] + ".csv");
+    ifstream file;
+    int tutNum;
+
+    if (tutorial)
+    {
+        file.open("tutorial_maps/" + fileList[fileIndex] + ".csv");
+        tutNum = fileIndex + 1;
+    }
+    else
+    {
+        file.open("maps/" + fileList[fileIndex] + ".csv");
+    }
 
     vector<vector<string>> mapData;
     vector<string> row;
@@ -181,7 +200,7 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             {
                 int size = mapData[y][x][8] - '0';
                 cout << size << endl;
-                drawZone(x, y, size, c, clock());
+                drawZone(x, y, size, c, clock(), tutNum);
 
                 if (size > 1)
                 {

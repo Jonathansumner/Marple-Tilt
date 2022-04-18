@@ -11,7 +11,7 @@ class Wall;
 class Marple;
 class Home;
 class Hole;
-void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t);
+void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t, int tutNum);
 
 class MapLoader
 {
@@ -21,12 +21,10 @@ class MapLoader
         MapLoader() {};
         ~MapLoader() {};
 
-        int loadFileList();
+        int loadFileList(bool tutorial = false);
         std::vector<std::string> getFileList(int n);
 
-        Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c);
-
-
+        Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutorial = false);
 
 };
 

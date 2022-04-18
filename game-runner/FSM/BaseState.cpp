@@ -15,7 +15,7 @@ void BaseState::OnExit()
 
 void BaseState::Update(MPU6050 *g)
 {
-    updateMarple(marple, g);
+    //updateMarple(marple, g);
     ColliderCheck(marple);
 }
 
