@@ -1,12 +1,7 @@
 #include "dynamics.h"
 
-void updateMarple(Marple *marple, MPU6050 *gyro, bool debug, float bounce_loss) {
-    if (marple== nullptr) {
-        return;
-    }
-    float x, y, z;
+void updateMarple(Marple *marple, MPU6050 *gyro, volatile float x, volatile float y, volatile float z,  bool debug, float bounce_loss) {
     float weighting_factor = 0.1;
-    gyro->getAccel(&x, &y, &z);
     // clip outliers
     if (x >= 2 or x <= -2) x = 0;
     if (y >= 2 or y <= -2) y = 0;
