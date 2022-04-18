@@ -227,7 +227,7 @@ void drawTutOver(rgb_matrix::Canvas *c)
 
 void drawMoveTutorial()
 {
-    
+
 }
 
 void drawZone(int x, int y, int d, Canvas *c, clock_t t) {
