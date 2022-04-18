@@ -1,16 +1,12 @@
 #include "MenuStates.h"
 #include "../maps/MapLoader.h"
+#include <iostream>
 
 // Main Menu Implementations
 
 void MainMenu::OnEntry() 
 {
     drawMainMenu(canvas);
-}
-
-void MainMenu::Update() 
-{
-    return;
 }
 
 std::string MainMenu::Name() {return stateName;};
@@ -20,11 +16,6 @@ std::string MainMenu::Name() {return stateName;};
 void SettingsMenu::OnEntry()
 {
     drawSettingsMenu(canvas);
-}
-
-void SettingsMenu::Update()
-{
-    return;
 }
 
 std::string SettingsMenu::Name() { return "Settings Menu"; }
@@ -37,11 +28,6 @@ void SoundMenu::OnEntry()
     drawSoundMenu(canvas);
 }
 
-void SoundMenu::Update()
-{
-    return;
-}
-
 std::string SoundMenu::Name() { return "Sound Menu"; }
 
 // Gameplay Menu Implementations
@@ -49,11 +35,6 @@ std::string SoundMenu::Name() { return "Sound Menu"; }
 void GameplayMenu::OnEntry()
 {
     drawGameplayMenu(canvas);
-}
-
-void GameplayMenu::Update()
-{
-    return;
 }
 
 std::string GameplayMenu::Name() { return "Gameplay Menu"; }
@@ -65,11 +46,6 @@ void BrightnessMenu::OnEntry()
     drawBrightnessMenu(canvas);
 }
 
-void BrightnessMenu::Update()
-{
-    return;
-}
-
 std::string BrightnessMenu::Name() { return "Brightness Menu"; }
 
 // Tutorial Menu Implementations
@@ -77,11 +53,6 @@ std::string BrightnessMenu::Name() { return "Brightness Menu"; }
 void TutorialMenu::OnEntry()
 {
     drawTutorialMenu(canvas);
-}
-
-void TutorialMenu::Update()
-{
-    return;
 }
 
 std::string TutorialMenu::Name() { return "Tutorial Menu"; }
@@ -93,35 +64,38 @@ void CalibrateMenu::OnEntry()
     drawCalibrateMenu(canvas);
 }
 
-void CalibrateMenu::Update()
-{
-    return;
-}
-
 std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
 
 // Map Menu Implemenations
+
+MapMenu::MapMenu(rgb_matrix::Canvas *c, int p) : BaseState {c} 
+{
+    currPage = p;
+}
+
+int MapMenu::getCurrPage()
+{
+    return currPage;
+}
 
 void MapMenu::OnEntry()
 {
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
-    drawMapMenu(canvas, loader->getFileList(), 0, this);
-}
-
-void MapMenu::Update()
-{
-    return;
+    std::cout << "Draw!\n";
+    drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
 }
 
 void MapMenu::ChangePage(int change)
 {
     if (change == 1)
     {
-        drawMapMenu(canvas, loader->getFileList(), currPage + 1, this);
+        currPage++;
+        drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
     } else {
-        drawMapMenu(canvas, loader->getFileList(), currPage - 1, this);
+        currPage--;
+        drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
     }
 }
 
@@ -131,7 +105,6 @@ void MapMenu::ChangePageWrapper(MapMenu *mm, int n) {
 
 void MapMenu::ChooseMap(int mapID)
 {
-    clearAll(canvas);
     setMarple(loader->loadMapFile(mapID, canvas));
 }
 

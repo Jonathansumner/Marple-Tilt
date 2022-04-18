@@ -2,6 +2,8 @@
 #include <iostream>
 #include <unistd.h>
 
+using rgb_matrix::Canvas;
+
 void MarpleTiltMachine::Init() {
 
     currState = new StartUp(canvas);
@@ -10,7 +12,7 @@ void MarpleTiltMachine::Init() {
     ChangeCurrentState(new MainMenu(canvas));
 }
 
-void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
+void MarpleTiltMachine::ChangeCurrentState(BaseState* newState) {
     currState->OnExit();
     delete prevState;
 
@@ -21,7 +23,7 @@ void MarpleTiltMachine::ChangeCurrentState(GameState* newState) {
     currState->OnEntry();
 }
 
-void MarpleTiltMachine::StaticStateChange(MarpleTiltMachine* fsm, GameState * nS) {
+void MarpleTiltMachine::StaticStateChange(MarpleTiltMachine* fsm, BaseState * nS) {
    fsm->ChangeCurrentState(nS);
 }
 
@@ -31,9 +33,29 @@ void MarpleTiltMachine::RewindState()
 }
 
 void MarpleTiltMachine::Update() {
-    currState->Update();
+    currState->Update(gyro);
 }
 
-GameState* MarpleTiltMachine::GetCurrentState() {
+BaseState* MarpleTiltMachine::GetCurrentState() {
     return currState;
+}
+
+void MarpleTiltMachine::setCanvas(Canvas *c)
+{
+    canvas = c;
+}
+
+Canvas* MarpleTiltMachine::getCanvas()
+{
+    return canvas;
+}
+
+void MarpleTiltMachine::setGyro(MPU6050 *g)
+{
+    gyro = g;
+}
+
+MPU6050* MarpleTiltMachine::getGyro()
+{
+    return gyro;
 }

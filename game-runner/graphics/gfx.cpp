@@ -162,7 +162,7 @@ void CollisionBox::colliderPoll(Marple *marple) { //TODO: make real-time?
     }
 }
 
-StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS)
+StateCollisionBox::StateCollisionBox(int x_pos, int y_pos, int w, int h, int trigger_time, void (*f)(MarpleTiltMachine *, BaseState *), bool loading_bar, MarpleTiltMachine *fsm, BaseState *nS)
 {
     stateColliders.push_back(this);
     callback = f;
@@ -262,7 +262,7 @@ float Button::getBarWidth() {
     return box->getBar()->getDiameter();
 }
 
-StateButton::StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int t) : Button{xp, yp, w, h, p} {
+StateButton::StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, BaseState*), MarpleTiltMachine *fsm, BaseState *ns, int t) : Button{xp, yp, w, h, p} {
 
     box = new StateCollisionBox(xp, yp, w, h, t, f, true, fsm, ns);
 }

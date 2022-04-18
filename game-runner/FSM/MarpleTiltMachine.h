@@ -2,26 +2,35 @@
 #include "GameStates.h"
 #include "MenuStates.h"
 
+class StartUp;
+class MainMenu;
+
 class MarpleTiltMachine {
-private:
-    GameState* prevState = nullptr;
+protected:
+    BaseState* prevState = nullptr;
     rgb_matrix::Canvas *canvas = nullptr;
+    MPU6050* gyro = nullptr;
 
 public:
     MarpleTiltMachine() {};
     ~MarpleTiltMachine() {};
 
     void Init();
-    void ChangeCurrentState(GameState *newState);
-    static void StaticStateChange(MarpleTiltMachine *fsm, GameState *nS);
+    void ChangeCurrentState(BaseState *newState);
+    static void StaticStateChange(MarpleTiltMachine *fsm, BaseState *nS);
 
     void RewindState();
     void Update();
 
     void Destroy();
 
-    GameState* GetCurrentState();
-    void SetCanvas(rgb_matrix::Canvas *c) {canvas = c;};
+    BaseState* GetCurrentState();
 
-    GameState *currState = nullptr;
+    void setCanvas(rgb_matrix::Canvas *c);
+    Canvas* getCanvas();
+
+    void setGyro(MPU6050 *g);
+    MPU6050* getGyro();
+
+    BaseState *currState = nullptr;
 };
