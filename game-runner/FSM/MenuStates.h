@@ -75,11 +75,13 @@ public:
 class MapMenu : public BaseState
 {
 public:
-    MapMenu(rgb_matrix::Canvas *c) : BaseState{c} {};
+    MapMenu(rgb_matrix::Canvas *c, int p);
     virtual void OnEntry() override;
     std::string Name() override;
 
     MapLoader* getLoader() {return loader;};
+
+    int getCurrPage();
 
     void ChangePage(int change);
     static void ChangePageWrapper(MapMenu *mm, int n);
@@ -90,7 +92,7 @@ public:
 private:
     MapLoader* loader;
 
-    int currPage = 0;
+    int currPage;
     int maxPage;
 };
 

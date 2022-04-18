@@ -13,9 +13,9 @@ void BaseState::OnExit()
     clearAll(canvas);
 }
 
-void BaseState::Update()
+void BaseState::Update(MPU6050 *g)
 {
-    //updateMarple(marple, runner.getGyro());
+    updateMarple(marple, g);
     ColliderCheck(marple);
 }
 

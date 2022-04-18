@@ -17,14 +17,6 @@ void GameTerminated::OnEntry()
 
 std::string GameTerminated::Name() { return "Game Terminated"; }
 
-// Game Waiting Function Implementations
-
-void GamePaused::OnEntry() {
-
-}
-
-std::string GamePaused::Name() { return "Game Paused"; }
-
 // Game Running Function Implementations
 
 void GameRunning::OnEntry()
@@ -47,21 +39,33 @@ void GameOver::OnEntry()
 
 std::string GameOver::Name() { return "Game Over"; }
 
-// Tutorial Paused Implementations
-
-void TutorialPaused::OnEntry()
-{
-}
-
-std::string TutorialPaused::Name() { return "Tutorial Paused"; }
-
 // Tutorial Running Implementations
 
-void TutorialRunning::OnEntry()
+void TutorialStart::OnEntry()
+{
+
+}
+
+std::string TutorialStart::Name() { return "Tutorial Start"; }
+
+void MoveTutorial::OnEntry()
+{
+    
+}
+
+std::string MoveTutorial::Name() { return "Tutorial - Movement"; }
+
+void HoleTutorial::OnEntry()
 {
 }
 
-std::string TutorialRunning::Name() { return "Tutorial Running"; }
+std::string HoleTutorial::Name() { return "Tutorial - Holes"; }
+
+void FullTutorial::OnEntry()
+{
+}
+
+std::string FullTutorial::Name() { return "Tutorial - Full Game"; }
 
 // Tutorial Over Implementations
 

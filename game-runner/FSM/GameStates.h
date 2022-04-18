@@ -24,15 +24,6 @@ public:
     std::string Name() override;
 };
 
-// Gameplay States
-class GamePaused : public BaseState
-{
-public:
-    GamePaused(rgb_matrix::Canvas *c) : BaseState{c} {};
-    virtual void OnEntry() override;
-    std::string Name() override;
-};
-
 class GameRunning : public BaseState
 {
 public:
@@ -57,19 +48,34 @@ protected:
     clock_t start;
 };
 
-// Tutorial States
-class TutorialPaused : public BaseState
+class TutorialStart : public BaseState
 {
 public:
-    TutorialPaused(rgb_matrix::Canvas *c) : BaseState{c} {};
+    TutorialStart(rgb_matrix::Canvas *c) : BaseState{c} {};
     virtual void OnEntry() override;
     std::string Name() override;
 };
 
-class TutorialRunning : public BaseState
+class MoveTutorial : public BaseState
 {
 public:
-    TutorialRunning(rgb_matrix::Canvas *c) : BaseState{c} {};
+    MoveTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
+    std::string Name() override;
+};
+
+class HoleTutorial : public BaseState
+{
+public:
+    HoleTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
+    std::string Name() override;
+};
+
+class FullTutorial : public BaseState
+{
+public:
+    FullTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
     virtual void OnEntry() override;
     std::string Name() override;
 };

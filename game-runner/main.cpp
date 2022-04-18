@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 15;
+    defaults.brightness = 5;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;

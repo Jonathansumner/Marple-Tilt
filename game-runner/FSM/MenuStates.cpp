@@ -68,13 +68,23 @@ std::string CalibrateMenu::Name() { return "Calibrate Menu"; }
 
 // Map Menu Implemenations
 
+MapMenu::MapMenu(rgb_matrix::Canvas *c, int p) : BaseState {c} 
+{
+    currPage = p;
+}
+
+int MapMenu::getCurrPage()
+{
+    return currPage;
+}
+
 void MapMenu::OnEntry()
 {
     loader = new MapLoader();
     maxPage = loader->loadFileList();
 
     std::cout << "Draw!\n";
-    drawMapMenu(canvas, loader->getFileList(0), 0, this);
+    drawMapMenu(canvas, loader->getFileList(currPage), currPage, this);
 }
 
 void MapMenu::ChangePage(int change)

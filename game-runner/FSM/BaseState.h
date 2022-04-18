@@ -6,8 +6,7 @@ class MarpleTiltMachine;
 class Marple;
 class MPU6050;
 
-//void updateMarple(Marple *marple, MPU6050 *gyro, bool debug = false, float bounce_loss = 0.75);
-//MPU6050* MarpleTiltMachine::getGyro();
+void updateMarple(Marple *marple, MPU6050 *gyro, bool debug = false, float bounce_loss = 0.75);
 
 // Base class for states
 class BaseState
@@ -24,7 +23,7 @@ public:
     virtual std::string Name() = 0;
 
     virtual void OnExit();
-    virtual void Update();
+    virtual void Update(MPU6050 *g);
     void setMarple(Marple *m);
     Marple *getMarple();
 

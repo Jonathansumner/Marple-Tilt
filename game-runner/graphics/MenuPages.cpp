@@ -39,7 +39,7 @@ void drawMainMenu(Canvas *c)
     BaseState::runner.GetCurrentState()->setMarple(m);
 
     char word[] = "img/play.png";
-    StateButton *chooseMap = new StateButton(14, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MapMenu(c));
+    StateButton *chooseMap = new StateButton(14, 18, 16, 16, "img/map.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MapMenu(c, 0));
 
     char word2[] = "img/question.png";
     StateButton *chooseTutorial = new StateButton(36, 18, 16, 16, "img/question.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new TutorialMenu(c));
@@ -113,7 +113,8 @@ void drawTutorialMenu(Canvas *c)
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
     BaseState::runner.GetCurrentState()->setMarple(m);
 
-    char word[] = "img/left.png";
+    StateButton *startButton = new StateButton(30, 30, 16, 16, "img/play.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MoveTutorial(c));
+
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
 }
 
@@ -149,12 +150,17 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
             buttons.push_back(new StateButton(4, 12 + (i*12), 12, 12, "img/map.png", 
                                 &MarpleTiltMachine::StaticStateChange, &BaseState::runner, 
                                 new GameRunning(c, mm->getLoader(), (i)+(pageNum*3)), 1));
-            boxes.push_back(new Textbox(22, 16 + (i*12), font, borderColor, c, tmp, NULL));
+            boxes.push_back(new Textbox(22, 18 + (i*12), font, borderColor, c, tmp, NULL));
             i++;
         }
     } else 
     {
-        boxes.push_back(new Textbox(30, 30, font, titleColor, c, "No Maps Found", NULL));
+        boxes.push_back(new Textbox(4, 30, font, titleColor, c, "No Maps Found", NULL));
+    }
+
+    if (files.size() == 3)
+    {
+        StateButton *forwardButton = new StateButton(50, 50, 10, 10, "img/right.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MapMenu(c, pageNum + 1));
     }
 
     string page = string("page ") + to_string(pageNum + 1);
@@ -163,7 +169,11 @@ void drawMapMenu(Canvas *c, vector<string> files, int pageNum, MapMenu *mm)
 
     boxes.push_back(new Textbox(20, 60, font, titleColor, c, arr, NULL));
 
-    StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+    if (pageNum > 0) {
+        StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MapMenu(c, pageNum-1));
+    } else  {
+        StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+    }
 
     boxes.clear();
     buttons.clear();
@@ -183,7 +193,8 @@ void drawGameOver(rgb_matrix::Canvas *c, double time)
     strcpy(arr2, s2.c_str());
     Textbox *resultBox2 = new Textbox(6, 30, font, borderColor, c, arr2, NULL);
 
-    string timeString = to_string(floor(time * 100.0) / 100.0) + string(" secs");
+    float a = floor(time * 100.0) / 100.0;
+    string timeString = to_string(a) + string(" secs");
     char *tArr = new char[timeString.length() + 1];
     strcpy(tArr, timeString.c_str());
     Textbox *scoreBox = new Textbox(6, 40, font, borderColor, c, tArr, NULL);
@@ -192,6 +203,31 @@ void drawGameOver(rgb_matrix::Canvas *c, double time)
     BaseState::runner.GetCurrentState()->setMarple(m);
 
     StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+}
+
+void drawTutOver(rgb_matrix::Canvas *c)
+{
+    drawMenu(c, "");
+
+    string s = "You are now";
+    char *arr = new char[s.length() + 1];
+    strcpy(arr, s.c_str());
+    Textbox *resultBox = new Textbox(8, 20, font, borderColor, c, arr, NULL);
+
+    string s2 = "ready to play";
+    char *arr2 = new char[s2.length() + 1];
+    strcpy(arr2, s2.c_str());
+    Textbox *resultBox2 = new Textbox(6, 30, font, borderColor, c, arr2, NULL);
+
+    Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
+    BaseState::runner.GetCurrentState()->setMarple(m);
+
+    StateButton *returnButton = new StateButton(8, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
+}
+
+void drawMoveTutorial()
+{
+    
 }
 
 void drawZone(int x, int y, int d, Canvas *c, clock_t t) {

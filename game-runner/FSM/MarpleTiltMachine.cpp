@@ -33,7 +33,7 @@ void MarpleTiltMachine::RewindState()
 }
 
 void MarpleTiltMachine::Update() {
-    currState->Update();
+    currState->Update(gyro);
 }
 
 BaseState* MarpleTiltMachine::GetCurrentState() {
