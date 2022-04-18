@@ -3,7 +3,7 @@
 
 #include "gfx.h"
 #include "images.h"
-#include "../FSM/MarpleTiltMachine.h"
+#include "MarpleTiltMachine.h"
 
 using namespace rgb_matrix;
 using namespace std;

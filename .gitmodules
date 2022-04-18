@@ -1,7 +1,7 @@
-[submodule "game-runner/external/matrix-api"]
-	path = game-runner/external/matrix-api
+[submodule "GameSystem/external/matrix-api"]
+	path = GameSystem/external/matrix-api
 	url = https://github.com/hzeller/rpi-rgb-led-matrix.git
 	ignore = dirty
-[submodule "game-runner/external/MPU6050-C-CPP-Library-for-Raspberry-Pi"]
-	path = game-runner/external/MPU6050-C-CPP-Library-for-Raspberry-Pi
+[submodule "GameSystem/external/MPU6050-C-CPP-Library-for-Raspberry-Pi"]
+	path = GameSystem/external/MPU6050-C-CPP-Library-for-Raspberry-Pi
 	url = https://github.com/AidanRandtoul/MPU6050-C-CPP-Library-for-Raspberry-Pi

@@ -1,5 +1,5 @@
 #include "MapLoader.h"
-#include "../graphics/gfx.h"
+#include "gfx.h"
 
 #include <sstream>
 #include <dirent.h>

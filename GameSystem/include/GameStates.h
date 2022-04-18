@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseState.h"
-#include "../graphics/images.h"
+#include "images.h"
 #include <ctime>
 
 class MapLoader;

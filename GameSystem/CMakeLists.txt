@@ -12,13 +12,14 @@ execute_process(COMMAND GraphicsMagick++-config --ldflags --libs OUTPUT_VARIABLE
 
 string(REPLACE "\n" " " MAGICK_LDF_FLAGS_STRIPPED ${MAGICK_LDF_FLAGS})
 
-add_executable(${PROJECT_NAME} main.cpp 
-    graphics/gfx.cpp graphics/images.cpp 
-    graphics/MenuPages.cpp
-    dynamics/dynamics.cpp 
-    FSM/GameStates.cpp FSM/MenuStates.cpp 
-    FSM/MarpleTiltMachine.cpp FSM/BaseState.cpp
-    maps/MapLoader.cpp)
+add_executable(${PROJECT_NAME} 
+    source/main.cpp
+    source/gfx.cpp source/images.cpp
+    source/MenuPages.cpp
+    source/dynamics.cpp 
+    source/GameStates.cpp source/MenuStates.cpp 
+    source/MarpleTiltMachine.cpp source/BaseState.cpp
+    source/MapLoader.cpp)
 
 add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)
 
@@ -34,6 +35,7 @@ set_target_properties(matrixAPI PROPERTIES
 include_directories(
     ${CMAKE_SOURCE_DIR}/external/matrix-api/include
     ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/src
+    ${CMAKE_SOURCE_DIR}/include
     )
 
 target_link_directories(${PROJECT_NAME}

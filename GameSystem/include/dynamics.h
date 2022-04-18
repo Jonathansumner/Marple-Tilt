@@ -3,7 +3,7 @@
 
 #endif //MARPLE_TILT_DYNAMICS_H
 
-#include "../graphics/gfx.h"
+#include "gfx.h"
 #include "MPU6050.h"
 #include <iostream>
 

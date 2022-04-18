@@ -8,14 +8,14 @@
 #include <cstring>
 #include <algorithm>
 
-#include "graphics/gfx.h"
-#include "dynamics/dynamics.h"
+#include "gfx.h"
+#include "dynamics.h"
 #include "MPU6050.h"
-#include "graphics/images.h"
-#include "graphics/MenuPages.h"
+#include "images.h"
+#include "MenuPages.h"
 
-#include "FSM/MarpleTiltMachine.h"
-#include "FSM/MenuStates.h"
+#include "MarpleTiltMachine.h"
+#include "MenuStates.h"
 
 #include <exception>
 #include <Magick++.h>
