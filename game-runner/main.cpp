@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <algorithm>
+#include <stdio.h>
+#include "pigpio.h"
 
 #include "graphics/gfx.h"
 #include "dynamics/dynamics.h"
@@ -29,7 +31,6 @@ using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
 using rgb_matrix::RGBMatrix;
 
-MPU6050 Gyro(0x68);
 std::vector<Object *> Object::instances;
 std::vector<CollisionBox *> CollisionBox::Colliders;
 std::vector<StateCollisionBox *> StateCollisionBox::stateColliders;
@@ -39,9 +40,12 @@ static Canvas *canvas;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
-MarpleTiltMachine BaseState::runner;
+MarpleTiltMachine GameState::runner;
+MPU6050 Gyro(0x68);
+volatile float accel_x = 0, accel_y = 0, accel_z = 0;
 
 //Interrupt flags and Timers
+int status = gpioInitialise();
 volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
@@ -49,6 +53,11 @@ long long elapsed_time;
 long long tick = 0;
 struct timeval t;
 long long frame_time = 16666; //time period for 60Hz in useconds
+
+void GyroCallback(int gpio, int level, uint32_t tick) {
+    Gyro.clearInterrupt(); // clear register 0x3A (58) of MPU6050 to clear interrupt
+    Gyro.getAccel(&accel_x, &accel_y, &accel_z);
+}
 
 static void InterruptHandler(int signo) {
     interrupt_received = true;
@@ -109,9 +118,10 @@ void update(Canvas *c, bool clear = false) { // Update object references within 
                     } else {
                         ref = nullptr;
                     }
-                    if (ref) { drawImage(button->getPath(), c,
-                                         {(int) button->getPos()[0], (int) button->getPos()[1], button->getWidth(),
-                                          button->getHeight()});
+                    if (ref) {
+                        drawImage(button->getPath(), c,
+                                  {(int) button->getPos()[0], (int) button->getPos()[1], button->getWidth(),
+                                   button->getHeight()});
                     }
                     fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
                     break;
@@ -212,6 +222,10 @@ int main(int argc, char *argv[]) {
     RGBMatrix::Options defaults;
     signal(SIGTERM, InterruptHandler);
     signal(SIGINT, InterruptHandler);
+    gpioSetMode(16, PI_INPUT);
+    gpioSetAlertFunc(16, &GyroCallback);
+    Gyro.clearInterrupt();
+
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
@@ -241,8 +255,8 @@ int main(int argc, char *argv[]) {
 
         //After display updates
         if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(BaseState::runner.GetCurrentState()->getMarple(), &Gyro);
-            ColliderCheck(BaseState::runner.GetCurrentState()->getMarple());
+            updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro, accel_x, accel_y, accel_z);
+            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());
         }
         //After game updates
         gettimeofday(&t, nullptr);

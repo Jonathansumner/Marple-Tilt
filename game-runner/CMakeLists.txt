@@ -42,6 +42,7 @@ target_link_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
     matrixAPI
+    "-lpigpio"
     Threads::Threads
     ${MAGICK_LDF_FLAGS_STRIPPED}
     "-lrt"
