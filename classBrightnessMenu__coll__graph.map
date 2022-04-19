@@ -1,0 +1,7 @@
+<map id="BrightnessMenu" name="BrightnessMenu">
+<area shape="rect" id="node1" title=" " alt="" coords="5,263,121,289"/>
+<area shape="rect" id="node2" href="$classBaseState.html" title=" " alt="" coords="81,173,163,200"/>
+<area shape="rect" id="node5" href="$classMarpleTiltMachine.html" title=" " alt="" coords="146,263,274,289"/>
+<area shape="rect" id="node3" href="$classMarple.html" title=" " alt="" coords="91,84,153,111"/>
+<area shape="rect" id="node4" href="$classObject.html" title=" " alt="" coords="92,7,152,33"/>
+</map>

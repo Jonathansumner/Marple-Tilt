@@ -1,0 +1,6 @@
+<map id="Button" name="Button">
+<area shape="rect" id="node1" title=" " alt="" coords="11,263,71,289"/>
+<area shape="rect" id="node2" href="$classObject.html" title=" " alt="" coords="5,7,65,33"/>
+<area shape="rect" id="node4" href="$classLoadingBar.html" title=" " alt="" coords="58,84,146,111"/>
+<area shape="rect" id="node3" href="$classCollisionBox.html" title=" " alt="" coords="57,173,150,200"/>
+</map>

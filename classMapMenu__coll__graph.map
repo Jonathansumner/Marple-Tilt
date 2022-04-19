@@ -1,0 +1,7 @@
+<map id="MapMenu" name="MapMenu">
+<area shape="rect" id="node1" title=" " alt="" coords="5,263,84,289"/>
+<area shape="rect" id="node2" href="$classBaseState.html" title=" " alt="" coords="47,173,130,200"/>
+<area shape="rect" id="node5" href="$classMarpleTiltMachine.html" title=" " alt="" coords="110,263,238,289"/>
+<area shape="rect" id="node3" href="$classMarple.html" title=" " alt="" coords="58,84,119,111"/>
+<area shape="rect" id="node4" href="$classObject.html" title=" " alt="" coords="59,7,119,33"/>
+</map>

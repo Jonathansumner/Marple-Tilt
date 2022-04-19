@@ -1,0 +1,7 @@
+<map id="GameOver" name="GameOver">
+<area shape="rect" id="node1" title=" " alt="" coords="5,263,91,289"/>
+<area shape="rect" id="node2" href="$classBaseState.html" title=" " alt="" coords="51,173,133,200"/>
+<area shape="rect" id="node5" href="$classMarpleTiltMachine.html" title=" " alt="" coords="115,263,243,289"/>
+<area shape="rect" id="node3" href="$classMarple.html" title=" " alt="" coords="61,84,123,111"/>
+<area shape="rect" id="node4" href="$classObject.html" title=" " alt="" coords="62,7,122,33"/>
+</map>
