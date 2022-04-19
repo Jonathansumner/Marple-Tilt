@@ -23,7 +23,8 @@ add_executable(${PROJECT_NAME}
     source/dynamics.cpp 
     source/game-states.cpp source/menu-states.cpp 
     source/marple-tilt-machine.cpp source/base-state.cpp
-    source/map-loader.cpp)
+    source/map-loader.cpp
+    tests/testFunc.cpp)
 
 add_subdirectory(external/mpu6050-api)
 
