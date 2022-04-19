@@ -40,19 +40,20 @@ static Canvas *canvas;
 Object *Object::frame_prev[64][64];
 Object *Object::frame[64][64];
 
-MarpleTiltMachine GameState::runner;
+MarpleTiltMachine BaseState::runner;
 MPU6050 Gyro(0x68);
 volatile float accel_x = 0, accel_y = 0, accel_z = 0;
 
 //Interrupt flags and Timers
 int status = gpioInitialise();
+int interrupt_pin = 16;
 volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
 long long elapsed_time;
 long long tick = 0;
 struct timeval t;
-long long frame_time = 16666; //time period for 60Hz in useconds
+long long frame_time = 10000; //time period for 60Hz in useconds
 
 void GyroCallback(int gpio, int level, uint32_t tick) {
     Gyro.clearInterrupt(); // clear register 0x3A (58) of MPU6050 to clear interrupt
@@ -217,59 +218,55 @@ void wallTest(bool border = true, bool wall = true) {
     }
 }
 
+void loop(Canvas *c, bool uniform = false) {
+    if (!interrupt_received) {
+        gettimeofday(&t, nullptr);
+        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+
+        updateMarple(BaseState::runner.GetCurrentState()->getMarple(), &Gyro, accel_x, accel_y, accel_z);
+        ColliderCheck(BaseState::runner.GetCurrentState()->getMarple());
+        update(c);
+        render(c);
+        update(c, true);
+
+        gettimeofday(&t, nullptr);
+        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
+        elapsed_time = timestamp2 - timestamp1;
+        if (uniform && (elapsed_time < frame_time)) {
+            usleep(frame_time - elapsed_time);
+        }
+        loop(c, uniform);
+    }
+}
+
 int main(int argc, char *argv[]) {
     //  Matrix initialisation
     RGBMatrix::Options defaults;
-    signal(SIGTERM, InterruptHandler);
-    signal(SIGINT, InterruptHandler);
-    gpioSetMode(16, PI_INPUT);
-    gpioSetAlertFunc(16, &GyroCallback);
-    Gyro.clearInterrupt();
-
     defaults.hardware_mapping = "regular";
     defaults.rows = 64;
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 5;
+    defaults.brightness = 20;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
+    if (canvas == nullptr) {
+        return 1;
+    }
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;
     font.LoadFont("img/5x8.bdf");
-    if (canvas == nullptr)
-        return 1;
-
-//  Test Objects
-    Gyro.setOffsets();
     BaseState::runner.setCanvas(canvas);
     BaseState::runner.currState = new MainMenu(canvas);
     BaseState::runner.GetCurrentState()->OnEntry();
+    Gyro.setOffsets();
+    Gyro.clearInterrupt();
+    signal(SIGTERM, InterruptHandler);
+    signal(SIGINT, InterruptHandler);
+    gpioSetMode(interrupt_pin, PI_INPUT);
+    gpioSetAlertFunc(interrupt_pin, &GyroCallback);
 
-    while (!interrupt_received) { // 60 ticks/updates per second
-        gettimeofday(&t, nullptr);
-        timestamp1 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        //Before all updates
-        update(canvas); // copy frame to frame_prev and update frame with new positions
-        render(canvas); // go through prev_frame and frame, draw/clear new/old pixels as appropriate
-        update(canvas, true); // copy frame to frame_prev and clear frame for new
+    loop(canvas, true);
 
-        //After display updates
-        if (tick % 1 == 0) { //Update physics engine every tick
-            updateMarple(GameState::runner.GetCurrentState()->getMarple(), &Gyro, accel_x, accel_y, accel_z);
-            ColliderCheck(GameState::runner.GetCurrentState()->getMarple());
-        }
-        //After game updates
-        gettimeofday(&t, nullptr);
-        timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
-        elapsed_time = timestamp2 - timestamp1;
-        if (elapsed_time < frame_time) {
-            usleep(frame_time - elapsed_time);
-        }
-        tick++;
-    }
-
-    canvas->Clear();
-    delete canvas;
     return 0;
 }
 
