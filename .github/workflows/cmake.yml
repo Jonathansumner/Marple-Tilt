@@ -21,7 +21,11 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Setup
-      run: bash GameSystem/setup.sh
+      run: |
+          cd GameSystem
+          bash setup.sh
       
     - name: Build
-      run: bash GameSystem/build.sh
+      run: |
+          cd GameSystem
+          bash build.sh
