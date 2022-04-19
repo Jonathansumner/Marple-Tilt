@@ -17,4 +17,7 @@ QColor ColourPick::onColour()
     {
         return colour;
     }
+    else{
+        return Qt::black;
+    }
 }

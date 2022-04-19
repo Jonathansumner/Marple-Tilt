@@ -53,7 +53,7 @@ paintTab::paintTab(QWidget *parent) :
     connect(end, &QPushButton::released, this, std::bind(&paintTab::endMode, this, painter));
 
     QPushButton *paintButton = new QPushButton(right);
-    connect(paintButton, &QPushButton::released, colourPicker, std::bind(&paintTab::selectColour, this, painter, colourPicker));
+    connect(paintButton, &QPushButton::released, colourPicker, std::bind(&paintTab::selectColour, this, painter, colourPicker, wall));
     paintButton->setStyleSheet("background-color: #ffaa7f");
     paintButton->setText("Change Colour");
     paintButton->setFixedSize(120,60);
@@ -151,12 +151,19 @@ paintTab::paintTab(QWidget *parent) :
     connect(threeM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 3));
     connect(fourM, &QPushButton::released, this, std::bind(&paintTab::setMarpleSize, this, painter, 4));
 
+    QPushButton *resetButton = new QPushButton(right);
+    resetButton->setText("Clear Map");
+    resetButton->setStyleSheet("background-color: #c788b3");
+    resetButton->setFixedSize(120,60);
+    rightFrame->addWidget(resetButton, 3, 1, Qt::AlignCenter);
+    connect(resetButton, &QPushButton::released, this, std::bind(&paintTab::resetAll, this, painter));
+
+
 
 }
 
 void::paintTab::wallMode(Paint *painter){
     painter->setElement(0);
-    painter->setColour("#61d5ff");
 }
 
 void::paintTab::holeMode(Paint *painter){
@@ -174,10 +181,13 @@ void::paintTab::endMode(Paint *painter){
     painter->setColour("#c15e60");
 }
 
-void::paintTab::selectColour(Paint *painter, ColourPick *picker){
+void::paintTab::selectColour(Paint *painter, ColourPick *picker, QPushButton *wall){
     int element = painter->getElement();
     if(element != 4){
-        painter->setColour(picker->onColour());
+        QColor colour = picker->onColour();
+        painter->setColour(colour);
+        painter->setBrushColour(colour);
+        wall->setStyleSheet("background-color: "+colour.name());
     }
 }
 
@@ -197,4 +207,8 @@ void::paintTab::border(Paint *painter){
 
 void::paintTab::setMarpleSize(Paint *painter, int i){
     painter->setMarpleSize(i);
+}
+
+void::paintTab::resetAll(Paint *painter){
+    painter->resetAll();
 }

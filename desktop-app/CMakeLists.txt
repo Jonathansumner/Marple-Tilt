@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(untitled1)
+project(Marple-Tilt-Map-Creator)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTOMOC ON)
@@ -15,8 +15,8 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(untitled1 main.cpp window.h window.cpp map.h map.cpp Tab1Content.cpp Tab1Content.h Tab3Content.cpp Tab3Content.h Tab2Content.cpp Tab2Content.h Paint.cpp Paint.h paintTab.cpp paintTab.h ImageInfo.cpp ImageInfo.h ColourPick.h ColourPick.cpp)
-target_link_libraries(untitled1
+add_executable(Marple-Tilt-Map-Creator main.cpp window.h window.cpp map.h map.cpp Tab1Content.cpp Tab1Content.h Tab3Content.cpp Tab3Content.h Tab2Content.cpp Tab2Content.h Paint.cpp Paint.h paintTab.cpp paintTab.h ImageInfo.cpp ImageInfo.h ColourPick.h ColourPick.cpp)
+target_link_libraries(Marple-Tilt-Map-Creator
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
@@ -40,6 +40,9 @@ if (WIN32)
                 COMMAND ${CMAKE_COMMAND} -E copy
                 "${QT_INSTALL_PATH}/plugins/platforms/qwindows${DEBUG_SUFFIX}.dll"
                 "$<TARGET_FILE_DIR:${PROJECT_NAME}>/plugins/platforms/")
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND ${CMAKE_COMMAND} -E make_directory
+                "$<TARGET_FILE_DIR:${PROJECT_NAME}>/maps/")
     endif ()
     foreach (QT_LIB Core Gui Widgets)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

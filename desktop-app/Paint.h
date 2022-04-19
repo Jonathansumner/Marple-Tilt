@@ -13,6 +13,9 @@
 #include <vector>
 #include <QList>
 #include <fstream>
+#include <QInputDialog>
+#include <QDir>
+#include <filesystem>
 
 
 class Paint : public QWidget
@@ -21,7 +24,7 @@ Q_OBJECT
 
 public:
     Paint(QWidget *parent = 0) : QWidget(parent), pressed(0) {
-        color = Qt::black;
+        color, brushColor = Qt::black;
         pixmap = new QPixmap(64, 64);
         pixmap->fill();
         resize(640, 640);
@@ -49,11 +52,18 @@ public:
 
 
     void setElement(int el){
+        if(el == 0){
+            color = brushColor;
+        }
         element = el;
     }
 
     void setColour(QColor colour){
         color = colour;
+    }
+
+    void setBrushColour(QColor colour){
+        brushColor = colour;
     }
 
     int getElement(){
@@ -74,6 +84,14 @@ public:
             resetElements();
         }
 
+    }
+
+    void resetAll(){
+        for(int i = 0; i<20; i++){
+            resetElements();
+        }
+        pixmap->fill();
+        repaint();
     }
 
 
@@ -123,6 +141,9 @@ private:
                         }
                     }
                     for(int i = 0; i < coordinates->size(); i++){
+                        std::cout << key;
+                        std::cout << coordinates->at(i).key;
+                        std::cout << "\n";
                         if(coordinates->at(i).key == key){
                             painter.drawPoint(coordinates->at(i).x, coordinates->at(i).y);
                             coordinates->remove(i);
@@ -153,6 +174,13 @@ private:
                         }
                     }
                 }else{
+                    for(int i = 0; i < marpleSize; i++){
+                        for(int j = 0; j < marpleSize; j++){
+                            if(itemCheck(x+i,y-j)){
+                                check = true;
+                            }
+                        }
+                    }
                     if(!check){
                         for(int i = 0; i < marpleSize; i++){
                             for(int j = 0; j < marpleSize; j++){
@@ -217,16 +245,13 @@ private:
             painter.drawPoint(x,y);
             coordinates->remove(i);
         }
-        if(coordinates->empty()){
-            std::cout << "Probably Empty?";
-            std::cout << "\n";
-        }
         color = colorStore;
         repaint();
 
     }
 
     QColor color;
+    QColor brushColor;
     QPixmap *pixmap;
     bool pressed;
     int marpleSize = 3;
@@ -242,8 +267,15 @@ public slots:
         char en = 'W';
         std::string size = std::to_string(marpleSize);
         bool isElement = false;
+        bool ok;
+        QString mapName = "map";
+        QString text = QInputDialog::getText(this, tr("Write"), tr("File-Name:"), QLineEdit::Normal, mapName, &ok);
+        if (ok && !text.isEmpty()){
+            mapName = text;
+        }
+
         std::ofstream outFile;
-        outFile.open("D:/Marple-Tilt/desktop-app/map.csv");
+        outFile.open("maps/"+mapName.toStdString()+".csv"); //"C:/Marple-Tilt-Maps/"+
         for(int i = 0; i < 64; i++){
             for(int j = 0; j <64; j++){
                 for(int n = 0; n < coordinates->size(); n++){

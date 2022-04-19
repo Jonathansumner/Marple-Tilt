@@ -36,11 +36,12 @@ private slots:
     void holeMode(Paint *painter);
     void startMode(Paint *painter);
     void endMode(Paint *painter);
-    void selectColour(Paint *painter, ColourPick *picker);
+    void selectColour(Paint *painter, ColourPick *picker, QPushButton *wall);
     void erase(Paint *painter);
     void setBrushSize(Paint *painter, int i);
     void border(Paint *painter);
     void setMarpleSize(Paint *painter, int i);
+    void resetAll(Paint *painter);
 };
 
 #endif //UNTITLED1_PAINTTAB_H
