@@ -126,3 +126,6 @@ sudo ./out/build/MarpleTilt
 To make changes to the game, simply edit the required files and then run the build script again to generate a new executable.
 
 Note: As the raspberry pi runs a linux based system it is reccomended that you make changes to the Game System on a linux system and therefore no instructions are provided for a Windows setup.
+
+It is possible to set up the raspberry pi to run MarpleTilt on boot up. Instructions on how to achieve this can be found at the following website:
+https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/#:~:text=The%20first%20method%20to%20run,local%20file.
