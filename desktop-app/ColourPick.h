@@ -1,9 +1,10 @@
-//
-// Created by Ali on 08/04/2022.
-//
+//Marple-Tilt Map Creator
+//Alasdair Russell, 2315645R
+//Part of the Marple-Tilt project
+//Built for RTEP group 6, 2022
 
-#ifndef UNTITLED1_COLOURPICK_H
-#define UNTITLED1_COLOURPICK_H
+#ifndef COLOURPICK_H
+#define COLOURPICK_H
 
 #include <QWidget>
 #include <QDebug>
@@ -22,4 +23,4 @@ public slots:
 
 };
 
-#endif //UNTITLED1_COLOURPICK_H
+#endif //COLOURPICK_H

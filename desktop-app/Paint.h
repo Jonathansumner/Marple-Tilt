@@ -1,14 +1,14 @@
-//
-// Created by Ali on 31/03/2022.
-//
+//Marple-Tilt Map Creator
+//Alasdair Russell, 2315645R
+//Part of the Marple-Tilt project
+//Built for RTEP group 6, 2022
 
-#ifndef UNTITLED1_PAINT_H
-#define UNTITLED1_PAINT_H
+#ifndef PAINT_H
+#define PAINT_H
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
 #include <iostream>
-#include "ImageInfo.h"
 #include <QVector>
 #include <vector>
 #include <QList>
@@ -30,8 +30,6 @@ public:
         resize(640, 640);
         coordinates = new QVector<coord>();
         brushSize = 1;
-
-
     }
     ~Paint() { if (pixmap) delete pixmap; }
 
@@ -40,215 +38,38 @@ public:
 
 
     struct coord {
+        //Store x coord, y coord, the element it is meant to be and a unique key.
             int x;
             int y;
             int el;
             int key = 0;
+            //Key is necessary to group individual coord pixels with the element they belong to.
     };
 
 
     QVector<coord> *coordinates;
 
-
-
-    void setElement(int el){
-        if(el == 0){
-            color = brushColor;
-        }
-        element = el;
-    }
-
-    void setColour(QColor colour){
-        color = colour;
-    }
-
-    void setBrushColour(QColor colour){
-        brushColor = colour;
-    }
-
-    int getElement(){
-        return element;
-    }
-
-    void setBrushSize(int i){
-        brushSize = i;
-    }
-
-    void borderIn(){
-        border();
-    }
-
-    void setMarpleSize(int mSize){
-        marpleSize = mSize;
-        for(int i = 0; i<20; i++){
-            resetElements();
-        }
-
-    }
-
-    void resetAll(){
-        for(int i = 0; i<20; i++){
-            resetElements();
-        }
-        pixmap->fill();
-        repaint();
-    }
-
+    void setElement(int el);
+    void setColour(QColor colour);
+    void setBrushColour(QColor colour);
+    int getElement();
+    void setBrushSize(int i);
+    void borderIn();
+    void setMarpleSize(int mSize);
+    void resetAll();
 
 protected:
-    void paintEvent(QPaintEvent *) {
-        QPainter painter(this);
-        painter.drawPixmap(0, 0, pixmap->scaled(640, 640));
-        //painter.drawPixmap(0, 0, *pixmap);
-    }
-
-    void mousePressEvent(QMouseEvent *e) {
-        if (e->button() == Qt::RightButton){}
-
-        else {
-            pressed = 1;
-            draw(e);
-        }
-    }
-
+    void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *) { pressed = 0; }
-    void mouseMoveEvent(QMouseEvent *e) {
-        if(element == 0 or element == 4){
-            draw(e);
-        }
-    }
-
-
+    void mouseMoveEvent(QMouseEvent *e);
 
 private:
-    void draw(QMouseEvent *e) {
-        if (pressed) {
-            QPainter painter(pixmap);
-            painter.setPen(color);
-            int x = e->pos().x()/10;
-            int y = e->pos().y()/10;
-            if(element == 4){
-                for(int i = 0; i < brushSize; i++){
-                    for(int j = 0; j < brushSize; j++){
-                        painter.drawPoint(x+i, y-j);
-                    }
-                }
-                if(itemCheck(x,y)){
-                    int key = 0;
-                    for(int i = 0; i < coordinates->size(); i++){
-                        if((coordinates->at(i).x == x) && (coordinates->at(i).y == y)){
-                            key = coordinates->at(i).key;
-                        }
-                    }
-                    for(int i = 0; i < coordinates->size(); i++){
-                        std::cout << key;
-                        std::cout << coordinates->at(i).key;
-                        std::cout << "\n";
-                        if(coordinates->at(i).key == key){
-                            painter.drawPoint(coordinates->at(i).x, coordinates->at(i).y);
-                            coordinates->remove(i);
-                        }
-                    }
-                }
-
-
-            }
-
-            else{
-                bool check = false;
-
-                for(int i = 0; i < brushSize; i++){
-                    for(int j = 0; j < brushSize; j++){
-                        if(itemCheck(x+i,y-j)){
-                            check = true;
-                        }
-                    }
-                }
-
-                if(element == 0){
-                    if(!check){
-                        for(int i = 0; i < brushSize; i++){
-                            for(int j = 0; j < brushSize; j++){
-                                painter.drawPoint(x+i, y-j);
-                            }
-                        }
-                    }
-                }else{
-                    for(int i = 0; i < marpleSize; i++){
-                        for(int j = 0; j < marpleSize; j++){
-                            if(itemCheck(x+i,y-j)){
-                                check = true;
-                            }
-                        }
-                    }
-                    if(!check){
-                        for(int i = 0; i < marpleSize; i++){
-                            for(int j = 0; j < marpleSize; j++){
-                                painter.drawPoint(x+i, y-j);
-                                updateMap(x+i,y-j);
-                            }
-                        }
-                        itemKey ++;
-                    }
-                }
-            }
-            repaint();
-        }
-    }
-
-    void updateMap(int x, int y){
-        coord coordinate;
-        coordinate.x = x;
-        coordinate.y = y;
-        coordinate.el = element;
-        coordinate.key = itemKey;
-        coordinates->append(coordinate);
-    }
-
-    bool itemCheck(int x, int y){
-        bool check = false;
-
-        for(int i = 0; i < coordinates->size(); i++){
-            if((coordinates->at(i).x == x) && (coordinates->at(i).y == y)){
-                check = true;
-            }
-        }
-        return check;
-    }
-
-    void border(){
-        QPainter painter(pixmap);
-        painter.setPen(color);
-        for(int i = 0; i < 64; i++){
-            for(int j = 0; j < brushSize; j++){
-                painter.drawPoint(0+j, 0+j+i);
-                painter.drawPoint(0+j+i, 0+j);
-                painter.drawPoint(63-j-i, 63-j);
-                painter.drawPoint(63-j, 63-j-i);
-            }
-
-        }
-
-        repaint();
-    }
-
-    void resetElements(){
-        QColor colorStore = color;
-        color = "#ffffff";
-        QPainter painter(pixmap);
-        painter.setPen(color);
-        int x = 0;
-        int y = 0;
-        for(int i = 0; i < coordinates->size(); i++){
-            x = coordinates->at(i).x;
-            y = coordinates->at(i).y;
-            painter.drawPoint(x,y);
-            coordinates->remove(i);
-        }
-        color = colorStore;
-        repaint();
-
-    }
+    void draw(QMouseEvent *e);
+    void updateMap(int x, int y);
+    bool itemCheck(int x, int y);
+    void border();
+    void resetElements();
 
     QColor color;
     QColor brushColor;
@@ -260,66 +81,7 @@ private:
 
 signals:
 public slots:
-    void writeFile(){
-        QPixmap map = pixmap->scaled(64, 64);
-        QImage im = map.toImage();
-        coord coordinate;
-        char en = 'W';
-        std::string size = std::to_string(marpleSize);
-        bool isElement = false;
-        bool ok;
-        QString mapName = "map";
-        QString text = QInputDialog::getText(this, tr("Write"), tr("File-Name:"), QLineEdit::Normal, mapName, &ok);
-        if (ok && !text.isEmpty()){
-            mapName = text;
-        }
-
-        std::ofstream outFile;
-        outFile.open("maps/"+mapName.toStdString()+".csv"); //"C:/Marple-Tilt-Maps/"+
-        for(int i = 0; i < 64; i++){
-            for(int j = 0; j <64; j++){
-                for(int n = 0; n < coordinates->size(); n++){
-                    coordinate = coordinates->at(n);
-                    if(coordinate.x == j && coordinate.y == i){
-                        if(coordinate.el == 1){
-                            en = 'H';
-                            isElement = true;
-
-                        }
-                        if(coordinate.el == 2){
-                            en = 'S';
-                            isElement = true;
-                        }
-                        if(coordinate.el == 3){
-                            en = 'E';
-                            isElement = true;
-                        }
-                    }
-                }
-
-                QColor p = im.pixelColor(j,i);
-                QString name = p.name();
-                if(name.toStdString() == "#ffffff"){
-                    en = 'N';
-                }
-                QString outP = name.insert(0,en);
-                std::string outPut = outP.toStdString();
-                if(isElement){
-                    outPut = outPut.append(size);
-                }
-
-                std::cout << outPut;
-                std::cout << "  ";
-                outFile << outPut + ",";
-                en = 'W';
-                isElement = false;
-            }
-
-            std::cout << '\n';
-            outFile << "\n";
-        }
-        outFile.close();
-    }
+    void writeFile();
 };
 
-#endif //UNTITLED1_PAINT_H
+#endif //PAINT_H
