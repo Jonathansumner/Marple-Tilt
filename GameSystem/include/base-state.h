@@ -23,7 +23,7 @@ public:
     virtual std::string Name() = 0;
 
     virtual void OnExit();
-    virtual void Update(MPU6050 *g);
+    virtual void Update(MPU6050 *g, volatile float x, volatile float y, volatile float z);
     void setMarple(Marple *m);
     Marple *getMarple();
 

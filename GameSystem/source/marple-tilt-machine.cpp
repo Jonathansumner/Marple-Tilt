@@ -19,8 +19,8 @@ void MarpleTiltMachine::StaticStateChange(MarpleTiltMachine* fsm, BaseState * nS
    fsm->ChangeCurrentState(nS);
 }
 
-void MarpleTiltMachine::Update() {
-    currState->Update(gyro);
+void MarpleTiltMachine::Update(volatile float x, volatile float y, volatile float z) {
+    currState->Update(gyro, x, y, z);
 }
 
 BaseState* MarpleTiltMachine::GetCurrentState() {

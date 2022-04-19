@@ -19,7 +19,7 @@ public:
     void ChangeCurrentState(BaseState *newState);
     static void StaticStateChange(MarpleTiltMachine *fsm, BaseState *nS);
 
-    void Update();
+    void Update(volatile float x, volatile float y, volatile float z);
 
     BaseState* GetCurrentState();
 

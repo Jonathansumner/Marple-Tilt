@@ -14,9 +14,9 @@ void BaseState::OnExit()
     clearAll(canvas);
 }
 
-void BaseState::Update(MPU6050 *g)
+void BaseState::Update(MPU6050 *g, volatile float x, volatile float y, volatile float z)
 {
-    updateMarple(marple, g);
+    updateMarple(marple, g, x, y, z);
     ColliderCheck(marple);
 }
 
