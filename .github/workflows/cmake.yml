@@ -32,7 +32,7 @@ jobs:
           cd GameSystem
           bash build.sh
 
-  build-win:
+  build-windows:
     runs-on: windows-latest
 
     - name: Build-MC
