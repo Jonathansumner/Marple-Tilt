@@ -36,12 +36,12 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - name: Build-MC
-      uses: jurpel/install-qt-action@v2
+    - uses: jurpel/install-qt-action@v2
       with:
         version: '5.15.1'
         arch: 'win64_mingw81'
 
+    - name: Build-MC
       run: |
           cd MapCreator
           cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}/Qt/5.15.1/win64_mingw81 -S . -B out
