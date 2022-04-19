@@ -127,5 +127,9 @@ To make changes to the game, simply edit the required files and then run the bui
 
 Note: As the raspberry pi runs a linux based system it is reccomended that you make changes to the Game System on a linux system and therefore no instructions are provided for a Windows setup.
 
+### Wiring
+In order to wire the MPU6050 please follow wiring guide for a typical I2c device, and connect the INT pin to `pin 13` of the Pi.
+In order to wire the matrix, please follow the guide on https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/wiring.md
+
 It is possible to set up the raspberry pi to run MarpleTilt on boot up. Instructions on how to achieve this can be found at the following website:
 https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/#:~:text=The%20first%20method%20to%20run,local%20file.
