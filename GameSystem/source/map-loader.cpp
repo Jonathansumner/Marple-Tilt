@@ -52,11 +52,9 @@ vector<string> MapLoader::getFileList(int pageNum)
         return files;
     } else if (len <= (pageNum + 1) * 3) 
     {
-        std::cout << "return files\n";
         return vector<string>(fileList.begin() + (pageNum * 3), fileList.end());
     } else {
         int n = pageNum * 3;
-        std::cout << "return files\n";
         return vector<string>(fileList.begin() + n, fileList.begin() + n + 3);
     }
 }
@@ -96,12 +94,18 @@ Marple* MapLoader::loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutori
 
     file.close();
 
+    if (mapData.size() == 0)
+    {
+        return nullptr;
+    }
+
     vector<Wall*> walls;
     vector<Hole*> holes;
     int w = 0;
     int h = 0;
 
     Marple *m;
+    bool endfound = false;
 
     // For every row
     for (int y=0; y<64; y++)
@@ -192,6 +196,7 @@ Marple* MapLoader::loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutori
             }
             else if (mapData[y][x][0] == 'E')
             {
+                endfound = true;
                 int size = mapData[y][x][8] - '0';
                 drawZone(x, y, size, c, clock(), tutNum);
 
@@ -237,7 +242,15 @@ Marple* MapLoader::loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutori
     mapData.clear();
     holes.clear();
     walls.clear();
-    return m;
+
+    if (endfound)
+    {
+        return m;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 vector<int> getColour(string hexString)

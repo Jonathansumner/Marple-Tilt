@@ -36,6 +36,10 @@ jobs:
     runs-on: windows-latest
     
     steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+      
     - uses: jurplel/install-qt-action@v2
       with:
         version: '5.15.1'
