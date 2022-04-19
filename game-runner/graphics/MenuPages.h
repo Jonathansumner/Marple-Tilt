@@ -8,7 +8,7 @@
 class MapButton;
 class StateButton;
 class MarpleTiltMachine;
-class GameState;
+class BaseState;
 class MapMenu;
 class GameOver;
 class Marple;
@@ -35,4 +35,4 @@ void drawTutorialMenu(rgb_matrix::Canvas *c);
 
 void drawGameOver(rgb_matrix::Canvas *c, double t);
 
-void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t);
+void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t, int tNum);

@@ -17,7 +17,7 @@
 #include "graphics/MenuPages.h"
 
 #include "FSM/MarpleTiltMachine.h"
-#include "maps/MapLoader.h"
+#include "FSM/MenuStates.h"
 
 #include <exception>
 #include <Magick++.h>
@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 50;
+    defaults.brightness = 5;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     Magick::InitializeMagick(*argv);
     rgb_matrix::Font font;
@@ -241,9 +241,9 @@ int main(int argc, char *argv[]) {
 
 //  Test Objects
     Gyro.setOffsets();
-    GameState::runner.SetCanvas(canvas);
-    GameState::runner.currState = new MainMenu(canvas);
-    GameState::runner.GetCurrentState()->OnEntry();
+    BaseState::runner.setCanvas(canvas);
+    BaseState::runner.currState = new MainMenu(canvas);
+    BaseState::runner.GetCurrentState()->OnEntry();
 
     while (!interrupt_received) { // 60 ticks/updates per second
         gettimeofday(&t, nullptr);

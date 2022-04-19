@@ -17,7 +17,7 @@ add_executable(${PROJECT_NAME} main.cpp
     graphics/MenuPages.cpp
     dynamics/dynamics.cpp 
     FSM/GameStates.cpp FSM/MenuStates.cpp 
-    FSM/MarpleTiltMachine.cpp
+    FSM/MarpleTiltMachine.cpp FSM/BaseState.cpp
     maps/MapLoader.cpp)
 
 add_subdirectory(external/MPU6050-C-CPP-Library-for-Raspberry-Pi)

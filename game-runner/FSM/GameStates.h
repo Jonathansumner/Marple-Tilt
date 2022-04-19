@@ -1,48 +1,30 @@
 #pragma once
-#include "GameState.h"
+#include "BaseState.h"
 #include "../graphics/images.h"
 #include <ctime>
 
 class MapLoader;
 void drawGameOver(rgb_matrix::Canvas *c, double elapsed);
+void drawMoveTutorial(rgb_matrix::Canvas *c);
+void drawHoleTutorial(rgb_matrix::Canvas *c);
+void drawFullTutorial(rgb_matrix::Canvas *c);
+void drawTutOver(rgb_matrix::Canvas *c);
 
-// StartUp State
+    // StartUp State
 
-class StartUp : public GameState
+    class StartUp : public BaseState
 {
 public:
-    StartUp(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
-    void OnExit();
+    StartUp(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
     std::string Name() override;
 };
 
-class GameTerminated : public GameState
+class GameRunning : public BaseState
 {
 public:
-    GameTerminated(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
-    std::string Name() override;
-};
-
-// Gameplay States
-class GamePaused : public GameState
-{
-public:
-    GamePaused(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
-    std::string Name() override;
-};
-
-class GameRunning : public GameState
-{
-public:
-    GameRunning(rgb_matrix::Canvas *c, MapLoader *m, int ID) : GameState{c} {loader = m; mID = ID;};
-    void OnEntry() override;
-    void Update() override;
+    GameRunning(rgb_matrix::Canvas *c, MapLoader *m, int ID) : BaseState{c} {loader = m; mID = ID;};
+    virtual void OnEntry() override;
     std::string Name() override;
     clock_t getTime() {return startTime;};
 
@@ -52,41 +34,44 @@ protected:
     std::clock_t startTime;
 };
 
-class GameOver : public GameState
+class GameOver : public BaseState
 {
 public:
-    GameOver(rgb_matrix::Canvas *c, clock_t time) : GameState{c} {start = time;};
-    void OnEntry() override;
-    void Update() override;
+    GameOver(rgb_matrix::Canvas *c, clock_t time) : BaseState{c} {start = time;};
+    virtual void OnEntry() override;
     std::string Name() override;
 protected:
     clock_t start;
 };
 
-// Tutorial States
-class TutorialPaused : public GameState
+class MoveTutorial : public BaseState
 {
 public:
-    TutorialPaused(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
+    MoveTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
     std::string Name() override;
 };
 
-class TutorialRunning : public GameState
+class HoleTutorial : public BaseState
 {
 public:
-    TutorialRunning(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
+    HoleTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
     std::string Name() override;
 };
 
-class TutorialOver : public GameState
+class FullTutorial : public BaseState
 {
 public:
-    TutorialOver(rgb_matrix::Canvas *c) : GameState{c} {};
-    void OnEntry() override;
-    void Update() override;
+    FullTutorial(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
+    std::string Name() override;
+};
+
+class TutorialOver : public BaseState
+{
+public:
+    TutorialOver(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
     std::string Name() override;
 };

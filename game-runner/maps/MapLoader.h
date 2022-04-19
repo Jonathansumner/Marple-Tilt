@@ -1,24 +1,17 @@
 #pragma once
 
-#include <iostream>
-#include <unistd.h>
-#include <fstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <dirent.h>
-#include <ios>
-#include <bitset>
-#include <math.h>
+
 #include "led-matrix.h"
 
-class GameState;
+class BaseState;
 class MarpleTiltMachine;
 class Wall;
 class Marple;
 class Home;
 class Hole;
-void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t);
+void drawZone(int x, int y, int d, rgb_matrix::Canvas *c, clock_t t, int tutNum);
 
 class MapLoader
 {
@@ -28,10 +21,10 @@ class MapLoader
         MapLoader() {};
         ~MapLoader() {};
 
-        int loadFileList();
-        std::vector<std::string> getFileList();
+        int loadFileList(bool tutorial = false);
+        std::vector<std::string> getFileList(int n);
 
-        Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c);
+        Marple* loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutorial = false);
 
 };
 

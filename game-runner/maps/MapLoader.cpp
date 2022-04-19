@@ -1,13 +1,30 @@
 #include "MapLoader.h"
 #include "../graphics/gfx.h"
 
+#include <sstream>
+#include <dirent.h>
+#include <ios>
+#include <bitset>
+#include <math.h>
+#include <iostream>
+#include <unistd.h>
+#include <fstream>
+
 using namespace std;
 
-int MapLoader::loadFileList()
+int MapLoader::loadFileList(bool tutorial)
 {
     struct dirent *d;
     DIR *dr;
-    dr = opendir("maps");
+
+    if (tutorial)
+    {
+        dr = opendir("tutorial_maps");
+    }
+    else
+    {
+        dr = opendir("maps");
+    }
 
     if (dr != NULL)
     {
@@ -31,14 +48,39 @@ int MapLoader::loadFileList()
 
 }
 
-vector<string> MapLoader::getFileList()
+vector<string> MapLoader::getFileList(int pageNum)
 {
-    return fileList;
+    vector<string> files;
+    int len = fileList.size();
+
+    if (len <= pageNum * 3) 
+    {
+        return files;
+    } else if (len <= (pageNum + 1) * 3) 
+    {
+        std::cout << "return files\n";
+        return vector<string>(fileList.begin() + (pageNum * 3), fileList.end());
+    } else {
+        int n = pageNum * 3;
+        std::cout << "return files\n";
+        return vector<string>(fileList.begin() + n, fileList.begin() + n + 3);
+    }
 }
 
-Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
+Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c, bool tutorial)
 {
-    ifstream file("maps/" + fileList[fileIndex] + ".csv");
+    ifstream file;
+    int tutNum;
+
+    if (tutorial)
+    {
+        file.open("tutorial_maps/" + fileList[fileIndex] + ".csv");
+        tutNum = fileIndex + 1;
+    }
+    else
+    {
+        file.open("maps/" + fileList[fileIndex] + ".csv");
+    }
 
     vector<vector<string>> mapData;
     vector<string> row;
@@ -76,7 +118,6 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             // Is a Wall here?
             if (mapData[y][x][0] == 'W')
             {   
-
                 // Check for 2x2 square
                 if (y < 63 && x < 63 && 
                     mapData[y+1][x][0] == 'W' && 
@@ -136,25 +177,73 @@ Marple* MapLoader::loadMapFile(int fileIndex, Canvas *c)
             }
             else if (mapData[y][x][0] == 'S')
             {
-                m = new Marple(x, y, 3, new Home(x, y, 3));
-                x+=2;
-                //Marple marple(x, y, 2);
-                //marple.setColour(getColour(mapData[y][x].substr(2,6)));
+                int size = mapData[y][x][8] - '0';
+                m = new Marple(x, y, size, new Home(x, y, size));
+
+                if (size > 1)
+                {
+                    mapData[y + 1][x] = "";
+                    mapData[y + 1][x + 1] = "";
+
+                    if (size > 2)
+                    {
+                        mapData[y + 1][x + 2] = "";
+                        mapData[y + 2][x] = "";
+                        mapData[y + 2][x + 1] = "";
+                        mapData[y + 2][x + 2] = "";
+                        x++;
+                    }
+                    x++;
+                }
             }
             else if (mapData[y][x][0] == 'E')
             {
-                // Marple marple(x, y, 2);
-                drawZone(x, y, 3, c, clock());
-                x+=2;
+                int size = mapData[y][x][8] - '0';
+                cout << size << endl;
+                drawZone(x, y, size, c, clock(), tutNum);
+
+                if (size > 1)
+                {
+                    mapData[y + 1][x] = "";
+                    mapData[y + 1][x + 1] = "";
+
+                    if (size > 2)
+                    {
+                        mapData[y + 1][x + 2] = "";
+                        mapData[y + 2][x] = "";
+                        mapData[y + 2][x + 1] = "";
+                        mapData[y + 2][x + 2] = "";
+                        x++;
+                    }
+                    x++;
+                }
             }
             else if (mapData[y][x][0] == 'H')
             {
-                holes.push_back(new Hole(x, y, 3));
+                int size = mapData[y][x][8] - '0';
+
+                holes.push_back(new Hole(x, y, size));
+
+                if (size > 1) {
+                    mapData[y + 1][x] = "";
+                    mapData[y + 1][x + 1] = "";
+
+                    if (size > 2) {
+                        mapData[y + 1][x + 2] = "";
+                        mapData[y + 2][x] = "";
+                        mapData[y + 2][x + 1] = "";
+                        mapData[y + 2][x + 2] = "";
+                        x++;
+                    }
+                    x++;
+                }
                 h++;
-                x+=2;
             }
         }
     }
+    mapData.clear();
+    holes.clear();
+    walls.clear();
     return m;
 }
 

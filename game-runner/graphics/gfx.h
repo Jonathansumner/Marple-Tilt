@@ -27,7 +27,7 @@ enum draw_type { //Order of enum ordinal determines drawing order, and therefore
 
 class MapMenu;
 class MarpleTiltMachine;
-class GameState;
+class BaseState;
 
 class Object
 {
@@ -226,12 +226,12 @@ public:
 class StateCollisionBox : public CollisionBox
 {
 public:
-    void (*callback)(MarpleTiltMachine *, GameState *);
+    void (*callback)(MarpleTiltMachine *, BaseState *);
     MarpleTiltMachine *StateMachine;
-    GameState *NewState;
+    BaseState *NewState;
     static std::vector<StateCollisionBox *> stateColliders;
 
-    StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, GameState *), bool loading_bar, MarpleTiltMachine *fsm, GameState *nS);
+    StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, BaseState *), bool loading_bar, MarpleTiltMachine *fsm, BaseState *nS);
     static void colliderStatePoll(Marple * marple);
     static bool checkCollision(Marple *marple, StateCollisionBox *collider);
     static void clear() {
@@ -265,7 +265,7 @@ private:
     int diameter;
     StateCollisionBox *box;
 public:
-    End(float x, float y, int d, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=1)
+    End(float x, float y, int d, void(*f)(MarpleTiltMachine*, BaseState*), MarpleTiltMachine *fsm, BaseState *ns, int time=1)
             : Object{x, y, END}
     {
         green = 100;
@@ -284,7 +284,7 @@ class StateButton : public Button {
     private:
         
     public:
-        StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, GameState*), MarpleTiltMachine *fsm, GameState *ns, int time=2);
+        StateButton(int xp, int yp, int w, int h, char *p, void(*f)(MarpleTiltMachine*, BaseState*), MarpleTiltMachine *fsm, BaseState *ns, int time=1);
 
 };
 
