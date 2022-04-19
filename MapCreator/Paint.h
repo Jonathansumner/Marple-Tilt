@@ -23,19 +23,10 @@ class Paint : public QWidget
 Q_OBJECT
 
 public:
-    Paint(QWidget *parent = 0) : QWidget(parent), pressed(0) {
-        color, brushColor = Qt::black;
-        pixmap = new QPixmap(64, 64);
-        pixmap->fill();
-        resize(640, 640);
-        coordinates = new QVector<coord>();
-        brushSize = 1;
-    }
-    ~Paint() { if (pixmap) delete pixmap; }
+    Paint(QWidget *parent = 0);
+    ~Paint();
 
     int element = 0;
-
-
 
     struct coord {
         //Store x coord, y coord, the element it is meant to be and a unique key.
@@ -61,7 +52,7 @@ public:
 protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *) { pressed = 0; }
+    void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *e);
 
 private:

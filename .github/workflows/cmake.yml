@@ -27,7 +27,22 @@ jobs:
           cd GameSystem
           bash setup.sh
       
-    - name: Build
+    - name: Build-GS
       run: |
           cd GameSystem
           bash build.sh
+
+  build-win:
+    runs-on: windows-latest
+
+    - name: Build-MC
+      uses: jurpel/install-qt-action@v2
+      with:
+        version: '5.15.1'
+        arch: 'win64_mingw81'
+
+      run: |
+          cd MapCreator
+          cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}/Qt/5.15.1/win64_mingw81 -S . -B out
+          cd out
+          make
