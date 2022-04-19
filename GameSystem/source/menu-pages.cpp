@@ -207,7 +207,7 @@ Marple* drawGameOver(rgb_matrix::Canvas *c, double time)
 
     float a = roundf(time * 100) / 100;
     string timeS = to_string(a);
-    string timeString = timeS.substr(0, timeS.length() - 4) + string(" secs");
+    string timeString = timeS.substr(0, timeS.length() - 4) + string(" s");
     Textbox *scoreBox = new Textbox(6, 40, {60, 170, 50}, c, timeString, NULL);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
