@@ -34,7 +34,8 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-
+    
+    steps:
     - name: Build-MC
       uses: jurpel/install-qt-action@v2
       with:
