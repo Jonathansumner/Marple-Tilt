@@ -48,6 +48,6 @@ jobs:
     - name: Build-MC
       run: |
           cd MapCreator
-          cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}/Qt/5.15.1/win64_mingw81 -S . -B out
+          cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}/Qt/5.15.1/win64_mingw81 -G"MinGW Makefiles" -S . -B out
           cd out
           make

@@ -75,9 +75,9 @@ Marple* drawSettingsMenu(Canvas *c)
 
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
 
-    StateButton *chooseBrightness = new StateButton(12, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new BrightnessMenu(c));
+    StateButton *chooseBrightness = new StateButton(8, 30, 16, 16, "img/sun.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new BrightnessMenu(c));
 
-    StateButton *chooseSound = new StateButton(32, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SoundMenu(c));
+    StateButton *chooseSound = new StateButton(40, 30, 16, 16, "img/audio.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SoundMenu(c));
 
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new MainMenu(c));
 
@@ -90,8 +90,8 @@ Marple* drawSoundMenu(Canvas *c)
 
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
 
-    Textbox *tempBox = new Textbox(30, 20, {60, 170, 50}, c, "Coming", NULL);
-    Textbox *tempBox2 = new Textbox(32, 30, {60, 170, 50}, c, "Soon", NULL);
+    Textbox *tempBox = new Textbox(20, 30, {60, 170, 50}, c, "Coming", NULL);
+    Textbox *tempBox2 = new Textbox(22, 40, {60, 170, 50}, c, "Soon", NULL);
 
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SettingsMenu(c));
 
@@ -105,7 +105,7 @@ Marple* drawBrightnessMenu(Canvas *c)
     Marple *m = new Marple(32, 32, 3, new Home(32, 32, 5));
 
     Textbox *tempBox = new Textbox(20, 30, {60, 170, 50}, c, "Coming", NULL);
-    Textbox *tempBox2 = new Textbox(22, 30, {60, 170, 50}, c, "Soon", NULL);
+    Textbox *tempBox2 = new Textbox(22, 40, {60, 170, 50}, c, "Soon", NULL);
 
     StateButton *backButton = new StateButton(4, 50, 10, 10, "img/left.png", &MarpleTiltMachine::StaticStateChange, &BaseState::runner, new SettingsMenu(c));
 
@@ -205,8 +205,9 @@ Marple* drawGameOver(rgb_matrix::Canvas *c, double time)
     Textbox *resultBox = new Textbox(6, 20, {60, 170, 50}, c, "Well Done!", NULL);
     Textbox *resultBox2 = new Textbox(6, 30, {60, 170, 50}, c, "You Took", NULL);
 
-    float a = roundf(time * 100.0) / 100.0;
-    string timeString = to_string(a) + string(" secs");
+    float a = roundf(time * 100) / 100;
+    string timeS = to_string(a);
+    string timeString = timeS.substr(0, timeS.length() - 4) + string(" secs");
     Textbox *scoreBox = new Textbox(6, 40, {60, 170, 50}, c, timeString, NULL);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
