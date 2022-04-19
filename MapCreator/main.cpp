@@ -3,7 +3,6 @@
 //Part of the Marple-Tilt project
 //Built for RTEP group 6, 2022
 
-
 #include "window.h"
 #include <QApplication>
 

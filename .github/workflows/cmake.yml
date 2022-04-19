@@ -32,17 +32,22 @@ jobs:
           cd GameSystem
           bash build.sh
 
-  build-win:
+  build-windows:
     runs-on: windows-latest
-
-    - name: Build-MC
-      uses: jurpel/install-qt-action@v2
+    
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+      
+    - uses: jurplel/install-qt-action@v2
       with:
         version: '5.15.1'
         arch: 'win64_mingw81'
 
+    - name: Build-MC
       run: |
           cd MapCreator
-          cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}/Qt/5.15.1/win64_mingw81 -S . -B out
+          cmake -DCMAKE_PREFIX_PATH=${{ github.workspace}}\Qt\5.15.1\win64_mingw81 -G"MinGW Makefiles" -S . -B out
           cd out
-          make
+          mingw32-make
