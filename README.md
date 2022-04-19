@@ -8,6 +8,9 @@
 
 Welcome to Marple Tilt, the revoluntionary new take on the popular childrens game Labrinth. This repository contains the code for both the Map Maker App and the Game System, both of which have been developed using C++. The Game is designed to run on a Raspberry Pi system and utilises an AdaFruit 64x64 Matrix and an MPU6050 Gyroscope.
 
+## Documention
+Documentation of repo structure can be found at https://jonathansumner.github.io/Marple-Tilt/
+
 ## Downloading the Source Code
 
 The project is stored and maintained using GitHub so the first task is to download the source code. This can be done in two ways, by downloading the zip file or by cloning the repository onto your machine. To clone the repository, use the command:
