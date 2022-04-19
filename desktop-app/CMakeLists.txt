@@ -15,7 +15,7 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(Marple-Tilt-Map-Creator main.cpp window.h window.cpp map.h map.cpp Tab1Content.cpp Tab1Content.h Tab3Content.cpp Tab3Content.h Tab2Content.cpp Tab2Content.h Paint.cpp Paint.h paintTab.cpp paintTab.h ImageInfo.cpp ImageInfo.h ColourPick.h ColourPick.cpp)
+add_executable(Marple-Tilt-Map-Creator main.cpp window.h window.cpp Paint.cpp Paint.h ColourPick.h ColourPick.cpp)
 target_link_libraries(Marple-Tilt-Map-Creator
         Qt5::Core
         Qt5::Gui
