@@ -9,6 +9,26 @@
 #include <QPainter>
 #include <QMouseEvent>
 
+Paint::Paint(QWidget *parent) : QWidget(parent), pressed(0)
+{
+    color, brushColor = Qt::black;
+    pixmap = new QPixmap(64, 64);
+    pixmap->fill();
+    resize(640, 640);
+    coordinates = new QVector<coord>();
+    brushSize = 1;
+}
+
+Paint::~Paint()
+{
+    if (pixmap)
+        delete pixmap;
+}
+
+void Paint::mouseReleaseEvent(QMouseEvent *)
+{
+    pressed = 0; 
+}
 
 void::Paint::setElement(int el){
     //Set internal element for the Painter.
