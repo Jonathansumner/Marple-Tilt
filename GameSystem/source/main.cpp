@@ -51,7 +51,11 @@ volatile float accel_x = 0, accel_y = 0, accel_z = 0;
 
 //Interrupt flags and Timers
 int status = gpioInitialise();
-int interrupt_pin = 16;
+int interrupt_pin = 13;
+int rt_test_pin = 26; // Pin to be used for real time testing
+//set rt_test & rt_flag set to true in order to measure realtime performance on pin 13 and 26
+bool rt_test = false; // true: toggles pin 26 to measure time taken between interrupt and end of loop
+bool rt_flag = false; // this boolean assures that interrupts processed during a loop do not hold the measurement pin high
 volatile bool interrupt_received = false;
 long long timestamp1;
 long long timestamp2;
@@ -62,6 +66,10 @@ long long frame_time = 10000; //time period for 60Hz in useconds
 
 void GyroCallback(int gpio, int level, uint32_t tick)
 {
+    if (rt_test) {
+        gpioWrite(rt_test_pin, 1);
+        rt_flag = false;
+    }
     Gyro.clearInterrupt(); // clear register 0x3A (58) of MPU6050 to clear interrupt
     Gyro.getAccel(&accel_x, &accel_y, &accel_z);
 }
@@ -82,6 +90,10 @@ void loop(Canvas *c, bool uniform = false)
         update(c);
         render(c);
         update(c, true);
+        if (rt_test) {
+            gpioWrite(rt_test_pin, 0);
+            rt_flag = true;
+        }
 
         gettimeofday(&t, nullptr);
         timestamp2 = t.tv_sec * 1000L + (t.tv_usec / 1000L);
@@ -102,7 +114,7 @@ int main(int argc, char *argv[]) {
     defaults.cols = 64;
     defaults.chain_length = 1;
     defaults.parallel = 1;
-    defaults.brightness = 15;
+    defaults.brightness = 20;
     canvas = RGBMatrix::CreateFromFlags(&argc, &argv, &defaults);
     if (canvas == nullptr)
         return 1;
@@ -128,6 +140,8 @@ int main(int argc, char *argv[]) {
     gpioSetAlertFunc(interrupt_pin, &GyroCallback);
 
     loop(canvas, true);
+
+    gpioTerminate();
     canvas->Clear();
     delete canvas;
     return 0;
