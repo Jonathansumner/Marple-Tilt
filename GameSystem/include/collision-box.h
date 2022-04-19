@@ -25,10 +25,9 @@ public:
     static void colliderPoll(Marple *marple);
     LoadingBar *getBar();
     LoadingBar *bar;
-    static void clear()
-    {
-        Colliders.clear();
-    }
+
+    static void clear();
+
     int getWidth();
     int getHeight();
     int getX();

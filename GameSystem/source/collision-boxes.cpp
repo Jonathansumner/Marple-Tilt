@@ -66,3 +66,8 @@ bool StateCollisionBox::checkCollision(Marple *marple, StateCollisionBox *collid
     }
     return false; // TODO: look into destructor and removing from vectors
 }
+
+void StateCollisionBox::clear()
+{
+    stateColliders.clear();
+}

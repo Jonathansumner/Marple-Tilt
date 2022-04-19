@@ -1,32 +1,22 @@
 #pragma once
 #include "base-state.h"
-#include "images.h"
 #include <ctime>
 
 class MapLoader;
-void drawGameOver(rgb_matrix::Canvas *c, double elapsed);
-void drawMoveTutorial(rgb_matrix::Canvas *c);
-void drawHoleTutorial(rgb_matrix::Canvas *c);
-void drawFullTutorial(rgb_matrix::Canvas *c);
-void drawTutOver(rgb_matrix::Canvas *c);
+Marple* drawGameOver(rgb_matrix::Canvas *c, double elapsed);
+Marple* drawTutOver(rgb_matrix::Canvas *c);
 
-    // StartUp State
-
-    class StartUp : public BaseState
-{
-public:
-    StartUp(rgb_matrix::Canvas *c) : BaseState{c} {};
-    virtual void OnEntry() override;
-    std::string Name() override;
-};
+//
 
 class GameRunning : public BaseState
 {
 public:
-    GameRunning(rgb_matrix::Canvas *c, MapLoader *m, int ID) : BaseState{c} {loader = m; mID = ID;};
+    GameRunning(rgb_matrix::Canvas *c, MapLoader *m, int ID);
+    ~GameRunning();
+
     virtual void OnEntry() override;
     std::string Name() override;
-    clock_t getTime() {return startTime;};
+    clock_t getTime();
 
 protected:
     MapLoader *loader;
@@ -37,7 +27,7 @@ protected:
 class GameOver : public BaseState
 {
 public:
-    GameOver(rgb_matrix::Canvas *c, clock_t time) : BaseState{c} {start = time;};
+    GameOver(rgb_matrix::Canvas *c, clock_t time);
     virtual void OnEntry() override;
     std::string Name() override;
 protected:

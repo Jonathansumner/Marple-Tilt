@@ -38,12 +38,12 @@ set_target_properties(matrixAPI PROPERTIES
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/external/matrix-api/include
-    ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/src
+    ${CMAKE_SOURCE_DIR}/external/mpu6050-api/src
     ${CMAKE_SOURCE_DIR}/include
     )
 
 target_link_directories(${PROJECT_NAME}
-    PRIVATE ${CMAKE_SOURCE_DIR}/external/MPU6050-C-CPP-Library-for-Raspberry-Pi/build/
+    PRIVATE ${CMAKE_SOURCE_DIR}/external/mpu6050-api/build/
 )
 
 target_link_libraries(${PROJECT_NAME}

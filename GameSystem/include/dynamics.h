@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef MARPLE_TILT_DYNAMICS_H
 #define MARPLE_TILT_DYNAMICS_H
 

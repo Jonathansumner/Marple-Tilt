@@ -1,8 +1,14 @@
 #include "render.h"
 #include "game-objects.h"
 #include "collision-boxes.h"
+#include "textbox.h"
+#include "button.h"
+#include "images.h"
 
 #include <math.h>
+#include <vector>
+#include <cstring>
+#include <algorithm>
 
 using rgb_matrix::Color;
 using rgb_matrix::Canvas;
@@ -61,4 +67,112 @@ void clearAll(Canvas *c)
     Object::clearStage(c);
     CollisionBox::clear();
     StateCollisionBox::clear();
+}
+
+void update(Canvas *c, bool clear)
+{ // Update object references within the render buffer
+    std::sort(Object::instances.begin(), Object::instances.end(),
+         [](Object *cmp1, Object *cmp2)
+         { return cmp1->getType() > cmp2->getType(); });
+    if (clear)
+        memcpy(Object::frame_prev, Object::frame, sizeof(Object::frame_prev));
+    for (Object *obj : Object::instances)
+    {
+        if (obj)
+        {
+            switch (obj->getType())
+            {
+            case MARPLE:
+            {
+                int d = dynamic_cast<Marple *>(obj)->getDiameter();
+                Marple *ref;
+                if (!clear)
+                {
+                    ref = dynamic_cast<Marple *>(obj);
+                }
+                else
+                {
+                    ref = nullptr;
+                }
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                break;
+            }
+            case HOLE:
+            {
+                int d = dynamic_cast<Hole *>(obj)->getDiameter();
+                auto *ref = dynamic_cast<Hole *>(obj);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                break;
+            }
+            case WALL:
+            {
+                int d = dynamic_cast<Wall *>(obj)->diameter;
+                auto *ref = dynamic_cast<Wall *>(obj);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                break;
+            }
+            case TEXT:
+            {
+                dynamic_cast<Textbox *>(obj)->draw();
+                break;
+            }
+            case END:
+            {
+                int d = dynamic_cast<End *>(obj)->getDiameter();
+                auto *ref = dynamic_cast<End *>(obj);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+                break;
+            }
+            case HOME:
+            {
+                int d = dynamic_cast<Home *>(obj)->getDiameter();
+                auto *ref = dynamic_cast<Home *>(obj);
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, d, ref, Object::frame);
+            }
+            case BUTTON:
+            {
+                auto *button = dynamic_cast<Button *>(obj);
+                int d = std::round(button->getBarWidth());
+                int h = button->getHeight();
+                Button *ref;
+                if (!clear)
+                {
+                    ref = button;
+                }
+                else
+                {
+                    ref = nullptr;
+                }
+                if (ref)
+                {
+                    drawImage(button->getPath(), c,
+                              {(int)button->getPos()[0], (int)button->getPos()[1], button->getWidth(),
+                               button->getHeight()});
+                }
+                fillRect(obj->getPos()[0], obj->getPos()[1], d, h, ref, Object::frame);
+                break;
+            }
+            case BAR:
+                break;
+            }
+        }
+    }
+}
+
+void render(Canvas *canvas)
+{ // render each pixel with respect to the object reference
+    for (int i = 0; i < 64; i++)
+    {
+        for (int j = 0; j < 64; j++)
+        {
+            if (Object::frame[i][j] && !Object::frame_prev[i][j])
+            {
+                canvas->SetPixel(i, j, Object::frame[i][j]->red, Object::frame[i][j]->green, Object::frame[i][j]->blue);
+            }
+            else if (!Object::frame[i][j] && Object::frame_prev[i][j])
+            {
+                canvas->SetPixel(i, j, 0, 0, 0);
+            }
+        }
+    }
 }

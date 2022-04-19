@@ -3,16 +3,26 @@
 
 class MapLoader;
 class Marple;
-void drawMainMenu(rgb_matrix::Canvas *c);
-void drawSettingsMenu(rgb_matrix::Canvas *c);
-void drawSoundMenu(rgb_matrix::Canvas *c);
-void drawBrightnessMenu(rgb_matrix::Canvas *c);
-void drawGameplayMenu(rgb_matrix::Canvas *c);
-void drawTutorialMenu(rgb_matrix::Canvas *c);
-void drawCalibrateMenu(rgb_matrix::Canvas *c);
-void drawZone(int x, int y, int d, Marple *m, rgb_matrix::Canvas *c, clock_t t);
+
+Marple* drawStartMenu(rgb_matrix::Canvas *c);
+Marple* drawMainMenu(rgb_matrix::Canvas *c);
+Marple* drawSettingsMenu(rgb_matrix::Canvas *c);
+Marple* drawSoundMenu(rgb_matrix::Canvas *c);
+Marple* drawBrightnessMenu(rgb_matrix::Canvas *c);
+Marple* drawGameplayMenu(rgb_matrix::Canvas *c);
+Marple* drawTutorialMenu(rgb_matrix::Canvas *c);
+Marple* drawCalibrateMenu(rgb_matrix::Canvas *c);
 
 // Menu States
+
+class StartMenu : public BaseState
+{
+public:
+    StartMenu(rgb_matrix::Canvas *c) : BaseState{c} {};
+    virtual void OnEntry() override;
+    std::string Name() override;
+};
+
 class MainMenu : public BaseState
 {
 public:
@@ -76,24 +86,19 @@ class MapMenu : public BaseState
 {
 public:
     MapMenu(rgb_matrix::Canvas *c, int p);
+    ~MapMenu();
+
     virtual void OnEntry() override;
     std::string Name() override;
 
-    MapLoader* getLoader() {return loader;};
+    MapLoader* getLoader();
 
     int getCurrPage();
-
-    void ChangePage(int change);
-    static void ChangePageWrapper(MapMenu *mm, int n);
-
-    void ChooseMap(int mapID);
-    static void ChooseMapWrapper(MapMenu *mm, int mapID);
 
 private:
     MapLoader* loader;
 
     int currPage;
-    int maxPage;
 };
 
-void drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> list, int page, MapMenu *mm);
+Marple* drawMapMenu(rgb_matrix::Canvas *c, std::vector<std::string> list, int page, MapMenu *mm);

@@ -5,31 +5,18 @@
 using rgb_matrix::Canvas;
 
 void MarpleTiltMachine::Init() {
-
-    currState = new StartUp(canvas);
+    currState = new StartMenu(canvas);
     currState->OnEntry();
-    sleep(5);
-    ChangeCurrentState(new MainMenu(canvas));
 }
 
 void MarpleTiltMachine::ChangeCurrentState(BaseState* newState) {
     currState->OnExit();
-    delete prevState;
-
-    prevState = currState;
     currState = newState;
-
-
     currState->OnEntry();
 }
 
 void MarpleTiltMachine::StaticStateChange(MarpleTiltMachine* fsm, BaseState * nS) {
    fsm->ChangeCurrentState(nS);
-}
-
-void MarpleTiltMachine::RewindState()
-{
-    ChangeCurrentState(prevState);
 }
 
 void MarpleTiltMachine::Update() {
@@ -58,4 +45,9 @@ void MarpleTiltMachine::setGyro(MPU6050 *g)
 MPU6050* MarpleTiltMachine::getGyro()
 {
     return gyro;
+}
+
+MarpleTiltMachine::~MarpleTiltMachine()
+{
+    delete currState;
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "object.h"
 
+#include <string.h>
+
 class CollisionBox;
 
 class Button : public Object
@@ -12,14 +14,9 @@ protected:
 public:
     int width;
     int height;
-    Button(int x_pos, int y_pos, int w, int h, char *p, int time = 2)
-        : Object{(float)x_pos, (float)y_pos, BUTTON}
-    {
-        width = w;
-        height = h;
-        instances.push_back(this);
-        path = p;
-    }
+    Button(int x_pos, int y_pos, int w, int h, std::string p, int time = 1);
+    ~Button();
+
     int getWidth();
     int getHeight();
     float getBarWidth();

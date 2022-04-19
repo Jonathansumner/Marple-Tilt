@@ -14,6 +14,11 @@ Marple::Marple(float x, float y, int d, Home *h) : Object {x, y, MARPLE}
     blue = 0;
 }
 
+Marple::~Marple()
+{
+    delete home;
+}
+
 int Marple::getDiameter()
 {
     return diameter;

@@ -1,5 +1,6 @@
 #include "base-state.h"
 #include "render.h"
+#include "dynamics.h"
 
 using rgb_matrix::Canvas;
 
@@ -15,7 +16,7 @@ void BaseState::OnExit()
 
 void BaseState::Update(MPU6050 *g)
 {
-    //updateMarple(marple, g);
+    updateMarple(marple, g);
     ColliderCheck(marple);
 }
 

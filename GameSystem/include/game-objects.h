@@ -25,8 +25,7 @@ private:
 
 public:
     Marple(float x, float y, int d, Home *h);
-
-    //    ~Marple();
+    ~Marple();
 
     int getDiameter();
     void returnHome();

@@ -12,3 +12,7 @@ void fillBorder(rgb_matrix::Color borderColour, int width);
 void ColliderCheck(Marple * marple);
 
 void clearAll(rgb_matrix::Canvas *c);
+
+void update(rgb_matrix::Canvas *c, bool clear = false);
+
+void render(rgb_matrix::Canvas *canvas);

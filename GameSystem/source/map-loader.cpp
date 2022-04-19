@@ -14,7 +14,7 @@
 
 using namespace std;
 
-int MapLoader::loadFileList(bool tutorial)
+void MapLoader::loadFileList(bool tutorial)
 {
     struct dirent *d;
     DIR *dr;
@@ -40,14 +40,6 @@ int MapLoader::loadFileList(bool tutorial)
         }
         closedir(dr);
     }
-
-    if (fileList.size() / 4 == 0)
-    {
-        return ceil(fileList.size() / 4);
-    } else {
-        return ceil(fileList.size() / 4) + 1;
-    }
-
 }
 
 vector<string> MapLoader::getFileList(int pageNum)
@@ -201,7 +193,6 @@ Marple* MapLoader::loadMapFile(int fileIndex, rgb_matrix::Canvas *c, bool tutori
             else if (mapData[y][x][0] == 'E')
             {
                 int size = mapData[y][x][8] - '0';
-                cout << size << endl;
                 drawZone(x, y, size, c, clock(), tutNum);
 
                 if (size > 1)

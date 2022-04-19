@@ -15,8 +15,5 @@ public:
     StateCollisionBox(int x, int y, int w, int h, int progress_secs, void (*f)(MarpleTiltMachine *, BaseState *), bool loading_bar, MarpleTiltMachine *fsm, BaseState *nS);
     static void colliderStatePoll(Marple *marple);
     static bool checkCollision(Marple *marple, StateCollisionBox *collider);
-    static void clear()
-    {
-        stateColliders.clear();
-    }
+    static void clear();
 };

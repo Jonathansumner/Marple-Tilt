@@ -110,3 +110,8 @@ int CollisionBox::getY()
 {
     return y;
 }
+
+void CollisionBox::clear()
+{
+    Colliders.clear();
+}

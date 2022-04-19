@@ -11,11 +11,5 @@ public:
 public:
     float getDiameter();
     int getHeight();
-    LoadingBar(float x_pos, float y_pos, int h)
-        : Object{x_pos, y_pos, BAR}
-    {
-        instances.push_back(this);
-        diameter = 0;
-        height = h;
-    }
+    LoadingBar(float x_pos, float y_pos, int h);
 };
