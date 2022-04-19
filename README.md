@@ -2,9 +2,9 @@
 <img width="200" src="https://github.com/Jonathansumner/Marple-Tilt/blob/main/Icons/marple_logo_resized.jpg" alt="Material Bread logo">
 <h1 align="center">Marple Tilt: Don't Lose Your Marples</h1>
 </p>
-
-<a href =https://www.instagram.com/marpletilt/ ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Instagram.png" width="32" padding="10"/> </a><a href =https://www.tiktok.com/@marpletilt ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Tiktok.png" width="32" padding="10"/> </a><a href =https://www.twitter.com/marpletilt ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Twitter.png" width="32" padding="10"/> </a>
-
+<p align="center">
+<a href =https://www.instagram.com/marpletilt/ ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Instagram.png" width="64"/> </a><a href =https://www.tiktok.com/@marpletilt ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Tiktok.png" width="64"/> </a><a href =https://www.twitter.com/marpletilt ><img src="https://raw.githubusercontent.com/Jonathansumner/Marple-Tilt/main/Icons/Twitter.png" width="64"/> </a>
+</p>
 
 Welcome to Marple Tilt, the revoluntionary new take on the popular childrens game Labrinth. This repository contains the code for both the Map Maker App and the Game System, both of which have been developed using C++. The Game is designed to run on a Raspberry Pi system and utilises an AdaFruit 64x64 Matrix and an MPU6050 Gyroscope.
 
