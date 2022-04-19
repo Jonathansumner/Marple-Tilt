@@ -223,7 +223,7 @@ Marple* drawTutOver(rgb_matrix::Canvas *c)
 
     Textbox *resultBox = new Textbox(4, 14, {60, 170, 50}, c, "You are now", NULL);
     Textbox *resultBox2 = new Textbox(8, 24, {60, 170, 50}, c, "ready to", NULL);
-    Textbox *resultBox2 = new Textbox(10, 34, {60, 170, 50}, c, "play!", NULL);
+    Textbox *resultBox3 = new Textbox(10, 34, {60, 170, 50}, c, "play!", NULL);
 
     Marple *m = new Marple(32, 32, 3, new Home(20, 20, 5));
 
