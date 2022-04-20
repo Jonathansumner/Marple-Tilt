@@ -69,7 +69,7 @@ $(function() {
   <div class="headertitle"><div class="title">window.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//Marple-Tilt Map Creator</span></div>
+<a href="window_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//Marple-Tilt Map Creator</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">//Alasdair Russell, 2315645R</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//Part of the Marple-Tilt project</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment">//Built for RTEP group 6, 2022</span></div>
@@ -77,8 +77,8 @@ $(function() {
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#ifndef WINDOW_H</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define WINDOW_H</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;Paint.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;ColourPick.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="Paint_8h.html">Paint.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="ColourPick_8h.html">ColourPick.h</a>&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;QWidget&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;QTabWidget&gt;</span></div>
@@ -90,10 +90,10 @@ $(function() {
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="classWindow.html">   19</a></span><span class="keyword">class </span><a class="code hl_class" href="classWindow.html">Window</a> : <span class="keyword">public</span> QWidget {</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>Q_OBJECT</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classWindow.html">Window</a>(QWidget *parent = 0);</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    paintTab *painterTab;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <a class="code hl_class" href="classPaint.html">Paint</a> *painter;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_class" href="classColourPick.html">ColourPick</a> *colourPicker;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classWindow.html#ab27fe44e0834066236f79f244b02f67e">Window</a>(QWidget *parent = 0);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classWindow.html#a6e21620754a1b0ce71822b89d0fe18ee">   23</a></span>    paintTab *<a class="code hl_variable" href="classWindow.html#a6e21620754a1b0ce71822b89d0fe18ee">painterTab</a>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">   24</a></span>    <a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classWindow.html#a676dfe9d9e50580b478a37d541d934c3">   25</a></span>    <a class="code hl_class" href="classColourPick.html">ColourPick</a> *<a class="code hl_variable" href="classWindow.html#a676dfe9d9e50580b478a37d541d934c3">colourPicker</a>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    QMenuBar *menuBar;</div>
@@ -105,23 +105,29 @@ $(function() {
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keyword">private</span> slots:</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> wallMode(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> holeMode(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> startMode(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> endMode(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">void</span> selectColour(<a class="code hl_class" href="classPaint.html">Paint</a> *painter, <a class="code hl_class" href="classColourPick.html">ColourPick</a> *picker, QPushButton *wall);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> erase(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span> setBrushSize(<a class="code hl_class" href="classPaint.html">Paint</a> *painter, <span class="keywordtype">int</span> i);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">void</span> border(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">void</span> setMarpleSize(<a class="code hl_class" href="classPaint.html">Paint</a> *painter, <span class="keywordtype">int</span> i);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">void</span> resetAll(<a class="code hl_class" href="classPaint.html">Paint</a> *painter);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordtype">void</span> wallMode(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keywordtype">void</span> holeMode(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">void</span> startMode(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">void</span> endMode(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">void</span> selectColour(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>, <a class="code hl_class" href="classColourPick.html">ColourPick</a> *picker, QPushButton *wall);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> erase(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">void</span> setBrushSize(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>, <span class="keywordtype">int</span> i);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">void</span> border(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">void</span> setMarpleSize(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>, <span class="keywordtype">int</span> i);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">void</span> resetAll(<a class="code hl_class" href="classPaint.html">Paint</a> *<a class="code hl_variable" href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">painter</a>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>};</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif </span><span class="comment">// WINDOW_H</span></div>
+<div class="ttc" id="aColourPick_8h_html"><div class="ttname"><a href="ColourPick_8h.html">ColourPick.h</a></div></div>
+<div class="ttc" id="aPaint_8h_html"><div class="ttname"><a href="Paint_8h.html">Paint.h</a></div></div>
 <div class="ttc" id="aclassColourPick_html"><div class="ttname"><a href="classColourPick.html">ColourPick</a></div><div class="ttdef"><b>Definition:</b> ColourPick.h:14</div></div>
 <div class="ttc" id="aclassPaint_html"><div class="ttname"><a href="classPaint.html">Paint</a></div><div class="ttdef"><b>Definition:</b> Paint.h:22</div></div>
 <div class="ttc" id="aclassWindow_html"><div class="ttname"><a href="classWindow.html">Window</a></div><div class="ttdef"><b>Definition:</b> window.h:19</div></div>
+<div class="ttc" id="aclassWindow_html_a676dfe9d9e50580b478a37d541d934c3"><div class="ttname"><a href="classWindow.html#a676dfe9d9e50580b478a37d541d934c3">Window::colourPicker</a></div><div class="ttdeci">ColourPick * colourPicker</div><div class="ttdef"><b>Definition:</b> window.h:25</div></div>
+<div class="ttc" id="aclassWindow_html_a6e21620754a1b0ce71822b89d0fe18ee"><div class="ttname"><a href="classWindow.html#a6e21620754a1b0ce71822b89d0fe18ee">Window::painterTab</a></div><div class="ttdeci">paintTab * painterTab</div><div class="ttdef"><b>Definition:</b> window.h:23</div></div>
+<div class="ttc" id="aclassWindow_html_aa6f4cb7da54e72ea92ce68272279723c"><div class="ttname"><a href="classWindow.html#aa6f4cb7da54e72ea92ce68272279723c">Window::painter</a></div><div class="ttdeci">Paint * painter</div><div class="ttdef"><b>Definition:</b> window.h:24</div></div>
+<div class="ttc" id="aclassWindow_html_ab27fe44e0834066236f79f244b02f67e"><div class="ttname"><a href="classWindow.html#ab27fe44e0834066236f79f244b02f67e">Window::Window</a></div><div class="ttdeci">Window(QWidget *parent=0)</div><div class="ttdef"><b>Definition:</b> window.cpp:23</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

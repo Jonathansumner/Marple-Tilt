@@ -69,8 +69,8 @@ $(function() {
   <div class="headertitle"><div class="title">button.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;object.h&quot;</span></div>
+<a href="button_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="object_8h.html">object.h</a>&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
@@ -79,23 +79,36 @@ $(function() {
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classButton.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classButton.html">Button</a> : <span class="keyword">public</span> <a class="code hl_class" href="classObject.html">Object</a></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordtype">char</span> *path;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_class" href="classCollisionBox.html">CollisionBox</a> *box;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="classButton.html#a318f8ceab612752296550e9d75fb29e6">   11</a></span>    <span class="keywordtype">char</span> *<a class="code hl_variable" href="classButton.html#a318f8ceab612752296550e9d75fb29e6">path</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classButton.html#a7124566516f642c8109c600396ff5259">   12</a></span>    <a class="code hl_class" href="classCollisionBox.html">CollisionBox</a> *<a class="code hl_variable" href="classButton.html#a7124566516f642c8109c600396ff5259">box</a>;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">int</span> width;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">int</span> height;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_class" href="classButton.html">Button</a>(<span class="keywordtype">int</span> x_pos, <span class="keywordtype">int</span> y_pos, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, std::string p, <span class="keywordtype">int</span> time = 1);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_class" href="classButton.html">~Button</a>();</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classButton.html#a94051f6f79d4436d8a268a81b828863a">   15</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classButton.html#a94051f6f79d4436d8a268a81b828863a">width</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classButton.html#a1c43732d529541e53c6b83607bdc5673">   16</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classButton.html#a1c43732d529541e53c6b83607bdc5673">height</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_function" href="classButton.html#afd798e87de8c9385ff0262f58ff79f70">Button</a>(<span class="keywordtype">int</span> <a class="code hl_variable" href="classObject.html#ad6da93e69e85e65cf38e408fba34a156">x_pos</a>, <span class="keywordtype">int</span> <a class="code hl_variable" href="classObject.html#a1d88da4abc6060ac27eeb6bf322dd4bb">y_pos</a>, <span class="keywordtype">int</span> w, <span class="keywordtype">int</span> h, std::string p, <span class="keywordtype">int</span> time = 1);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_function" href="classButton.html#a2a001eb9c3cc8ae54768a850dd345002">~Button</a>();</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">int</span> getWidth();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">int</span> getHeight();</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">float</span> getBarWidth();</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">char</span> *getPath();</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classButton.html#a78bb3e6eeb85f91d07c98b392a816f3f">getWidth</a>();</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classButton.html#a9ed8c54a9a7f468ea3fa4417f954ec23">getHeight</a>();</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classButton.html#a2cbe49652d421ddfab93977873a34ab2">getBarWidth</a>();</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keywordtype">char</span> *<a class="code hl_function" href="classButton.html#a4dad615a1a989cd403d5636e78f16543">getPath</a>();</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
 <div class="ttc" id="aclassButton_html"><div class="ttname"><a href="classButton.html">Button</a></div><div class="ttdef"><b>Definition:</b> button.h:9</div></div>
+<div class="ttc" id="aclassButton_html_a1c43732d529541e53c6b83607bdc5673"><div class="ttname"><a href="classButton.html#a1c43732d529541e53c6b83607bdc5673">Button::height</a></div><div class="ttdeci">int height</div><div class="ttdef"><b>Definition:</b> button.h:16</div></div>
+<div class="ttc" id="aclassButton_html_a2a001eb9c3cc8ae54768a850dd345002"><div class="ttname"><a href="classButton.html#a2a001eb9c3cc8ae54768a850dd345002">Button::~Button</a></div><div class="ttdeci">~Button()</div><div class="ttdef"><b>Definition:</b> button.cpp:15</div></div>
+<div class="ttc" id="aclassButton_html_a2cbe49652d421ddfab93977873a34ab2"><div class="ttname"><a href="classButton.html#a2cbe49652d421ddfab93977873a34ab2">Button::getBarWidth</a></div><div class="ttdeci">float getBarWidth()</div><div class="ttdef"><b>Definition:</b> button.cpp:35</div></div>
+<div class="ttc" id="aclassButton_html_a318f8ceab612752296550e9d75fb29e6"><div class="ttname"><a href="classButton.html#a318f8ceab612752296550e9d75fb29e6">Button::path</a></div><div class="ttdeci">char * path</div><div class="ttdef"><b>Definition:</b> button.h:11</div></div>
+<div class="ttc" id="aclassButton_html_a4dad615a1a989cd403d5636e78f16543"><div class="ttname"><a href="classButton.html#a4dad615a1a989cd403d5636e78f16543">Button::getPath</a></div><div class="ttdeci">char * getPath()</div><div class="ttdef"><b>Definition:</b> button.cpp:30</div></div>
+<div class="ttc" id="aclassButton_html_a7124566516f642c8109c600396ff5259"><div class="ttname"><a href="classButton.html#a7124566516f642c8109c600396ff5259">Button::box</a></div><div class="ttdeci">CollisionBox * box</div><div class="ttdef"><b>Definition:</b> button.h:12</div></div>
+<div class="ttc" id="aclassButton_html_a78bb3e6eeb85f91d07c98b392a816f3f"><div class="ttname"><a href="classButton.html#a78bb3e6eeb85f91d07c98b392a816f3f">Button::getWidth</a></div><div class="ttdeci">int getWidth()</div><div class="ttdef"><b>Definition:</b> button.cpp:20</div></div>
+<div class="ttc" id="aclassButton_html_a94051f6f79d4436d8a268a81b828863a"><div class="ttname"><a href="classButton.html#a94051f6f79d4436d8a268a81b828863a">Button::width</a></div><div class="ttdeci">int width</div><div class="ttdef"><b>Definition:</b> button.h:15</div></div>
+<div class="ttc" id="aclassButton_html_a9ed8c54a9a7f468ea3fa4417f954ec23"><div class="ttname"><a href="classButton.html#a9ed8c54a9a7f468ea3fa4417f954ec23">Button::getHeight</a></div><div class="ttdeci">int getHeight()</div><div class="ttdef"><b>Definition:</b> button.cpp:25</div></div>
+<div class="ttc" id="aclassButton_html_afd798e87de8c9385ff0262f58ff79f70"><div class="ttname"><a href="classButton.html#afd798e87de8c9385ff0262f58ff79f70">Button::Button</a></div><div class="ttdeci">Button(int x_pos, int y_pos, int w, int h, std::string p, int time=1)</div><div class="ttdef"><b>Definition:</b> button.cpp:5</div></div>
 <div class="ttc" id="aclassCollisionBox_html"><div class="ttname"><a href="classCollisionBox.html">CollisionBox</a></div><div class="ttdef"><b>Definition:</b> collision-box.h:9</div></div>
 <div class="ttc" id="aclassObject_html"><div class="ttname"><a href="classObject.html">Object</a></div><div class="ttdef"><b>Definition:</b> object.h:20</div></div>
+<div class="ttc" id="aclassObject_html_a1d88da4abc6060ac27eeb6bf322dd4bb"><div class="ttname"><a href="classObject.html#a1d88da4abc6060ac27eeb6bf322dd4bb">Object::y_pos</a></div><div class="ttdeci">float y_pos</div><div class="ttdef"><b>Definition:</b> object.h:45</div></div>
+<div class="ttc" id="aclassObject_html_ad6da93e69e85e65cf38e408fba34a156"><div class="ttname"><a href="classObject.html#ad6da93e69e85e65cf38e408fba34a156">Object::x_pos</a></div><div class="ttdeci">float x_pos</div><div class="ttdef"><b>Definition:</b> object.h:44</div></div>
+<div class="ttc" id="aobject_8h_html"><div class="ttname"><a href="object_8h.html">object.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
