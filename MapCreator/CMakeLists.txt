@@ -10,6 +10,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+file(MAKE_DIRECTORY "out/maps")
+
 find_package(Qt5 REQUIRED COMPONENTS
         Core
         Gui
